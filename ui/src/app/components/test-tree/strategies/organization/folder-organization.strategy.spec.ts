@@ -158,7 +158,7 @@ describe('FolderOrganizationStrategy', () => {
 
     const result = strategy.buildTree(tests);
 
-    expect(result[0].testCount).toBeUndefined(); // Test nodes don't have testCount
+    expect(result[0].testCount).toBeUndefined();
   });
 
   it('should calculate test count for a folder with multiple tests', () => {
@@ -184,8 +184,8 @@ describe('FolderOrganizationStrategy', () => {
     const folderA = result[0];
 
     expect(folderA.testCount).toBe(4);
-    expect(folderA.children?.[0].testCount).toBe(2); // folder b
-    expect(folderA.children?.[1].testCount).toBe(1); // folder c
+    expect(folderA.children?.[0].testCount).toBe(2);
+    expect(folderA.children?.[1].testCount).toBe(1);
   });
 
   it('should calculate test count for mixed content (tests and subfolders)', () => {
@@ -198,6 +198,6 @@ describe('FolderOrganizationStrategy', () => {
     const folder1 = result[0];
 
     expect(folder1.testCount).toBe(2);
-    expect(folder1.children?.[0].testCount).toBe(1); // subfolder
+    expect(folder1.children?.[0].testCount).toBe(1);
   });
 });

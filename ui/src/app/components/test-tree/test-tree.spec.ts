@@ -7,6 +7,22 @@ import { TestFilterStrategy } from './strategies/filter/test-filter-strategy.int
 import { TreeSortStrategy } from './strategies/sort/tree-sort-strategy.interface';
 import { vi } from 'vitest';
 
+const createMockTreeOrganizationStrategy = (
+  buildTreeResult: TestTreeNode[] = [],
+  name: string = 'mock',
+  icon: string = 'folder',
+  color: string = 'inherit',
+): TreeOrganizationStrategy => ({
+  buildTree: vi.fn().mockReturnValue(buildTreeResult),
+  getName: vi.fn().mockReturnValue(name),
+  getIcon: vi.fn().mockReturnValue(icon),
+  getColor: vi.fn().mockReturnValue(color),
+});
+
+const createMockTestFilterStrategy = (filterResult: Test[] = []): TestFilterStrategy => ({
+  filter: vi.fn().mockReturnValue(filterResult),
+});
+
 describe('TestTree Component', () => {
   let component: TestTree;
   let fixture: ComponentFixture<TestTree>;
@@ -68,12 +84,7 @@ describe('TestTree Component', () => {
         { name: 'test1', path: '/folder/test1', lastExecutionType: 'SUCCESS', durationMs: 1000 },
       ];
 
-      const mockStrategy: TreeOrganizationStrategy = {
-        buildTree: vi.fn().mockReturnValue([]),
-        getName: vi.fn().mockReturnValue('mock'),
-        getIcon: vi.fn().mockReturnValue('folder'),
-        getColor: vi.fn().mockReturnValue('inherit'),
-      };
+      const mockStrategy = createMockTreeOrganizationStrategy([]);
 
       fixture.componentRef.setInput('tests', tests);
       fixture.componentRef.setInput('strategy', mockStrategy);
@@ -91,12 +102,7 @@ describe('TestTree Component', () => {
 
       const expectedResult: TestTreeNode[] = [{ name: 'folder', children: [{ name: 'test1' }] }];
 
-      const mockStrategy: TreeOrganizationStrategy = {
-        buildTree: vi.fn().mockReturnValue(expectedResult),
-        getName: vi.fn().mockReturnValue('mock'),
-        getIcon: vi.fn().mockReturnValue('folder'),
-        getColor: vi.fn().mockReturnValue('inherit'),
-      };
+      const mockStrategy = createMockTreeOrganizationStrategy(expectedResult);
 
       fixture.componentRef.setInput('tests', tests);
       fixture.componentRef.setInput('strategy', mockStrategy);
@@ -112,12 +118,7 @@ describe('TestTree Component', () => {
         { name: 'test1', path: '/folder/test1', lastExecutionType: 'SUCCESS', durationMs: 1000 },
       ];
 
-      const mockStrategy: TreeOrganizationStrategy = {
-        buildTree: vi.fn().mockReturnValue([]),
-        getName: vi.fn().mockReturnValue('mock'),
-        getIcon: vi.fn().mockReturnValue('folder'),
-        getColor: vi.fn().mockReturnValue('inherit'),
-      };
+      const mockStrategy = createMockTreeOrganizationStrategy([]);
 
       fixture.componentRef.setInput('tests', tests1);
       fixture.componentRef.setInput('strategy', mockStrategy);
@@ -143,22 +144,17 @@ describe('TestTree Component', () => {
         { name: 'test1', path: '/folder/test1', lastExecutionType: 'SUCCESS', durationMs: 1000 },
       ];
 
-      const strategy1: TreeOrganizationStrategy = {
-        buildTree: vi.fn().mockReturnValue([
-          {
-            name: 'result1',
-            test: {
-              name: 'test1',
-              path: '/folder/test1',
-              lastExecutionType: 'SUCCESS',
-              durationMs: 1000,
-            },
+      const strategy1 = createMockTreeOrganizationStrategy([
+        {
+          name: 'result1',
+          test: {
+            name: 'test1',
+            path: '/folder/test1',
+            lastExecutionType: 'SUCCESS',
+            durationMs: 1000,
           },
-        ]),
-        getName: vi.fn().mockReturnValue('strategy1'),
-        getIcon: vi.fn().mockReturnValue('folder'),
-        getColor: vi.fn().mockReturnValue('inherit'),
-      };
+        },
+      ]);
 
       fixture.componentRef.setInput('tests', tests);
       fixture.componentRef.setInput('strategy', strategy1);
@@ -167,22 +163,17 @@ describe('TestTree Component', () => {
       let result = component.dataSource();
       expect(result[0].name).toBe('result1');
 
-      const strategy2: TreeOrganizationStrategy = {
-        buildTree: vi.fn().mockReturnValue([
-          {
-            name: 'result2',
-            test: {
-              name: 'test1',
-              path: '/folder/test1',
-              lastExecutionType: 'SUCCESS',
-              durationMs: 1000,
-            },
+      const strategy2 = createMockTreeOrganizationStrategy([
+        {
+          name: 'result2',
+          test: {
+            name: 'test1',
+            path: '/folder/test1',
+            lastExecutionType: 'SUCCESS',
+            durationMs: 1000,
           },
-        ]),
-        getName: vi.fn().mockReturnValue('strategy2'),
-        getIcon: vi.fn().mockReturnValue('folder'),
-        getColor: vi.fn().mockReturnValue('inherit'),
-      };
+        },
+      ]);
 
       fixture.componentRef.setInput('strategy', strategy2);
       fixture.detectChanges();
@@ -476,9 +467,7 @@ describe('TestTree Component', () => {
         { name: 'test2', path: '/test2', lastExecutionType: 'FAILURE' },
       ];
 
-      const mockFilter: TestFilterStrategy = {
-        filter: vi.fn().mockReturnValue([tests[0]]),
-      };
+      const mockFilter = createMockTestFilterStrategy([tests[0]]);
 
       fixture.componentRef.setInput('tests', tests);
       fixture.componentRef.setInput('filterStrategy', mockFilter);
@@ -494,9 +483,7 @@ describe('TestTree Component', () => {
         { name: 'test2', path: '/test2', lastExecutionType: 'FAILURE' },
       ];
 
-      const filter1: TestFilterStrategy = {
-        filter: vi.fn().mockReturnValue([tests[0]]),
-      };
+      const filter1 = createMockTestFilterStrategy([tests[0]]);
 
       fixture.componentRef.setInput('tests', tests);
       fixture.componentRef.setInput('filterStrategy', filter1);
@@ -505,9 +492,7 @@ describe('TestTree Component', () => {
       component.filteredTests();
       expect(filter1.filter).toHaveBeenCalledTimes(1);
 
-      const filter2: TestFilterStrategy = {
-        filter: vi.fn().mockReturnValue([tests[1]]),
-      };
+      const filter2 = createMockTestFilterStrategy([tests[1]]);
 
       fixture.componentRef.setInput('filterStrategy', filter2);
       fixture.detectChanges();
@@ -527,12 +512,7 @@ describe('TestTree Component', () => {
         sort: vi.fn().mockReturnValue([{ name: 'sorted', children: [] }]),
       };
 
-      const mockStrategy: TreeOrganizationStrategy = {
-        buildTree: vi.fn().mockReturnValue([{ name: 'unsorted', children: [] }]),
-        getName: vi.fn().mockReturnValue('mock'),
-        getIcon: vi.fn().mockReturnValue('folder'),
-        getColor: vi.fn().mockReturnValue('inherit'),
-      };
+      const mockStrategy = createMockTreeOrganizationStrategy([{ name: 'unsorted', children: [] }]);
 
       fixture.componentRef.setInput('tests', tests);
       fixture.componentRef.setInput('strategy', mockStrategy);
@@ -565,12 +545,7 @@ describe('TestTree Component', () => {
           ]),
       };
 
-      const mockStrategy: TreeOrganizationStrategy = {
-        buildTree: vi.fn().mockReturnValue([{ name: 'test', children: [] }]),
-        getName: vi.fn().mockReturnValue('mock'),
-        getIcon: vi.fn().mockReturnValue('folder'),
-        getColor: vi.fn().mockReturnValue('inherit'),
-      };
+      const mockStrategy = createMockTreeOrganizationStrategy([{ name: 'test', children: [] }]);
 
       fixture.componentRef.setInput('tests', tests);
       fixture.componentRef.setInput('strategy', mockStrategy);
@@ -590,12 +565,7 @@ describe('TestTree Component', () => {
 
       const expectedNodes: TestTreeNode[] = [{ name: 'test1', children: [] }];
 
-      const mockStrategy: TreeOrganizationStrategy = {
-        buildTree: vi.fn().mockReturnValue(expectedNodes),
-        getName: vi.fn().mockReturnValue('mock'),
-        getIcon: vi.fn().mockReturnValue('folder'),
-        getColor: vi.fn().mockReturnValue('inherit'),
-      };
+      const mockStrategy = createMockTreeOrganizationStrategy(expectedNodes);
 
       fixture.componentRef.setInput('tests', tests);
       fixture.componentRef.setInput('strategy', mockStrategy);
@@ -616,16 +586,9 @@ describe('TestTree Component', () => {
 
       const filteredTests: Test[] = [tests[0]];
 
-      const mockFilter: TestFilterStrategy = {
-        filter: vi.fn().mockReturnValue(filteredTests),
-      };
+      const mockFilter = createMockTestFilterStrategy(filteredTests);
 
-      const mockStrategy: TreeOrganizationStrategy = {
-        buildTree: vi.fn().mockReturnValue([{ name: 'test1' }]),
-        getName: vi.fn().mockReturnValue('mock'),
-        getIcon: vi.fn().mockReturnValue('folder'),
-        getColor: vi.fn().mockReturnValue('inherit'),
-      };
+      const mockStrategy = createMockTreeOrganizationStrategy([{ name: 'test1' }]);
 
       fixture.componentRef.setInput('tests', tests);
       fixture.componentRef.setInput('filterStrategy', mockFilter);
@@ -645,20 +608,13 @@ describe('TestTree Component', () => {
 
       const filteredTests: Test[] = [tests[0]];
 
-      const mockFilter: TestFilterStrategy = {
-        filter: vi.fn().mockReturnValue(filteredTests),
-      };
+      const mockFilter = createMockTestFilterStrategy(filteredTests);
 
       const mockSort: TreeSortStrategy = {
         sort: vi.fn().mockReturnValue([{ name: 'sorted', children: [] }]),
       };
 
-      const mockStrategy: TreeOrganizationStrategy = {
-        buildTree: vi.fn().mockReturnValue([{ name: 'unsorted', children: [] }]),
-        getName: vi.fn().mockReturnValue('mock'),
-        getIcon: vi.fn().mockReturnValue('folder'),
-        getColor: vi.fn().mockReturnValue('inherit'),
-      };
+      const mockStrategy = createMockTreeOrganizationStrategy([{ name: 'unsorted', children: [] }]);
 
       fixture.componentRef.setInput('tests', tests);
       fixture.componentRef.setInput('filterStrategy', mockFilter);
