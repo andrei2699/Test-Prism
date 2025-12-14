@@ -105,4 +105,40 @@ describe('TestCountDisplayComponent', () => {
       hexToRgb(EXECUTION_TYPE_COLORS.ERROR),
     );
   });
+
+  it('should display tooltips with correct information for each execution type', () => {
+    const testCounts: Record<TestExecutionType, number> = {
+      SUCCESS: 5,
+      FAILURE: 2,
+      SKIPPED: 1,
+      ERROR: 0,
+    };
+
+    fixture.componentRef.setInput('testCounts', testCounts);
+    fixture.detectChanges();
+
+    const executionCountElements = fixture.debugElement.queryAll(By.css('.execution-count'));
+
+    const successElement = executionCountElements.find(
+      el => el.nativeElement.textContent.trim() === '5',
+    );
+    expect(successElement).toBeTruthy();
+    expect(successElement?.nativeElement.title).toBe('SUCCESS: 5');
+
+    const failureElement = executionCountElements.find(
+      el => el.nativeElement.textContent.trim() === '2',
+    );
+    expect(failureElement).toBeTruthy();
+    expect(failureElement?.nativeElement.title).toBe('FAILURE: 2');
+
+    const skippedElement = executionCountElements.find(
+      el => el.nativeElement.textContent.trim() === '1',
+    );
+    expect(skippedElement).toBeTruthy();
+    expect(skippedElement?.nativeElement.title).toBe('SKIPPED: 1');
+
+    const totalElement = fixture.debugElement.query(By.css('.total-count'));
+    expect(totalElement).toBeTruthy();
+    expect(totalElement?.nativeElement.title).toBe('Total: 8');
+  });
 });
