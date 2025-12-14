@@ -11,6 +11,10 @@ export class HumanizeDurationPipe implements PipeTransform {
       return '0ms';
     }
 
-    return humanizeDuration(milliseconds, { round: true });
+    return humanizeDuration(milliseconds, {
+      round: false,
+      units: ['h', 'm', 's', 'ms'],
+      largest: 2,
+    });
   }
 }

@@ -6,7 +6,7 @@
     </mat-icon>
     <span class="node-label">{{ node.name }}</span>
     @if (node.test?.durationMs !== undefined) {
-      <span class="node-duration"> ({{ node.test!.durationMs | humanizeDuration }}) </span>
+      <span class="node-duration" [matTooltip]="node.test!.durationMs + 'ms'"> ({{ node.test!.durationMs | humanizeDuration }}) </span>
     }
   </mat-tree-node>
 
@@ -25,7 +25,7 @@
     </mat-icon>
     <span class="node-label">{{ node.name }}</span>
     @if (node.totalDurationMs !== undefined) {
-      <span class="node-duration"> ({{ node.totalDurationMs | humanizeDuration }}) </span>
+      <span class="node-duration" [matTooltip]="node.totalDurationMs + 'ms'"> ({{ node.totalDurationMs | humanizeDuration }}) </span>
     }
   </mat-tree-node>
 </mat-tree>

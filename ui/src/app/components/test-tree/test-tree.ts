@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { Test } from '../../types/TestReport';
 import { TreeOrganizationStrategy } from './strategies/tree-organization-strategy.interface';
 import { TreeOrganizationStrategyFactory } from './strategies/tree-organization-strategy.factory';
@@ -19,7 +20,14 @@ export interface TestTreeNode {
 
 @Component({
   selector: 'app-test-tree',
-  imports: [CommonModule, MatTreeModule, MatButtonModule, MatIconModule, HumanizeDurationPipe],
+  imports: [
+    CommonModule,
+    MatTreeModule,
+    MatButtonModule,
+    MatIconModule,
+    MatTooltipModule,
+    HumanizeDurationPipe,
+  ],
   templateUrl: './test-tree.html',
   styleUrl: './test-tree.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
