@@ -30,6 +30,14 @@ describe('TreeOrganizationStrategyFactory', () => {
       buildTree(): TestTreeNode[] {
         return [];
       }
+
+      getIcon(): string {
+        return 'folder';
+      }
+
+      getColor(): string {
+        return 'inherit';
+      }
     }
 
     TreeOrganizationStrategyFactory.register('custom', () => new CustomStrategy());
@@ -52,6 +60,14 @@ describe('TreeOrganizationStrategyFactory', () => {
 
       buildTree(): TestTreeNode[] {
         return [];
+      }
+
+      getIcon(): string {
+        return 'folder';
+      }
+
+      getColor(): string {
+        return 'inherit';
       }
     }
 

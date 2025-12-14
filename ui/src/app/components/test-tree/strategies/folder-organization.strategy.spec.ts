@@ -103,4 +103,52 @@ describe('FolderOrganizationStrategy', () => {
 
     expect(folderB?.children).toHaveLength(2);
   });
+
+  it('should calculate total duration for folders with single test', () => {
+    const tests: Test[] = [
+      { name: 'test1', path: '/folder/test1', lastExecutionType: 'SUCCESS', durationMs: 1500 },
+    ];
+
+    const result = strategy.buildTree(tests);
+
+    expect(result[0].totalDurationMs).toBe(1500);
+  });
+
+  it('should sum durations for folders with multiple tests', () => {
+    const tests: Test[] = [
+      { name: 'test1', path: '/folder/test1', lastExecutionType: 'SUCCESS', durationMs: 1000 },
+      { name: 'test2', path: '/folder/test2', lastExecutionType: 'SUCCESS', durationMs: 2000 },
+      { name: 'test3', path: '/folder/test3', lastExecutionType: 'FAILURE', durationMs: 500 },
+    ];
+
+    const result = strategy.buildTree(tests);
+
+    expect(result[0].totalDurationMs).toBe(3500);
+  });
+
+  it('should sum durations recursively for nested folders', () => {
+    const tests: Test[] = [
+      { name: 'test1', path: '/a/b/test1', lastExecutionType: 'SUCCESS', durationMs: 1000 },
+      { name: 'test2', path: '/a/b/test2', lastExecutionType: 'SUCCESS', durationMs: 2000 },
+      { name: 'test3', path: '/a/c/test3', lastExecutionType: 'SUCCESS', durationMs: 500 },
+    ];
+
+    const result = strategy.buildTree(tests);
+    const folderA = result[0];
+
+    expect(folderA.totalDurationMs).toBe(3500);
+    expect(folderA.children?.[0].totalDurationMs).toBe(3000);
+    expect(folderA.children?.[1].totalDurationMs).toBe(500);
+  });
+
+  it('should handle tests without duration', () => {
+    const tests: Test[] = [
+      { name: 'test1', path: '/folder/test1', lastExecutionType: 'SUCCESS' },
+      { name: 'test2', path: '/folder/test2', lastExecutionType: 'SUCCESS', durationMs: 2000 },
+    ];
+
+    const result = strategy.buildTree(tests);
+
+    expect(result[0].totalDurationMs).toBe(2000);
+  });
 });

@@ -24,5 +24,8 @@
       {{ getIcon(node) }}
     </mat-icon>
     <span class="node-label">{{ node.name }}</span>
+    @if (node.totalDurationMs !== undefined) {
+      <span class="node-duration"> ({{ node.totalDurationMs | humanizeDuration }}) </span>
+    }
   </mat-tree-node>
 </mat-tree>

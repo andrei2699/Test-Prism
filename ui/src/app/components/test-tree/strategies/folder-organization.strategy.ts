@@ -19,6 +19,7 @@ export class FolderOrganizationStrategy extends BaseTreeOrganizationStrategy {
       this.addTestToHierarchy(test, pathParts, nodeMap, rootNodes);
     });
 
+    this.calculateTotalDurations(rootNodes);
     return rootNodes;
   }
 

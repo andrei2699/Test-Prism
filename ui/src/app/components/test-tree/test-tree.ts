@@ -14,6 +14,7 @@ export interface TestTreeNode {
   children?: TestTreeNode[];
   icon?: string;
   color?: string;
+  totalDurationMs?: number;
 }
 
 @Component({

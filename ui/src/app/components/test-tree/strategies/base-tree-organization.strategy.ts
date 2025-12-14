@@ -101,4 +101,27 @@ export abstract class BaseTreeOrganizationStrategy implements TreeOrganizationSt
       rootNodes.push(groupNode);
     }
   }
+
+  protected calculateTotalDurations(nodes: TestTreeNode[]): void {
+    nodes.forEach(node => {
+      this.calculateNodeTotalDuration(node);
+    });
+  }
+
+  private calculateNodeTotalDuration(node: TestTreeNode): number {
+    if (node.test?.durationMs) {
+      return node.test.durationMs;
+    }
+
+    if (node.children && node.children.length > 0) {
+      let total = 0;
+      node.children.forEach(child => {
+        total += this.calculateNodeTotalDuration(child);
+      });
+      node.totalDurationMs = total;
+      return total;
+    }
+
+    return 0;
+  }
 }

@@ -86,11 +86,13 @@ function generateTestData(): TestReport {
     const path = paths[i % paths.length];
     const testName = testNames[i % testNames.length];
     const executionType = executionTypes[i % executionTypes.length];
+    const durationMs = Math.floor(Math.random() * 4900) + 100;
 
     tests.push({
       name: `${testName} #${i}`,
       path: `/${path}`,
       lastExecutionType: executionType,
+      durationMs,
     });
   }
 

@@ -68,4 +68,32 @@ describe('ExecutionTypeOrganizationStrategy', () => {
     expect(result[2].children).toHaveLength(1);
     expect(result[3].children).toHaveLength(1);
   });
+
+  it('should calculate total duration for status groups', () => {
+    const tests: Test[] = [
+      { name: 'test1', path: '/test1', lastExecutionType: 'SUCCESS', durationMs: 1000 },
+      { name: 'test2', path: '/test2', lastExecutionType: 'SUCCESS', durationMs: 2000 },
+      { name: 'test3', path: '/test3', lastExecutionType: 'FAILURE', durationMs: 3000 },
+    ];
+
+    const result = strategy.buildTree(tests);
+
+    const successGroup = result.find(n => n.name === 'SUCCESS');
+    const failureGroup = result.find(n => n.name === 'FAILURE');
+
+    expect(successGroup?.totalDurationMs).toBe(3000);
+    expect(failureGroup?.totalDurationMs).toBe(3000);
+  });
+
+  it('should sum durations across multiple tests in same group', () => {
+    const tests: Test[] = [
+      { name: 'test1', path: '/test1', lastExecutionType: 'SUCCESS', durationMs: 500 },
+      { name: 'test2', path: '/test2', lastExecutionType: 'SUCCESS', durationMs: 750 },
+      { name: 'test3', path: '/test3', lastExecutionType: 'SUCCESS', durationMs: 250 },
+    ];
+
+    const result = strategy.buildTree(tests);
+
+    expect(result[0].totalDurationMs).toBe(1500);
+  });
 });

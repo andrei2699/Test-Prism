@@ -63,12 +63,14 @@ describe('TestTree Component', () => {
 
     it('should call strategy buildTree with tests', () => {
       const tests: Test[] = [
-        { name: 'test1', path: '/folder/test1', lastExecutionType: 'SUCCESS' },
+        { name: 'test1', path: '/folder/test1', lastExecutionType: 'SUCCESS', durationMs: 1000 },
       ];
 
       const mockStrategy: TreeOrganizationStrategy = {
         buildTree: vi.fn().mockReturnValue([]),
         getName: vi.fn().mockReturnValue('mock'),
+        getIcon: vi.fn().mockReturnValue('folder'),
+        getColor: vi.fn().mockReturnValue('inherit'),
       };
 
       fixture.componentRef.setInput('tests', tests);
@@ -82,7 +84,7 @@ describe('TestTree Component', () => {
 
     it('should return result from strategy buildTree', () => {
       const tests: Test[] = [
-        { name: 'test1', path: '/folder/test1', lastExecutionType: 'SUCCESS' },
+        { name: 'test1', path: '/folder/test1', lastExecutionType: 'SUCCESS', durationMs: 1000 },
       ];
 
       const expectedResult: TestTreeNode[] = [{ name: 'folder', children: [{ name: 'test1' }] }];
@@ -90,6 +92,8 @@ describe('TestTree Component', () => {
       const mockStrategy: TreeOrganizationStrategy = {
         buildTree: vi.fn().mockReturnValue(expectedResult),
         getName: vi.fn().mockReturnValue('mock'),
+        getIcon: vi.fn().mockReturnValue('folder'),
+        getColor: vi.fn().mockReturnValue('inherit'),
       };
 
       fixture.componentRef.setInput('tests', tests);
@@ -103,12 +107,14 @@ describe('TestTree Component', () => {
 
     it('should recalculate when tests change', () => {
       const tests1: Test[] = [
-        { name: 'test1', path: '/folder/test1', lastExecutionType: 'SUCCESS' },
+        { name: 'test1', path: '/folder/test1', lastExecutionType: 'SUCCESS', durationMs: 1000 },
       ];
 
       const mockStrategy: TreeOrganizationStrategy = {
         buildTree: vi.fn().mockReturnValue([]),
         getName: vi.fn().mockReturnValue('mock'),
+        getIcon: vi.fn().mockReturnValue('folder'),
+        getColor: vi.fn().mockReturnValue('inherit'),
       };
 
       fixture.componentRef.setInput('tests', tests1);
@@ -119,8 +125,8 @@ describe('TestTree Component', () => {
       expect(mockStrategy.buildTree).toHaveBeenCalledTimes(1);
 
       const tests2: Test[] = [
-        { name: 'test1', path: '/folder/test1', lastExecutionType: 'SUCCESS' },
-        { name: 'test2', path: '/folder/test2', lastExecutionType: 'FAILURE' },
+        { name: 'test1', path: '/folder/test1', lastExecutionType: 'SUCCESS', durationMs: 1000 },
+        { name: 'test2', path: '/folder/test2', lastExecutionType: 'FAILURE', durationMs: 2000 },
       ];
 
       fixture.componentRef.setInput('tests', tests2);
@@ -132,12 +138,24 @@ describe('TestTree Component', () => {
 
     it('should recalculate when strategy changes', () => {
       const tests: Test[] = [
-        { name: 'test1', path: '/folder/test1', lastExecutionType: 'SUCCESS' },
+        { name: 'test1', path: '/folder/test1', lastExecutionType: 'SUCCESS', durationMs: 1000 },
       ];
 
       const strategy1: TreeOrganizationStrategy = {
-        buildTree: vi.fn().mockReturnValue([{ name: 'result1' }]),
+        buildTree: vi.fn().mockReturnValue([
+          {
+            name: 'result1',
+            test: {
+              name: 'test1',
+              path: '/folder/test1',
+              lastExecutionType: 'SUCCESS',
+              durationMs: 1000,
+            },
+          },
+        ]),
         getName: vi.fn().mockReturnValue('strategy1'),
+        getIcon: vi.fn().mockReturnValue('folder'),
+        getColor: vi.fn().mockReturnValue('inherit'),
       };
 
       fixture.componentRef.setInput('tests', tests);
@@ -148,8 +166,20 @@ describe('TestTree Component', () => {
       expect(result[0].name).toBe('result1');
 
       const strategy2: TreeOrganizationStrategy = {
-        buildTree: vi.fn().mockReturnValue([{ name: 'result2' }]),
+        buildTree: vi.fn().mockReturnValue([
+          {
+            name: 'result2',
+            test: {
+              name: 'test1',
+              path: '/folder/test1',
+              lastExecutionType: 'SUCCESS',
+              durationMs: 1000,
+            },
+          },
+        ]),
         getName: vi.fn().mockReturnValue('strategy2'),
+        getIcon: vi.fn().mockReturnValue('folder'),
+        getColor: vi.fn().mockReturnValue('inherit'),
       };
 
       fixture.componentRef.setInput('strategy', strategy2);
@@ -239,6 +269,7 @@ describe('TestTree Component', () => {
         name: 'test1',
         path: '/test1',
         lastExecutionType: 'SUCCESS',
+        durationMs: 1500,
       };
 
       const node: TestTreeNode = { name: 'test1', test };
@@ -257,6 +288,7 @@ describe('TestTree Component', () => {
         name: 'test1',
         path: '/test1',
         lastExecutionType: 'SUCCESS',
+        durationMs: 2000,
       };
 
       const node: TestTreeNode = { name: 'test1', test };
@@ -272,6 +304,153 @@ describe('TestTree Component', () => {
 
       expect(node.test).toBeUndefined();
       expect(node.children).toBeDefined();
+    });
+  });
+
+  describe('getIcon', () => {
+    it('should return folder icon for group nodes', () => {
+      const node: TestTreeNode = { name: 'folder', children: [] };
+      expect(component.getIcon(node)).toBe('folder');
+    });
+
+    it('should return check_circle for SUCCESS tests', () => {
+      const node: TestTreeNode = {
+        name: 'test',
+        test: {
+          name: 'test',
+          path: '/test',
+          lastExecutionType: 'SUCCESS',
+        },
+      };
+
+      expect(component.getIcon(node)).toBe('check_circle');
+    });
+
+    it('should return cancel for FAILURE tests', () => {
+      const node: TestTreeNode = {
+        name: 'test',
+        test: {
+          name: 'test',
+          path: '/test',
+          lastExecutionType: 'FAILURE',
+        },
+      };
+
+      expect(component.getIcon(node)).toBe('cancel');
+    });
+
+    it('should return error for ERROR tests', () => {
+      const node: TestTreeNode = {
+        name: 'test',
+        test: {
+          name: 'test',
+          path: '/test',
+          lastExecutionType: 'ERROR',
+        },
+      };
+
+      expect(component.getIcon(node)).toBe('error');
+    });
+
+    it('should return skip_next for SKIPPED tests', () => {
+      const node: TestTreeNode = {
+        name: 'test',
+        test: {
+          name: 'test',
+          path: '/test',
+          lastExecutionType: 'SKIPPED',
+        },
+      };
+
+      expect(component.getIcon(node)).toBe('skip_next');
+    });
+  });
+
+  describe('getColor', () => {
+    it('should return inherit for group nodes', () => {
+      const node: TestTreeNode = { name: 'folder', children: [] };
+      expect(component.getColor(node)).toBe('inherit');
+    });
+
+    it('should return green for SUCCESS tests', () => {
+      const node: TestTreeNode = {
+        name: 'test',
+        test: {
+          name: 'test',
+          path: '/test',
+          lastExecutionType: 'SUCCESS',
+        },
+      };
+
+      expect(component.getColor(node)).toBe('#4caf50');
+    });
+
+    it('should return red for FAILURE tests', () => {
+      const node: TestTreeNode = {
+        name: 'test',
+        test: {
+          name: 'test',
+          path: '/test',
+          lastExecutionType: 'FAILURE',
+        },
+      };
+
+      expect(component.getColor(node)).toBe('#f44336');
+    });
+
+    it('should return orange for ERROR tests', () => {
+      const node: TestTreeNode = {
+        name: 'test',
+        test: {
+          name: 'test',
+          path: '/test',
+          lastExecutionType: 'ERROR',
+        },
+      };
+
+      expect(component.getColor(node)).toBe('#ff9800');
+    });
+
+    it('should return gray for SKIPPED tests', () => {
+      const node: TestTreeNode = {
+        name: 'test',
+        test: {
+          name: 'test',
+          path: '/test',
+          lastExecutionType: 'SKIPPED',
+        },
+      };
+
+      expect(component.getColor(node)).toBe('#9e9e9e');
+    });
+  });
+
+  describe('TestTreeNode Interface - Duration', () => {
+    it('should support optional durationMs on test', () => {
+      const test: Test = {
+        name: 'test1',
+        path: '/test1',
+        lastExecutionType: 'SUCCESS',
+        durationMs: 1500,
+      };
+
+      const node: TestTreeNode = { name: 'test1', test };
+      expect(node.test?.durationMs).toBe(1500);
+    });
+
+    it('should support optional totalDurationMs on group', () => {
+      const node: TestTreeNode = {
+        name: 'folder',
+        children: [],
+        totalDurationMs: 5000,
+      };
+
+      expect(node.totalDurationMs).toBe(5000);
+    });
+
+    it('should allow nodes without duration', () => {
+      const node: TestTreeNode = { name: 'test' };
+      expect(node.totalDurationMs).toBeUndefined();
     });
   });
 });

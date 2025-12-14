@@ -19,8 +19,11 @@ export class ExecutionTypeOrganizationStrategy extends BaseTreeOrganizationStrat
       this.addTestToGroup(test, status, statusMap);
     });
 
-    return rootNodes.sort(
+    const sorted = rootNodes.sort(
       (a, b) => this.statusOrder.indexOf(a.name) - this.statusOrder.indexOf(b.name),
     );
+
+    this.calculateTotalDurations(sorted);
+    return sorted;
   }
 }
