@@ -16,6 +16,7 @@ export interface TestTreeNode {
   icon?: string;
   color?: string;
   totalDurationMs?: number;
+  testCount?: number;
 }
 
 @Component({

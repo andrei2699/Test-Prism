@@ -46,6 +46,7 @@ export abstract class BaseTreeOrganizationStrategy implements TreeOrganizationSt
     return {
       name,
       children: [],
+      testCount: 0,
     };
   }
 
@@ -110,6 +111,29 @@ export abstract class BaseTreeOrganizationStrategy implements TreeOrganizationSt
       });
       node.totalDurationMs = total;
       return total;
+    }
+
+    return 0;
+  }
+
+  protected calculateTestCounts(nodes: TestTreeNode[]): void {
+    nodes.forEach(node => {
+      this.calculateNodeTestCount(node);
+    });
+  }
+
+  private calculateNodeTestCount(node: TestTreeNode): number {
+    if (node.test) {
+      return 1;
+    }
+
+    if (node.children && node.children.length > 0) {
+      let count = 0;
+      node.children.forEach(child => {
+        count += this.calculateNodeTestCount(child);
+      });
+      node.testCount = count;
+      return count;
     }
 
     return 0;
