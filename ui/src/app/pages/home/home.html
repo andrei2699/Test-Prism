@@ -1,14 +1,16 @@
-<div>
-  <h2>Tests Organized by folder</h2>
-  <app-test-filter-input (filterChanged)="onFilterChange($event)" />
-</div>
-
 <app-test-distribution-pie
   [tests]="testReport().tests"
-  [strategy]="summaryOrganizationStrategy()" />
+  [strategy]="summaryOrganizationStrategy()"/>
 
-<app-test-tree
-  [tests]="testReport().tests"
-  [strategy]="treeOrganizationStrategy()"
-  [filterStrategy]="filterStrategy()"
-  [sortStrategies]="sortStrategies()" />
+
+<div>
+  <h2>Tests Organized by folder</h2>
+  <app-test-filter-input (filterChanged)="onFilterChange($event)"/>
+
+  <app-test-tree
+    [tests]="testReport().tests"
+    [strategy]="treeOrganizationStrategy()"
+    [filterStrategy]="filterStrategy()"
+    [sortStrategies]="sortStrategies()"/>
+
+</div>
