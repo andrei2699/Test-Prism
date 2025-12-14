@@ -1,0 +1,13 @@
+﻿.test-count-display {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.total-count {
+  font-weight: bold;
+}
+
+.execution-count {
+  font-weight: bold;
+}

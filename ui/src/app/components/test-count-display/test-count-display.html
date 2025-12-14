@@ -1,0 +1,15 @@
+﻿<span class="test-count-display">
+  @if (totalCount()) {
+    <span class="total-count" [title]="'Total: ' + totalCount()"> ({{ totalCount() }}) </span>
+    @for (type of testCounts() | keyvalue; track type.key) {
+      @if (type.value > 0) {
+        <span
+          class="execution-count"
+          [style.color]="getExecutionTypeColor(type.key)"
+          [title]="type.key + ': ' + type.value">
+          {{ type.value }}
+        </span>
+      }
+    }
+  }
+</span>

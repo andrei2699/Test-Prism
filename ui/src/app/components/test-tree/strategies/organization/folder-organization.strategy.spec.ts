@@ -26,7 +26,7 @@ describe('FolderOrganizationStrategy', () => {
     expect(result).toHaveLength(1);
     expect(result[0].name).toBe('test1');
     expect(result[0].test).toEqual(tests[0]);
-    expect(result[0].testCount).toBeUndefined();
+    expect(result[0].testCount).toMatchObject({ SUCCESS: 1, FAILURE: 0, SKIPPED: 0, ERROR: 0 });
   });
 
   it('should create folder hierarchy', () => {
@@ -158,7 +158,7 @@ describe('FolderOrganizationStrategy', () => {
 
     const result = strategy.buildTree(tests);
 
-    expect(result[0].testCount).toBeUndefined();
+    expect(result[0].testCount).toMatchObject({ SUCCESS: 1, FAILURE: 0, SKIPPED: 0, ERROR: 0 });
   });
 
   it('should calculate test count for a folder with multiple tests', () => {
@@ -169,7 +169,7 @@ describe('FolderOrganizationStrategy', () => {
 
     const result = strategy.buildTree(tests);
 
-    expect(result[0].testCount).toBe(2);
+    expect(result[0].testCount).toMatchObject({ SUCCESS: 1, FAILURE: 1, SKIPPED: 0, ERROR: 0 });
   });
 
   it('should calculate test count recursively for nested folders', () => {
@@ -183,9 +183,19 @@ describe('FolderOrganizationStrategy', () => {
     const result = strategy.buildTree(tests);
     const folderA = result[0];
 
-    expect(folderA.testCount).toBe(4);
-    expect(folderA.children?.[0].testCount).toBe(2);
-    expect(folderA.children?.[1].testCount).toBe(1);
+    expect(folderA.testCount).toMatchObject({ SUCCESS: 4, FAILURE: 0, SKIPPED: 0, ERROR: 0 });
+    expect(folderA.children?.[0].testCount).toMatchObject({
+      SUCCESS: 2,
+      FAILURE: 0,
+      SKIPPED: 0,
+      ERROR: 0,
+    });
+    expect(folderA.children?.[1].testCount).toMatchObject({
+      SUCCESS: 1,
+      FAILURE: 0,
+      SKIPPED: 0,
+      ERROR: 0,
+    });
   });
 
   it('should calculate test count for mixed content (tests and subfolders)', () => {
@@ -197,7 +207,12 @@ describe('FolderOrganizationStrategy', () => {
     const result = strategy.buildTree(tests);
     const folder1 = result[0];
 
-    expect(folder1.testCount).toBe(2);
-    expect(folder1.children?.[0].testCount).toBe(1);
+    expect(folder1.testCount).toMatchObject({ SUCCESS: 2, FAILURE: 0, SKIPPED: 0, ERROR: 0 });
+    expect(folder1.children?.[0].testCount).toMatchObject({
+      SUCCESS: 1,
+      FAILURE: 0,
+      SKIPPED: 0,
+      ERROR: 0,
+    });
   });
 });

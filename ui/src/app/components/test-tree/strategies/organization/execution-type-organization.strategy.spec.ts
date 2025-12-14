@@ -1,5 +1,6 @@
 ﻿import { ExecutionTypeOrganizationStrategy } from './execution-type-organization.strategy';
 import { Test } from '../../../../types/TestReport';
+import { TestTreeNode } from '../../test-tree';
 
 describe('ExecutionTypeOrganizationStrategy', () => {
   let strategy: ExecutionTypeOrganizationStrategy;
@@ -21,11 +22,49 @@ describe('ExecutionTypeOrganizationStrategy', () => {
 
     const result = strategy.buildTree(tests);
 
-    const successGroup = result.find(n => n.name === 'SUCCESS');
-    const failureGroup = result.find(n => n.name === 'FAILURE');
+    const expectedResult: TestTreeNode[] = [
+      {
+        name: 'SUCCESS',
+        children: [
+          {
+            name: 'test1',
+            test: tests[0],
+            testCount: { SUCCESS: 1, FAILURE: 0, SKIPPED: 0, ERROR: 0 },
+          },
+          {
+            name: 'test3',
+            test: tests[2],
+            testCount: { SUCCESS: 1, FAILURE: 0, SKIPPED: 0, ERROR: 0 },
+          },
+        ],
+        totalDurationMs: 0,
+        testCount: {
+          SUCCESS: 2,
+          FAILURE: 0,
+          SKIPPED: 0,
+          ERROR: 0,
+        },
+      },
+      {
+        name: 'FAILURE',
+        children: [
+          {
+            name: 'test2',
+            test: tests[1],
+            testCount: { SUCCESS: 0, FAILURE: 1, SKIPPED: 0, ERROR: 0 },
+          },
+        ],
+        totalDurationMs: 0,
+        testCount: {
+          SUCCESS: 0,
+          FAILURE: 1,
+          SKIPPED: 0,
+          ERROR: 0,
+        },
+      },
+    ];
 
-    expect(successGroup?.children).toHaveLength(2);
-    expect(failureGroup?.children).toHaveLength(1);
+    expect(result).toEqual(expectedResult);
   });
 
   it('should sort by status order (SUCCESS, FAILURE, SKIPPED, ERROR)', () => {
@@ -46,10 +85,13 @@ describe('ExecutionTypeOrganizationStrategy', () => {
     const tests: Test[] = [{ name: 'test1', path: '/folder/test1', lastExecutionType: 'FAILURE' }];
 
     const result = strategy.buildTree(tests);
-    const testNode = result[0].children?.[0];
+    const expectedTestNode: TestTreeNode = {
+      name: 'test1',
+      test: tests[0],
+      testCount: { SUCCESS: 0, FAILURE: 1, SKIPPED: 0, ERROR: 0 },
+    };
 
-    expect(testNode?.test?.name).toBe('test1');
-    expect(testNode?.test?.path).toBe('/folder/test1');
+    expect(result[0].children?.[0]).toEqual(expectedTestNode);
   });
 
   it('should handle tests with different execution types', () => {
@@ -62,11 +104,78 @@ describe('ExecutionTypeOrganizationStrategy', () => {
 
     const result = strategy.buildTree(tests);
 
-    expect(result).toHaveLength(4);
-    expect(result[0].children).toHaveLength(1);
-    expect(result[1].children).toHaveLength(1);
-    expect(result[2].children).toHaveLength(1);
-    expect(result[3].children).toHaveLength(1);
+    const expectedResult: TestTreeNode[] = [
+      {
+        name: 'SUCCESS',
+        children: [
+          {
+            name: 'test1',
+            test: tests[0],
+            testCount: { SUCCESS: 1, FAILURE: 0, SKIPPED: 0, ERROR: 0 },
+          },
+        ],
+        totalDurationMs: 0,
+        testCount: {
+          SUCCESS: 1,
+          FAILURE: 0,
+          SKIPPED: 0,
+          ERROR: 0,
+        },
+      },
+      {
+        name: 'FAILURE',
+        children: [
+          {
+            name: 'test2',
+            test: tests[1],
+            testCount: { SUCCESS: 0, FAILURE: 1, SKIPPED: 0, ERROR: 0 },
+          },
+        ],
+        totalDurationMs: 0,
+        testCount: {
+          SUCCESS: 0,
+          FAILURE: 1,
+          SKIPPED: 0,
+          ERROR: 0,
+        },
+      },
+      {
+        name: 'SKIPPED',
+        children: [
+          {
+            name: 'test3',
+            test: tests[2],
+            testCount: { SUCCESS: 0, FAILURE: 0, SKIPPED: 1, ERROR: 0 },
+          },
+        ],
+        totalDurationMs: 0,
+        testCount: {
+          SUCCESS: 0,
+          FAILURE: 0,
+          SKIPPED: 1,
+          ERROR: 0,
+        },
+      },
+      {
+        name: 'ERROR',
+        children: [
+          {
+            name: 'test4',
+            test: tests[3],
+            testCount: { SUCCESS: 0, FAILURE: 0, SKIPPED: 0, ERROR: 1 },
+          },
+        ],
+        totalDurationMs: 0,
+        testCount: {
+          SUCCESS: 0,
+          FAILURE: 0,
+          SKIPPED: 0,
+          ERROR: 1,
+        },
+      },
+    ];
+
+    expect(result).toEqual(expectedResult);
   });
 
   it('should calculate total duration for status groups', () => {
@@ -78,11 +187,49 @@ describe('ExecutionTypeOrganizationStrategy', () => {
 
     const result = strategy.buildTree(tests);
 
-    const successGroup = result.find(n => n.name === 'SUCCESS');
-    const failureGroup = result.find(n => n.name === 'FAILURE');
+    const expectedSuccessGroup: TestTreeNode = {
+      name: 'SUCCESS',
+      children: [
+        {
+          name: 'test1',
+          test: tests[0],
+          testCount: { SUCCESS: 1, FAILURE: 0, SKIPPED: 0, ERROR: 0 },
+        },
+        {
+          name: 'test2',
+          test: tests[1],
+          testCount: { SUCCESS: 1, FAILURE: 0, SKIPPED: 0, ERROR: 0 },
+        },
+      ],
+      totalDurationMs: 3000,
+      testCount: {
+        SUCCESS: 2,
+        FAILURE: 0,
+        SKIPPED: 0,
+        ERROR: 0,
+      },
+    };
 
-    expect(successGroup?.totalDurationMs).toBe(3000);
-    expect(failureGroup?.totalDurationMs).toBe(3000);
+    const expectedFailureGroup: TestTreeNode = {
+      name: 'FAILURE',
+      children: [
+        {
+          name: 'test3',
+          test: tests[2],
+          testCount: { SUCCESS: 0, FAILURE: 1, SKIPPED: 0, ERROR: 0 },
+        },
+      ],
+      totalDurationMs: 3000,
+      testCount: {
+        SUCCESS: 0,
+        FAILURE: 1,
+        SKIPPED: 0,
+        ERROR: 0,
+      },
+    };
+
+    expect(result.find(n => n.name === 'SUCCESS')).toEqual(expectedSuccessGroup);
+    expect(result.find(n => n.name === 'FAILURE')).toEqual(expectedFailureGroup);
   });
 
   it('should sum durations across multiple tests in same group', () => {
@@ -94,7 +241,35 @@ describe('ExecutionTypeOrganizationStrategy', () => {
 
     const result = strategy.buildTree(tests);
 
-    expect(result[0].totalDurationMs).toBe(1500);
+    const expectedGroup: TestTreeNode = {
+      name: 'SUCCESS',
+      children: [
+        {
+          name: 'test1',
+          test: tests[0],
+          testCount: { SUCCESS: 1, FAILURE: 0, SKIPPED: 0, ERROR: 0 },
+        },
+        {
+          name: 'test2',
+          test: tests[1],
+          testCount: { SUCCESS: 1, FAILURE: 0, SKIPPED: 0, ERROR: 0 },
+        },
+        {
+          name: 'test3',
+          test: tests[2],
+          testCount: { SUCCESS: 1, FAILURE: 0, SKIPPED: 0, ERROR: 0 },
+        },
+      ],
+      totalDurationMs: 1500,
+      testCount: {
+        SUCCESS: 3,
+        FAILURE: 0,
+        SKIPPED: 0,
+        ERROR: 0,
+      },
+    };
+
+    expect(result[0]).toEqual(expectedGroup);
   });
 
   it('should calculate test count for status groups', () => {
@@ -106,11 +281,49 @@ describe('ExecutionTypeOrganizationStrategy', () => {
 
     const result = strategy.buildTree(tests);
 
-    const successGroup = result.find(n => n.name === 'SUCCESS');
-    const failureGroup = result.find(n => n.name === 'FAILURE');
+    const expectedSuccessGroup: TestTreeNode = {
+      name: 'SUCCESS',
+      children: [
+        {
+          name: 'test1',
+          test: tests[0],
+          testCount: { SUCCESS: 1, FAILURE: 0, SKIPPED: 0, ERROR: 0 },
+        },
+        {
+          name: 'test2',
+          test: tests[1],
+          testCount: { SUCCESS: 1, FAILURE: 0, SKIPPED: 0, ERROR: 0 },
+        },
+      ],
+      totalDurationMs: 0,
+      testCount: {
+        SUCCESS: 2,
+        FAILURE: 0,
+        SKIPPED: 0,
+        ERROR: 0,
+      },
+    };
 
-    expect(successGroup?.testCount).toBe(2);
-    expect(failureGroup?.testCount).toBe(1);
+    const expectedFailureGroup: TestTreeNode = {
+      name: 'FAILURE',
+      children: [
+        {
+          name: 'test3',
+          test: tests[2],
+          testCount: { SUCCESS: 0, FAILURE: 1, SKIPPED: 0, ERROR: 0 },
+        },
+      ],
+      totalDurationMs: 0,
+      testCount: {
+        SUCCESS: 0,
+        FAILURE: 1,
+        SKIPPED: 0,
+        ERROR: 0,
+      },
+    };
+
+    expect(result.find(n => n.name === 'SUCCESS')).toEqual(expectedSuccessGroup);
+    expect(result.find(n => n.name === 'FAILURE')).toEqual(expectedFailureGroup);
   });
 
   it('should sum test counts across multiple tests in same group', () => {
@@ -122,6 +335,32 @@ describe('ExecutionTypeOrganizationStrategy', () => {
 
     const result = strategy.buildTree(tests);
 
-    expect(result[0].testCount).toBe(3);
+    expect(result[0]).toEqual({
+      name: 'SUCCESS',
+      children: [
+        {
+          name: 'test1',
+          test: tests[0],
+          testCount: { SUCCESS: 1, FAILURE: 0, SKIPPED: 0, ERROR: 0 },
+        },
+        {
+          name: 'test2',
+          test: tests[1],
+          testCount: { SUCCESS: 1, FAILURE: 0, SKIPPED: 0, ERROR: 0 },
+        },
+        {
+          name: 'test3',
+          test: tests[2],
+          testCount: { SUCCESS: 1, FAILURE: 0, SKIPPED: 0, ERROR: 0 },
+        },
+      ],
+      totalDurationMs: 0,
+      testCount: {
+        SUCCESS: 3,
+        FAILURE: 0,
+        SKIPPED: 0,
+        ERROR: 0,
+      },
+    });
   });
 });

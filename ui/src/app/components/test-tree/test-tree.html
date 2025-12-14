@@ -30,7 +30,7 @@
       </mat-icon>
       <span class="node-label">{{ node.name }}</span>
       @if (node.testCount !== undefined) {
-        <span class="node-test-count"> ({{ node.testCount }}) </span>
+        <app-test-count-display [testCounts]="node.testCount"></app-test-count-display>
       }
       @if (node.totalDurationMs !== undefined) {
         <span class="node-duration" [matTooltip]="(node.totalDurationMs ?? 0) + 'ms'">
