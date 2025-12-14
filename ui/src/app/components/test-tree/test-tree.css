@@ -16,3 +16,10 @@
   color: #666;
   font-weight: 300;
 }
+
+.no-tests-message {
+  padding: 16px;
+  text-align: center;
+  color: #999;
+  font-style: italic;
+}

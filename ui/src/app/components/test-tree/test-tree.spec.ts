@@ -629,4 +629,29 @@ describe('TestTree Component', () => {
       expect(result[0].name).toBe('sorted');
     });
   });
+
+  describe('No tests message', () => {
+    it('should display "No tests to display." when dataSource is empty', () => {
+      fixture.componentRef.setInput('tests', []);
+      fixture.detectChanges();
+
+      const noTestsMessage = fixture.nativeElement.querySelector('.no-tests-message');
+      expect(noTestsMessage).toBeTruthy();
+      expect(noTestsMessage.textContent).toContain('No tests to display.');
+    });
+
+    it('should not display "No tests to display." when dataSource has items', () => {
+      const tests: Test[] = [
+        { name: 'test1', path: '/folder/test1', lastExecutionType: 'SUCCESS' },
+      ];
+      const mockStrategy = createMockTreeOrganizationStrategy([{ name: 'test1', children: [] }]);
+
+      fixture.componentRef.setInput('tests', tests);
+      fixture.componentRef.setInput('strategy', mockStrategy);
+      fixture.detectChanges();
+
+      const noTestsMessage = fixture.nativeElement.querySelector('.no-tests-message');
+      expect(noTestsMessage).toBeFalsy();
+    });
+  });
 });
