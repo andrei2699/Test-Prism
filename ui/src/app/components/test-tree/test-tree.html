@@ -1,0 +1,31 @@
+<mat-tree #tree [dataSource]="dataSource()" [childrenAccessor]="childrenAccessor">
+  <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+    <button matIconButton disabled></button>
+    <mat-icon [style.color]="getColor(node)">
+      {{ getIcon(node) }}
+    </mat-icon>
+    <span class="node-label">{{ node.name }}</span>
+    @if (node.test?.durationMs !== undefined) {
+      <span class="node-duration" [matTooltip]="node.test!.durationMs + 'ms'"> ({{ node.test!.durationMs | humanizeDuration }}) </span>
+    }
+  </mat-tree-node>
+
+  <mat-tree-node
+    *matTreeNodeDef="let node; when: hasChild"
+    matTreeNodePadding
+    matTreeNodeToggle
+    [cdkTreeNodeTypeaheadLabel]="node.name">
+    <button matIconButton matTreeNodeToggle [attr.aria-label]="'Toggle ' + node.name">
+      <mat-icon>
+        {{ tree.isExpanded(node) ? 'expand_more' : 'chevron_right' }}
+      </mat-icon>
+    </button>
+    <mat-icon [style.color]="getColor(node)">
+      {{ getIcon(node) }}
+    </mat-icon>
+    <span class="node-label">{{ node.name }}</span>
+    @if (node.totalDurationMs !== undefined) {
+      <span class="node-duration" [matTooltip]="node.totalDurationMs + 'ms'"> ({{ node.totalDurationMs | humanizeDuration }}) </span>
+    }
+  </mat-tree-node>
+</mat-tree>
