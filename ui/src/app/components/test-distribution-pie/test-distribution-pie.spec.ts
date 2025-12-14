@@ -5,14 +5,16 @@ import { afterEach, beforeEach, describe, it, expect } from 'vitest';
 import { Test } from '../../types/TestReport';
 import { TestDistributionPie } from './test-distribution-pie';
 import { BaseChartDirective, provideCharts, withDefaultRegisterables } from 'ng2-charts';
+import { DistributionStrategyFactory } from './strategies/distribution-strategy.factory';
 
 @Component({
-  template: '<app-test-distribution-pie [tests]="tests()" />',
+  template: '<app-test-distribution-pie [tests]="tests()" [strategy]="strategy()" />',
   standalone: true,
   imports: [TestDistributionPie],
 })
 class TestHostComponent {
   tests = input.required<Test[]>();
+  strategy = input<'execution-type'>('execution-type');
 }
 
 describe('TestDistributionPie', () => {
@@ -21,7 +23,7 @@ describe('TestDistributionPie', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [TestHostComponent],
-      providers: [provideCharts(withDefaultRegisterables())],
+      providers: [provideCharts(withDefaultRegisterables()), DistributionStrategyFactory],
     }).compileComponents();
 
     fixture = TestBed.createComponent(TestHostComponent);

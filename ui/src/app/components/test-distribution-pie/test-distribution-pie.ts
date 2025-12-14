@@ -1,15 +1,13 @@
-﻿import { Component, input, computed, ChangeDetectionStrategy } from '@angular/core';
+﻿import { Component, input, computed, ChangeDetectionStrategy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BaseChartDirective } from 'ng2-charts';
 import { Chart, ChartConfiguration } from 'chart.js';
-import { Test, TestExecutionType } from '../../types/TestReport';
-import { EXECUTION_TYPE_COLORS } from '../../shared/execution-type-colors';
+import { Test } from '../../types/TestReport';
+import { DistributionStrategyFactory, DistributionStrategyType } from './strategies/distribution-strategy.factory';
+import { DistributionDataItem } from './strategies/distribution-data.interface';
 
-interface PieChartData {
-  executionType: TestExecutionType;
-  count: number;
+interface PieChartData extends DistributionDataItem {
   percentage: number;
-  color: string;
 }
 
 @Component({
@@ -20,17 +18,20 @@ interface PieChartData {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TestDistributionPie {
+  private readonly distributionStrategyFactory = inject(DistributionStrategyFactory);
+
   tests = input.required<Test[]>();
+  strategy = input<DistributionStrategyType>('execution-type');
+
+  private distributionStrategy = computed(() => this.distributionStrategyFactory.getStrategy(this.strategy()));
 
   chartData = computed<PieChartData[]>(() => {
-    const distribution = this.calculateDistribution();
+    const distribution: DistributionDataItem[] = this.distributionStrategy().calculateDistribution(this.tests());
     const total = this.tests().length;
 
-    return distribution.map(({ executionType, count }) => ({
-      executionType,
-      count,
-      percentage: total > 0 ? (count / total) * 100 : 0,
-      color: EXECUTION_TYPE_COLORS[executionType],
+    return distribution.map((item): PieChartData => ({
+      ...item,
+      percentage: total > 0 ? (item.count / total) * 100 : 0,
     }));
   });
 
@@ -40,7 +41,7 @@ export class TestDistributionPie {
     return {
       type: 'pie',
       data: {
-        labels: data.map(d => d.executionType),
+        labels: data.map(d => d.label),
         datasets: [
           {
             data: data.map(d => d.count),
@@ -92,28 +93,7 @@ export class TestDistributionPie {
   });
 
   private getPercentageForLabel(label: string): string {
-    const data = this.chartData().find(d => d.executionType === label);
+    const data = this.chartData().find(d => d.label === label);
     return data ? data.percentage.toFixed(1) : '0.0';
-  }
-
-  private calculateDistribution(): Array<{ executionType: TestExecutionType; count: number }> {
-    const counts: Record<TestExecutionType, number> = {
-      SUCCESS: 0,
-      FAILURE: 0,
-      ERROR: 0,
-      SKIPPED: 0,
-    };
-
-    this.tests().forEach(test => {
-      counts[test.lastExecutionType]++;
-    });
-
-    const statusOrder: TestExecutionType[] = ['SUCCESS', 'FAILURE', 'SKIPPED', 'ERROR'];
-    return statusOrder
-      .map(executionType => ({
-        executionType,
-        count: counts[executionType],
-      }))
-      .filter(item => item.count > 0);
   }
 }
