@@ -1,20 +1,24 @@
-﻿import { Injectable } from '@angular/core';
-import { DistributionStrategy } from './distribution-strategy.interface';
+﻿import { DistributionStrategy } from './distribution-strategy.interface';
 import { ExecutionTypeDistributionStrategy } from './execution-type-distribution.strategy';
 
-export type DistributionStrategyType = 'execution-type';
-
-@Injectable({ providedIn: 'root' })
 export class DistributionStrategyFactory {
-  private readonly strategies: Record<DistributionStrategyType, DistributionStrategy> = {
-    'execution-type': new ExecutionTypeDistributionStrategy(),
-  };
+  private static readonly strategies = new Map<string, () => DistributionStrategy>([
+    ['status', () => new ExecutionTypeDistributionStrategy()],
+  ]);
 
-  getStrategy(type: DistributionStrategyType): DistributionStrategy {
-    const strategy = this.strategies[type];
-    if (!strategy) {
+  static create(type: string): DistributionStrategy {
+    const strategyCtor = this.strategies.get(type);
+    if (!strategyCtor) {
       throw new Error(`Unknown distribution strategy type: ${type}`);
     }
-    return strategy;
+    return strategyCtor();
+  }
+
+  static register(type: string, strategyCtor: () => DistributionStrategy): void {
+    this.strategies.set(type, strategyCtor);
+  }
+
+  static getSupportedTypes(): string[] {
+    return Array.from(this.strategies.keys());
   }
 }

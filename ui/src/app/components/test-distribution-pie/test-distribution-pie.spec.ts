@@ -1,11 +1,12 @@
 ﻿import { Component, input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { afterEach, beforeEach, describe, it, expect } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { Test } from '../../types/TestReport';
 import { TestDistributionPie } from './test-distribution-pie';
 import { BaseChartDirective, provideCharts, withDefaultRegisterables } from 'ng2-charts';
-import { DistributionStrategyFactory } from './strategies/distribution-strategy.factory';
+import { DistributionStrategy } from './strategies/distribution-strategy.interface';
+import { ExecutionTypeDistributionStrategy } from './strategies/execution-type-distribution.strategy';
 
 @Component({
   template: '<app-test-distribution-pie [tests]="tests()" [strategy]="strategy()" />',
@@ -14,19 +15,23 @@ import { DistributionStrategyFactory } from './strategies/distribution-strategy.
 })
 class TestHostComponent {
   tests = input.required<Test[]>();
-  strategy = input<'execution-type'>('execution-type');
+  strategy = input.required<DistributionStrategy>();
 }
 
 describe('TestDistributionPie', () => {
   let fixture: ComponentFixture<TestHostComponent>;
+  let executionTypeStrategy: ExecutionTypeDistributionStrategy;
 
   beforeEach(async () => {
+    executionTypeStrategy = new ExecutionTypeDistributionStrategy();
+
     await TestBed.configureTestingModule({
       imports: [TestHostComponent],
-      providers: [provideCharts(withDefaultRegisterables()), DistributionStrategyFactory],
+      providers: [provideCharts(withDefaultRegisterables())],
     }).compileComponents();
 
     fixture = TestBed.createComponent(TestHostComponent);
+    fixture.componentRef.setInput('strategy', executionTypeStrategy); // Provide the strategy instance
   });
 
   afterEach(() => {
@@ -53,7 +58,7 @@ describe('TestDistributionPie', () => {
     const chartData = chartInstance.data;
 
     expect(chartData).toBeDefined();
-    expect(chartData!.labels).toEqual(['SUCCESS', 'FAILURE', 'SKIPPED']);
+    expect(chartData!.labels).toEqual(['SUCCESS (50.00%)', 'FAILURE (25.00%)', 'SKIPPED (25.00%)']);
     expect(chartData!.datasets[0].data).toEqual([2, 1, 1]);
   });
 
@@ -82,7 +87,7 @@ describe('TestDistributionPie', () => {
     const chartData = chartInstance.data;
 
     expect(chartData).toBeDefined();
-    expect(chartData!.labels).toEqual(['SUCCESS']);
+    expect(chartData!.labels).toEqual(['SUCCESS (100.00%)']);
     expect(chartData!.datasets[0].data).toEqual([2]);
   });
 
@@ -101,7 +106,12 @@ describe('TestDistributionPie', () => {
     const chartData = chartInstance.data;
 
     expect(chartData).toBeDefined();
-    expect(chartData!.labels).toEqual(['SUCCESS', 'FAILURE', 'SKIPPED', 'ERROR']);
+    expect(chartData!.labels).toEqual([
+      'SUCCESS (25.00%)',
+      'FAILURE (25.00%)',
+      'SKIPPED (25.00%)',
+      'ERROR (25.00%)',
+    ]);
     expect(chartData!.datasets[0].data).toEqual([1, 1, 1, 1]);
   });
 });

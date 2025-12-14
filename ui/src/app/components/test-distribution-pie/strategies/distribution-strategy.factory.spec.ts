@@ -1,24 +1,57 @@
-﻿import { TestBed } from '@angular/core/testing';
-import { describe, it, expect, beforeEach } from 'vitest';
+﻿import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { DistributionStrategyFactory } from './distribution-strategy.factory';
 import { ExecutionTypeDistributionStrategy } from './execution-type-distribution.strategy';
+import { DistributionStrategy } from './distribution-strategy.interface';
+import { Test } from '../../../types/TestReport';
+import { DistributionDataItem } from './distribution-data.interface';
+
+class MockDistributionStrategy implements DistributionStrategy {
+  calculateDistribution(tests: Test[]): DistributionDataItem[] {
+    return [{ label: 'Mock', count: tests.length, color: '#000000' }];
+  }
+}
 
 describe('DistributionStrategyFactory', () => {
-  let factory: DistributionStrategyFactory;
+  let originalStrategies: Map<string, () => DistributionStrategy>;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [DistributionStrategyFactory],
-    });
-    factory = TestBed.inject(DistributionStrategyFactory);
+    originalStrategies = (DistributionStrategyFactory as any).strategies;
+    (DistributionStrategyFactory as any).strategies = new Map<string, () => DistributionStrategy>([
+      ['status', () => new ExecutionTypeDistributionStrategy()],
+    ]);
   });
 
-  it('should return an ExecutionTypeDistributionStrategy', () => {
-    const strategy = factory.getStrategy('execution-type');
+  afterEach(() => {
+    (DistributionStrategyFactory as any).strategies = originalStrategies;
+  });
+
+  it('should return an ExecutionTypeDistributionStrategy for "status" type', () => {
+    const strategy = DistributionStrategyFactory.create('status');
     expect(strategy).toBeInstanceOf(ExecutionTypeDistributionStrategy);
   });
 
   it('should throw an error for an unknown strategy type', () => {
-    expect(() => factory.getStrategy('unknown' as any)).toThrow('Unknown distribution strategy type: unknown');
+    expect(() => DistributionStrategyFactory.create('unknown' as any)).toThrow(
+      'Unknown distribution strategy type: unknown',
+    );
+  });
+
+  it('should allow registering a new strategy', () => {
+    const newStrategyType: string = 'mock-strategy' as any;
+    const newStrategyCtor = () => new MockDistributionStrategy();
+
+    DistributionStrategyFactory.register(newStrategyType, newStrategyCtor);
+
+    const strategy = DistributionStrategyFactory.create(newStrategyType);
+    expect(strategy).toBeInstanceOf(MockDistributionStrategy);
+  });
+
+  it('should return all supported strategy types', () => {
+    const newStrategyType: string = 'mock-strategy' as any;
+    const newStrategyCtor = () => new MockDistributionStrategy();
+    DistributionStrategyFactory.register(newStrategyType, newStrategyCtor);
+
+    const supportedTypes = DistributionStrategyFactory.getSupportedTypes();
+    expect(supportedTypes).toEqual(['status', 'mock-strategy']);
   });
 });

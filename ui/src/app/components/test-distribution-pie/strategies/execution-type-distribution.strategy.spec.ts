@@ -1,7 +1,7 @@
-﻿import { describe, it, expect } from 'vitest';
+﻿import { describe, expect, it } from 'vitest';
 import { ExecutionTypeDistributionStrategy } from './execution-type-distribution.strategy';
 import { Test } from '../../../types/TestReport';
-import { EXECUTION_TYPE_COLORS } from '../../../constants/execution-type-colors';
+import { EXECUTION_TYPE_COLORS } from '../../../shared/execution-type-colors';
 
 describe('ExecutionTypeDistributionStrategy', () => {
   it('should calculate the distribution of tests by execution type', () => {
