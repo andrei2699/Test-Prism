@@ -1,5 +1,5 @@
 ﻿import { TestTreeNode } from '../../test-tree';
-import { Test } from '../../../../types/TestReport';
+import { Test, TestExecutionType } from '../../../../types/TestReport';
 import { TreeOrganizationStrategy } from './tree-organization-strategy.interface';
 import { EXECUTION_TYPE_COLORS } from '../../../../shared/execution-type-colors';
 
@@ -46,7 +46,12 @@ export abstract class BaseTreeOrganizationStrategy implements TreeOrganizationSt
     return {
       name,
       children: [],
-      testCount: 0,
+      testCount: {
+        SUCCESS: 0,
+        FAILURE: 0,
+        SKIPPED: 0,
+        ERROR: 0,
+      },
     };
   }
 
@@ -118,24 +123,34 @@ export abstract class BaseTreeOrganizationStrategy implements TreeOrganizationSt
 
   protected calculateTestCounts(nodes: TestTreeNode[]): void {
     nodes.forEach(node => {
-      this.calculateNodeTestCount(node);
+      node.testCount = this.calculateNodeTestCount(node);
     });
   }
 
-  private calculateNodeTestCount(node: TestTreeNode): number {
+  private calculateNodeTestCount(node: TestTreeNode): Record<TestExecutionType, number> {
+    const counts: Record<TestExecutionType, number> = {
+      SUCCESS: 0,
+      FAILURE: 0,
+      SKIPPED: 0,
+      ERROR: 0,
+    };
+
     if (node.test) {
-      return 1;
+      counts[node.test.lastExecutionType] = 1;
+      return counts;
     }
 
     if (node.children && node.children.length > 0) {
-      let count = 0;
       node.children.forEach(child => {
-        count += this.calculateNodeTestCount(child);
+        const childCounts = this.calculateNodeTestCount(child);
+        const executionTypes: TestExecutionType[] = ['SUCCESS', 'FAILURE', 'SKIPPED', 'ERROR'];
+        for (const type of executionTypes) {
+          counts[type] += childCounts[type];
+        }
       });
-      node.testCount = count;
-      return count;
+      return counts;
     }
 
-    return 0;
+    return counts;
   }
 }
