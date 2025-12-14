@@ -14,7 +14,7 @@ export interface FilterState {
 @Component({
   selector: 'app-test-filter-input',
   standalone: true,
-  imports: [CommonModule, FormsModule, MatFormFieldModule, MatInputModule, MatCheckboxModule],
+  imports: [FormsModule, MatFormFieldModule, MatInputModule, MatCheckboxModule],
   templateUrl: './test-filter-input.component.html',
   styleUrl: './test-filter-input.component.css',
 })

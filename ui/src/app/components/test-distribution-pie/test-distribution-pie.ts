@@ -13,7 +13,7 @@ interface PieChartData extends DistributionDataItem {
 
 @Component({
   selector: 'app-test-distribution-pie',
-  imports: [CommonModule, BaseChartDirective],
+  imports: [BaseChartDirective],
   templateUrl: './test-distribution-pie.html',
   styleUrl: './test-distribution-pie.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
