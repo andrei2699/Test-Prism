@@ -1,5 +1,5 @@
-﻿import { TestTreeNode } from '../test-tree';
-import { Test } from '../../../types/TestReport';
+﻿import { TestTreeNode } from '../../test-tree';
+import { Test } from '../../../../types/TestReport';
 
 export interface TreeOrganizationStrategy {
   getName(): string;

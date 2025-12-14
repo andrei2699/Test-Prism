@@ -35,7 +35,15 @@
 - Maintain consistency with TypeScript, HTML, and CSS conventions
 - Use meaningful variable and function names
 - Prefer composition and functional approaches
-- **Prefer Signals over older Angular patterns.** For example, use `viewChild()` instead of `@ViewChild()`, `input()` instead of `@Input()`, etc.
+- **Prefer Signals over older Angular patterns:**
+  - Use `input()` instead of `@Input()`
+  - Use `output()` instead of `@Output()`
+  - Use `viewChild()` instead of `@ViewChild()`
+  - Use `viewChildren()` instead of `@ViewChildren()`
+  - Use `contentChild()` instead of `@ContentChild()`
+  - Use `signal()` for component state instead of properties
+  - Use `computed()` for derived state instead of getters or methods
+  - Use `effect()` for side effects (sparingly, prefer composition)
 
 ## General
 

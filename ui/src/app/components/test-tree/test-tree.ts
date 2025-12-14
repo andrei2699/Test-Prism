@@ -5,8 +5,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Test } from '../../types/TestReport';
-import { TreeOrganizationStrategy } from './strategies/tree-organization-strategy.interface';
-import { TreeOrganizationStrategyFactory } from './strategies/tree-organization-strategy.factory';
+import { TreeOrganizationStrategy } from './strategies/organization/tree-organization-strategy.interface';
+import { TreeOrganizationStrategyFactory } from './strategies/organization/tree-organization-strategy.factory';
+import { TreeSortStrategy } from './strategies/sort/tree-sort-strategy.interface';
+import { TestFilterStrategy } from './strategies/filter/test-filter-strategy.interface';
 import { HumanizeDurationPipe } from '../../pipes/humanize-duration.pipe';
 
 export interface TestTreeNode {
@@ -38,7 +40,22 @@ export class TestTree {
 
   strategy = input<TreeOrganizationStrategy>(TreeOrganizationStrategyFactory.create('folder'));
 
-  dataSource = computed<TestTreeNode[]>(() => this.strategy().buildTree(this.tests()));
+  filterStrategy = input<TestFilterStrategy | null>(null);
+
+  sortStrategies = input<TreeSortStrategy[]>([]);
+
+  filteredTests = computed<Test[]>(() => {
+    const filter = this.filterStrategy();
+    return filter ? filter.filter(this.tests()) : this.tests();
+  });
+
+  dataSource = computed<TestTreeNode[]>(() => {
+    let nodes = this.strategy().buildTree(this.filteredTests());
+    for (const sortStrategy of this.sortStrategies()) {
+      nodes = sortStrategy.sort(nodes);
+    }
+    return nodes;
+  });
 
   childrenAccessor = (node: TestTreeNode) => node.children ?? [];
 
