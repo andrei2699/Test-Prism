@@ -2,13 +2,8 @@
   width: 100%;
 }
 
-.status-filter-container {
-  margin-top: 16px;
-}
-
 .status-filter-label {
   display: block;
-  margin-bottom: 8px;
   font-weight: 500;
 }
 

@@ -1,14 +1,14 @@
-﻿<mat-form-field appearance="outline" class="filter-full-width">
-  <mat-label>Filter tests by name</mat-label>
-  <input
-    matInput
-    type="text"
-    [(ngModel)]="filterText"
-    (ngModelChange)="onFilterChange()"
-    placeholder="e.g. should display" />
-</mat-form-field>
+﻿<div>
+  <mat-form-field appearance="outline" class="filter-full-width">
+    <mat-label>Filter tests by name</mat-label>
+    <input
+      matInput
+      type="text"
+      [(ngModel)]="filterText"
+      (ngModelChange)="onFilterChange()"
+      placeholder="e.g. should display" />
+  </mat-form-field>
 
-<div class="status-filter-container">
   <label class="status-filter-label">Filter by status:</label>
   <div class="status-checkboxes">
     @for (status of statusOptions; track status) {
