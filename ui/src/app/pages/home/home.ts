@@ -1,6 +1,8 @@
 import { Component, signal } from '@angular/core';
 import { TestTree } from '../../components/test-tree/test-tree';
 import { TestReport } from '../../types/TestReport';
+import { TreeOrganizationStrategy } from '../../components/test-tree/strategies/tree-organization-strategy.interface';
+import { FolderOrganizationStrategy } from '../../components/test-tree/strategies/folder-organization.strategy';
 
 @Component({
   selector: 'app-home',
@@ -20,4 +22,6 @@ export class Home {
       },
     ],
   });
+
+  strategy = signal<TreeOrganizationStrategy>(new FolderOrganizationStrategy());
 }

@@ -1,1 +1,9 @@
-<app-test-tree [tests]="testReport().tests" />
+<div>
+  <h2>Test Tree Organization</h2>
+  <p>
+    <strong>Current Strategy:</strong>
+    <span>{{ strategy().getName() }}</span>
+  </p>
+</div>
+
+<app-test-tree [tests]="testReport().tests" [strategy]="strategy()" />
