@@ -1,5 +1,5 @@
 ﻿import { ExecutionTypeOrganizationStrategy } from './execution-type-organization.strategy';
-import { Test } from '../../../types/TestReport';
+import { Test } from '../../../../types/TestReport';
 
 describe('ExecutionTypeOrganizationStrategy', () => {
   let strategy: ExecutionTypeOrganizationStrategy;

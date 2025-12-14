@@ -1,7 +1,7 @@
-﻿import { TestTreeNode } from '../test-tree';
-import { Test } from '../../../types/TestReport';
+﻿import { TestTreeNode } from '../../test-tree';
+import { Test } from '../../../../types/TestReport';
 import { TreeOrganizationStrategy } from './tree-organization-strategy.interface';
-import { EXECUTION_TYPE_COLORS } from '../../../shared/execution-type-colors';
+import { EXECUTION_TYPE_COLORS } from '../../../../shared/execution-type-colors';
 
 export abstract class BaseTreeOrganizationStrategy implements TreeOrganizationStrategy {
   abstract getName(): string;

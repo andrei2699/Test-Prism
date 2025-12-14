@@ -1,8 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TestTree, TestTreeNode } from './test-tree';
-import { FolderOrganizationStrategy } from './strategies/folder-organization.strategy';
-import { TreeOrganizationStrategy } from './strategies/tree-organization-strategy.interface';
+import { FolderOrganizationStrategy } from './strategies/organization/folder-organization.strategy';
+import { TreeOrganizationStrategy } from './strategies/organization/tree-organization-strategy.interface';
 import { Test } from '../../types/TestReport';
+import { TestFilterStrategy } from './strategies/filter/test-filter-strategy.interface';
+import { TreeSortStrategy } from './strategies/sort/tree-sort-strategy.interface';
 import { vi } from 'vitest';
 
 describe('TestTree Component', () => {
@@ -451,6 +453,224 @@ describe('TestTree Component', () => {
     it('should allow nodes without duration', () => {
       const node: TestTreeNode = { name: 'test' };
       expect(node.totalDurationMs).toBeUndefined();
+    });
+  });
+
+  describe('filteredTests Computed Signal', () => {
+    it('should return all tests when no filter strategy is provided', () => {
+      const tests: Test[] = [
+        { name: 'test1', path: '/test1', lastExecutionType: 'SUCCESS' },
+        { name: 'test2', path: '/test2', lastExecutionType: 'FAILURE' },
+      ];
+
+      fixture.componentRef.setInput('tests', tests);
+      fixture.componentRef.setInput('filterStrategy', null);
+      fixture.detectChanges();
+
+      expect(component.filteredTests()).toEqual(tests);
+    });
+
+    it('should apply filter strategy when provided', () => {
+      const tests: Test[] = [
+        { name: 'test1', path: '/test1', lastExecutionType: 'SUCCESS' },
+        { name: 'test2', path: '/test2', lastExecutionType: 'FAILURE' },
+      ];
+
+      const mockFilter: TestFilterStrategy = {
+        filter: vi.fn().mockReturnValue([tests[0]]),
+      };
+
+      fixture.componentRef.setInput('tests', tests);
+      fixture.componentRef.setInput('filterStrategy', mockFilter);
+      fixture.detectChanges();
+
+      expect(component.filteredTests()).toEqual([tests[0]]);
+      expect(mockFilter.filter).toHaveBeenCalledWith(tests);
+    });
+
+    it('should recalculate when filter strategy changes', () => {
+      const tests: Test[] = [
+        { name: 'test1', path: '/test1', lastExecutionType: 'SUCCESS' },
+        { name: 'test2', path: '/test2', lastExecutionType: 'FAILURE' },
+      ];
+
+      const filter1: TestFilterStrategy = {
+        filter: vi.fn().mockReturnValue([tests[0]]),
+      };
+
+      fixture.componentRef.setInput('tests', tests);
+      fixture.componentRef.setInput('filterStrategy', filter1);
+      fixture.detectChanges();
+
+      component.filteredTests();
+      expect(filter1.filter).toHaveBeenCalledTimes(1);
+
+      const filter2: TestFilterStrategy = {
+        filter: vi.fn().mockReturnValue([tests[1]]),
+      };
+
+      fixture.componentRef.setInput('filterStrategy', filter2);
+      fixture.detectChanges();
+
+      expect(component.filteredTests()).toEqual([tests[1]]);
+      expect(filter2.filter).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('dataSource with Sorting', () => {
+    it('should apply sort strategies to tree nodes', () => {
+      const tests: Test[] = [
+        { name: 'test1', path: '/folder/test1', lastExecutionType: 'SUCCESS' },
+      ];
+
+      const mockSort: TreeSortStrategy = {
+        sort: vi.fn().mockReturnValue([{ name: 'sorted', children: [] }]),
+      };
+
+      const mockStrategy: TreeOrganizationStrategy = {
+        buildTree: vi.fn().mockReturnValue([{ name: 'unsorted', children: [] }]),
+        getName: vi.fn().mockReturnValue('mock'),
+        getIcon: vi.fn().mockReturnValue('folder'),
+        getColor: vi.fn().mockReturnValue('inherit'),
+      };
+
+      fixture.componentRef.setInput('tests', tests);
+      fixture.componentRef.setInput('strategy', mockStrategy);
+      fixture.componentRef.setInput('sortStrategies', [mockSort]);
+
+      const result = component.dataSource();
+
+      expect(mockSort.sort).toHaveBeenCalled();
+      expect(result[0].name).toBe('sorted');
+    });
+
+    it('should apply multiple sort strategies in order', () => {
+      const tests: Test[] = [
+        { name: 'test1', path: '/folder/test1', lastExecutionType: 'SUCCESS' },
+      ];
+
+      const mockSort1: TreeSortStrategy = {
+        sort: vi
+          .fn()
+          .mockImplementation((nodes: TestTreeNode[]) => [
+            ...nodes.map(n => ({ ...n, name: n.name + '1' })),
+          ]),
+      };
+
+      const mockSort2: TreeSortStrategy = {
+        sort: vi
+          .fn()
+          .mockImplementation((nodes: TestTreeNode[]) => [
+            ...nodes.map(n => ({ ...n, name: n.name + '2' })),
+          ]),
+      };
+
+      const mockStrategy: TreeOrganizationStrategy = {
+        buildTree: vi.fn().mockReturnValue([{ name: 'test', children: [] }]),
+        getName: vi.fn().mockReturnValue('mock'),
+        getIcon: vi.fn().mockReturnValue('folder'),
+        getColor: vi.fn().mockReturnValue('inherit'),
+      };
+
+      fixture.componentRef.setInput('tests', tests);
+      fixture.componentRef.setInput('strategy', mockStrategy);
+      fixture.componentRef.setInput('sortStrategies', [mockSort1, mockSort2]);
+
+      const result = component.dataSource();
+
+      expect(mockSort1.sort).toHaveBeenCalled();
+      expect(mockSort2.sort).toHaveBeenCalled();
+      expect(result[0].name).toBe('test12');
+    });
+
+    it('should handle empty sort strategies array', () => {
+      const tests: Test[] = [
+        { name: 'test1', path: '/folder/test1', lastExecutionType: 'SUCCESS' },
+      ];
+
+      const expectedNodes: TestTreeNode[] = [{ name: 'test1', children: [] }];
+
+      const mockStrategy: TreeOrganizationStrategy = {
+        buildTree: vi.fn().mockReturnValue(expectedNodes),
+        getName: vi.fn().mockReturnValue('mock'),
+        getIcon: vi.fn().mockReturnValue('folder'),
+        getColor: vi.fn().mockReturnValue('inherit'),
+      };
+
+      fixture.componentRef.setInput('tests', tests);
+      fixture.componentRef.setInput('strategy', mockStrategy);
+      fixture.componentRef.setInput('sortStrategies', []);
+
+      const result = component.dataSource();
+
+      expect(result).toEqual(expectedNodes);
+    });
+  });
+
+  describe('dataSource with Filtering and Sorting', () => {
+    it('should apply filtering before building tree', () => {
+      const tests: Test[] = [
+        { name: 'test1', path: '/folder/test1', lastExecutionType: 'SUCCESS' },
+        { name: 'test2', path: '/folder/test2', lastExecutionType: 'FAILURE' },
+      ];
+
+      const filteredTests: Test[] = [tests[0]];
+
+      const mockFilter: TestFilterStrategy = {
+        filter: vi.fn().mockReturnValue(filteredTests),
+      };
+
+      const mockStrategy: TreeOrganizationStrategy = {
+        buildTree: vi.fn().mockReturnValue([{ name: 'test1' }]),
+        getName: vi.fn().mockReturnValue('mock'),
+        getIcon: vi.fn().mockReturnValue('folder'),
+        getColor: vi.fn().mockReturnValue('inherit'),
+      };
+
+      fixture.componentRef.setInput('tests', tests);
+      fixture.componentRef.setInput('filterStrategy', mockFilter);
+      fixture.componentRef.setInput('strategy', mockStrategy);
+      fixture.componentRef.setInput('sortStrategies', []);
+
+      component.dataSource();
+
+      expect(mockStrategy.buildTree).toHaveBeenCalledWith(filteredTests);
+    });
+
+    it('should apply sorting after building tree with filtered tests', () => {
+      const tests: Test[] = [
+        { name: 'test1', path: '/folder/test1', lastExecutionType: 'SUCCESS' },
+        { name: 'test2', path: '/folder/test2', lastExecutionType: 'FAILURE' },
+      ];
+
+      const filteredTests: Test[] = [tests[0]];
+
+      const mockFilter: TestFilterStrategy = {
+        filter: vi.fn().mockReturnValue(filteredTests),
+      };
+
+      const mockSort: TreeSortStrategy = {
+        sort: vi.fn().mockReturnValue([{ name: 'sorted', children: [] }]),
+      };
+
+      const mockStrategy: TreeOrganizationStrategy = {
+        buildTree: vi.fn().mockReturnValue([{ name: 'unsorted', children: [] }]),
+        getName: vi.fn().mockReturnValue('mock'),
+        getIcon: vi.fn().mockReturnValue('folder'),
+        getColor: vi.fn().mockReturnValue('inherit'),
+      };
+
+      fixture.componentRef.setInput('tests', tests);
+      fixture.componentRef.setInput('filterStrategy', mockFilter);
+      fixture.componentRef.setInput('strategy', mockStrategy);
+      fixture.componentRef.setInput('sortStrategies', [mockSort]);
+
+      const result = component.dataSource();
+
+      expect(mockFilter.filter).toHaveBeenCalledWith(tests);
+      expect(mockStrategy.buildTree).toHaveBeenCalledWith(filteredTests);
+      expect(mockSort.sort).toHaveBeenCalled();
+      expect(result[0].name).toBe('sorted');
     });
   });
 });

@@ -1,7 +1,7 @@
 ﻿import { TreeOrganizationStrategyFactory } from './tree-organization-strategy.factory';
 
 import { TreeOrganizationStrategy } from './tree-organization-strategy.interface';
-import { TestTreeNode } from '../test-tree';
+import { TestTreeNode } from '../../test-tree';
 import { FolderOrganizationStrategy } from './folder-organization.strategy';
 import { ExecutionTypeOrganizationStrategy } from './execution-type-organization.strategy';
 

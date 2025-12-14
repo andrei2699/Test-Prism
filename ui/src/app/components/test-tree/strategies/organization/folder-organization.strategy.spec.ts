@@ -1,5 +1,5 @@
 ﻿import { FolderOrganizationStrategy } from './folder-organization.strategy';
-import { Test } from '../../../types/TestReport';
+import { Test } from '../../../../types/TestReport';
 
 describe('FolderOrganizationStrategy', () => {
   let strategy: FolderOrganizationStrategy;
