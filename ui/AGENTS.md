@@ -2,9 +2,8 @@
 
 ## Code Comments
 
-- **Do NOT add comments to code** unless explicitly requested in the prompt
-- Code should be self-documenting through clear naming and structure
-- Only add comments when the user specifically asks for them
+- **Do NOT add comments to code.** Comments should only be included if explicitly and directly requested by the user in the prompt.
+- Code should be self-documenting through clear naming and structure.
 
 ## Testing Requirements
 
@@ -43,3 +42,4 @@
 - Prioritize code clarity and maintainability
 - Avoid over-engineering solutions
 - Ask for clarification if requirements are ambiguous
+- **All code changes must be verified to compile successfully.**

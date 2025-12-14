@@ -1,9 +1,11 @@
 ﻿import { DistributionStrategy } from './distribution-strategy.interface';
 import { ExecutionTypeDistributionStrategy } from './execution-type-distribution.strategy';
+import { DurationDistributionStrategy } from './duration-distribution.strategy';
 
 export class DistributionStrategyFactory {
   private static readonly strategies = new Map<string, () => DistributionStrategy>([
     ['status', () => new ExecutionTypeDistributionStrategy()],
+    ['duration', () => new DurationDistributionStrategy()],
   ]);
 
   static create(type: string): DistributionStrategy {
