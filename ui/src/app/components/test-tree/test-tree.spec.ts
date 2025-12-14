@@ -2,10 +2,17 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TestTree, TestTreeNode } from './test-tree';
 import { FolderOrganizationStrategy } from './strategies/organization/folder-organization.strategy';
 import { TreeOrganizationStrategy } from './strategies/organization/tree-organization-strategy.interface';
-import { Test } from '../../types/TestReport';
+import { Test, TestExecutionType } from '../../types/TestReport';
 import { TestFilterStrategy } from './strategies/filter/test-filter-strategy.interface';
 import { TreeSortStrategy } from './strategies/sort/tree-sort-strategy.interface';
 import { vi } from 'vitest';
+
+const defaultTestCounts: Record<TestExecutionType, number> = {
+  SUCCESS: 0,
+  FAILURE: 0,
+  SKIPPED: 0,
+  ERROR: 0,
+};
 
 const createMockTreeOrganizationStrategy = (
   buildTreeResult: TestTreeNode[] = [],
@@ -13,7 +20,14 @@ const createMockTreeOrganizationStrategy = (
   icon: string = 'folder',
   color: string = 'inherit',
 ): TreeOrganizationStrategy => ({
-  buildTree: vi.fn().mockReturnValue(buildTreeResult),
+  buildTree: vi.fn().mockReturnValue(
+    buildTreeResult.map(node => {
+      if (node.children && node.children.length > 0 && node.testCount === undefined) {
+        return { ...node, testCount: { ...defaultTestCounts } };
+      }
+      return node;
+    }),
+  ),
   getName: vi.fn().mockReturnValue(name),
   getIcon: vi.fn().mockReturnValue(icon),
   getColor: vi.fn().mockReturnValue(color),
@@ -100,7 +114,13 @@ describe('TestTree Component', () => {
         { name: 'test1', path: '/folder/test1', lastExecutionType: 'SUCCESS', durationMs: 1000 },
       ];
 
-      const expectedResult: TestTreeNode[] = [{ name: 'folder', children: [{ name: 'test1' }] }];
+      const expectedResult: TestTreeNode[] = [
+        {
+          name: 'folder',
+          children: [{ name: 'test1' }],
+          testCount: { SUCCESS: 1, FAILURE: 0, SKIPPED: 0, ERROR: 0 },
+        },
+      ];
 
       const mockStrategy = createMockTreeOrganizationStrategy(expectedResult);
 
@@ -153,6 +173,7 @@ describe('TestTree Component', () => {
             lastExecutionType: 'SUCCESS',
             durationMs: 1000,
           },
+          testCount: { SUCCESS: 1, FAILURE: 0, SKIPPED: 0, ERROR: 0 },
         },
       ]);
 
@@ -172,6 +193,7 @@ describe('TestTree Component', () => {
             lastExecutionType: 'SUCCESS',
             durationMs: 1000,
           },
+          testCount: { SUCCESS: 1, FAILURE: 0, SKIPPED: 0, ERROR: 0 },
         },
       ]);
 
@@ -293,6 +315,7 @@ describe('TestTree Component', () => {
       const node: TestTreeNode = {
         name: 'folder',
         children: [{ name: 'test' }],
+        testCount: { ...defaultTestCounts },
       };
 
       expect(node.test).toBeUndefined();
@@ -509,10 +532,14 @@ describe('TestTree Component', () => {
       ];
 
       const mockSort: TreeSortStrategy = {
-        sort: vi.fn().mockReturnValue([{ name: 'sorted', children: [] }]),
+        sort: vi
+          .fn()
+          .mockReturnValue([{ name: 'sorted', children: [], testCount: { ...defaultTestCounts } }]),
       };
 
-      const mockStrategy = createMockTreeOrganizationStrategy([{ name: 'unsorted', children: [] }]);
+      const mockStrategy = createMockTreeOrganizationStrategy([
+        { name: 'unsorted', children: [], testCount: { ...defaultTestCounts } },
+      ]);
 
       fixture.componentRef.setInput('tests', tests);
       fixture.componentRef.setInput('strategy', mockStrategy);
@@ -545,7 +572,9 @@ describe('TestTree Component', () => {
           ]),
       };
 
-      const mockStrategy = createMockTreeOrganizationStrategy([{ name: 'test', children: [] }]);
+      const mockStrategy = createMockTreeOrganizationStrategy([
+        { name: 'test', children: [], testCount: { ...defaultTestCounts } },
+      ]);
 
       fixture.componentRef.setInput('tests', tests);
       fixture.componentRef.setInput('strategy', mockStrategy);
@@ -563,7 +592,9 @@ describe('TestTree Component', () => {
         { name: 'test1', path: '/folder/test1', lastExecutionType: 'SUCCESS' },
       ];
 
-      const expectedNodes: TestTreeNode[] = [{ name: 'test1', children: [] }];
+      const expectedNodes: TestTreeNode[] = [
+        { name: 'test1', children: [], testCount: { ...defaultTestCounts } },
+      ];
 
       const mockStrategy = createMockTreeOrganizationStrategy(expectedNodes);
 
@@ -588,7 +619,9 @@ describe('TestTree Component', () => {
 
       const mockFilter = createMockTestFilterStrategy(filteredTests);
 
-      const mockStrategy = createMockTreeOrganizationStrategy([{ name: 'test1' }]);
+      const mockStrategy = createMockTreeOrganizationStrategy([
+        { name: 'test1', testCount: { ...defaultTestCounts } },
+      ]);
 
       fixture.componentRef.setInput('tests', tests);
       fixture.componentRef.setInput('filterStrategy', mockFilter);
@@ -611,10 +644,14 @@ describe('TestTree Component', () => {
       const mockFilter = createMockTestFilterStrategy(filteredTests);
 
       const mockSort: TreeSortStrategy = {
-        sort: vi.fn().mockReturnValue([{ name: 'sorted', children: [] }]),
+        sort: vi
+          .fn()
+          .mockReturnValue([{ name: 'sorted', children: [], testCount: { ...defaultTestCounts } }]),
       };
 
-      const mockStrategy = createMockTreeOrganizationStrategy([{ name: 'unsorted', children: [] }]);
+      const mockStrategy = createMockTreeOrganizationStrategy([
+        { name: 'unsorted', children: [], testCount: { ...defaultTestCounts } },
+      ]);
 
       fixture.componentRef.setInput('tests', tests);
       fixture.componentRef.setInput('filterStrategy', mockFilter);
@@ -644,7 +681,9 @@ describe('TestTree Component', () => {
       const tests: Test[] = [
         { name: 'test1', path: '/folder/test1', lastExecutionType: 'SUCCESS' },
       ];
-      const mockStrategy = createMockTreeOrganizationStrategy([{ name: 'test1', children: [] }]);
+      const mockStrategy = createMockTreeOrganizationStrategy([
+        { name: 'test1', children: [], testCount: { ...defaultTestCounts } },
+      ]);
 
       fixture.componentRef.setInput('tests', tests);
       fixture.componentRef.setInput('strategy', mockStrategy);

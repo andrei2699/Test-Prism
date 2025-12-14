@@ -31,7 +31,7 @@ describe('TestDistributionPie', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(TestHostComponent);
-    fixture.componentRef.setInput('strategy', executionTypeStrategy); // Provide the strategy instance
+    fixture.componentRef.setInput('strategy', executionTypeStrategy);
   });
 
   afterEach(() => {

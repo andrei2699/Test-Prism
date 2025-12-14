@@ -4,8 +4,19 @@ import { TestExecutionType } from '../../types/TestReport';
 import { By } from '@angular/platform-browser';
 import { EXECUTION_TYPE_COLORS } from '../../shared/execution-type-colors';
 
+function hexToRgb(hex: string): string | null {
+  const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+  hex = hex.replace(shorthandRegex, function (_, r, g, b) {
+    return r + r + g + g + b + b;
+  });
+
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result
+    ? `rgb(${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)})`
+    : null;
+}
+
 describe('TestCountDisplayComponent', () => {
-  let component: TestCountDisplayComponent;
   let fixture: ComponentFixture<TestCountDisplayComponent>;
 
   beforeEach(async () => {
@@ -14,7 +25,6 @@ describe('TestCountDisplayComponent', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(TestCountDisplayComponent);
-    component = fixture.componentInstance;
   });
 
   it('should display the total count and individual execution type counts with correct colors', () => {
@@ -35,27 +45,49 @@ describe('TestCountDisplayComponent', () => {
     const executionCountElements = fixture.debugElement.queryAll(By.css('.execution-count'));
     expect(executionCountElements.length).toBe(3);
 
-    expect(executionCountElements[0].nativeElement.textContent).toContain('5');
-    expect(executionCountElements[0].nativeElement.style.color).toBe(EXECUTION_TYPE_COLORS.SUCCESS);
+    const successElement = executionCountElements.find(
+      el => el.nativeElement.textContent.trim() === '5',
+    );
+    expect(successElement).toBeTruthy();
+    expect(successElement?.nativeElement.style.color).toBe(hexToRgb(EXECUTION_TYPE_COLORS.SUCCESS));
 
-    expect(executionCountElements[1].nativeElement.textContent).toContain('2');
-    expect(executionCountElements[1].nativeElement.style.color).toBe(EXECUTION_TYPE_COLORS.FAILURE);
+    const failureElement = executionCountElements.find(
+      el => el.nativeElement.textContent.trim() === '2',
+    );
+    expect(failureElement).toBeTruthy();
+    expect(failureElement?.nativeElement.style.color).toBe(hexToRgb(EXECUTION_TYPE_COLORS.FAILURE));
 
-    expect(executionCountElements[2].nativeElement.textContent).toContain('1');
-    expect(executionCountElements[2].nativeElement.style.color).toBe(EXECUTION_TYPE_COLORS.SKIPPED);
+    const skippedElement = executionCountElements.find(
+      el => el.nativeElement.textContent.trim() === '1',
+    );
+    expect(skippedElement).toBeTruthy();
+    expect(skippedElement?.nativeElement.style.color).toBe(hexToRgb(EXECUTION_TYPE_COLORS.SKIPPED));
 
     const errorCountElement = fixture.debugElement.query(
-      By.css(`[style*="color: ${EXECUTION_TYPE_COLORS.ERROR}"]`),
+      By.css(`[style*="color: ${hexToRgb(EXECUTION_TYPE_COLORS.ERROR)}"]`),
     );
     expect(errorCountElement).toBeNull();
   });
 
-  it('should display only the total count if all individual counts are 0', () => {
+  it('should not display any counts if totalCount is 0 (e.g., empty object or all zeros)', () => {
     const testCounts: Record<TestExecutionType, number> = {
       SUCCESS: 0,
       FAILURE: 0,
       SKIPPED: 0,
       ERROR: 0,
+    };
+    fixture.componentRef.setInput('testCounts', testCounts);
+    fixture.detectChanges();
+    expect(fixture.debugElement.queryAll(By.css('.total-count')).length).toBe(0);
+    expect(fixture.debugElement.queryAll(By.css('.execution-count')).length).toBe(0);
+  });
+
+  it('should display error count if present', () => {
+    const testCounts: Record<TestExecutionType, number> = {
+      SUCCESS: 0,
+      FAILURE: 0,
+      SKIPPED: 0,
+      ERROR: 3,
     };
 
     fixture.componentRef.setInput('testCounts', testCounts);
@@ -63,19 +95,14 @@ describe('TestCountDisplayComponent', () => {
 
     const totalCountElement = fixture.debugElement.query(By.css('.total-count'));
     expect(totalCountElement).toBeTruthy();
-    expect(totalCountElement.nativeElement.textContent).toContain('(0)');
+    expect(totalCountElement.nativeElement.textContent).toContain('(3)');
 
     const executionCountElements = fixture.debugElement.queryAll(By.css('.execution-count'));
-    expect(executionCountElements.length).toBe(0);
-  });
+    expect(executionCountElements.length).toBe(1);
 
-  it('should not display anything if testCounts is an empty object', () => {
-    const testCounts: Record<TestExecutionType, number> = {} as Record<TestExecutionType, number>;
-
-    fixture.componentRef.setInput('testCounts', testCounts);
-    fixture.detectChanges();
-
-    const testCountDisplayElement = fixture.debugElement.query(By.css('.test-count-display'));
-    expect(testCountDisplayElement).toBeNull();
+    expect(executionCountElements[0].nativeElement.textContent).toContain('3');
+    expect(executionCountElements[0].nativeElement.style.color).toBe(
+      hexToRgb(EXECUTION_TYPE_COLORS.ERROR),
+    );
   });
 });

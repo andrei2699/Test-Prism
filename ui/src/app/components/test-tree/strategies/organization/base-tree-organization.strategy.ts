@@ -123,11 +123,11 @@ export abstract class BaseTreeOrganizationStrategy implements TreeOrganizationSt
 
   protected calculateTestCounts(nodes: TestTreeNode[]): void {
     nodes.forEach(node => {
-      node.testCount = this.calculateNodeTestCount(node);
+      this.recursivelyCalculateTestCounts(node);
     });
   }
 
-  private calculateNodeTestCount(node: TestTreeNode): Record<TestExecutionType, number> {
+  private recursivelyCalculateTestCounts(node: TestTreeNode): Record<TestExecutionType, number> {
     const counts: Record<TestExecutionType, number> = {
       SUCCESS: 0,
       FAILURE: 0,
@@ -137,20 +137,16 @@ export abstract class BaseTreeOrganizationStrategy implements TreeOrganizationSt
 
     if (node.test) {
       counts[node.test.lastExecutionType] = 1;
-      return counts;
-    }
-
-    if (node.children && node.children.length > 0) {
+    } else if (node.children && node.children.length > 0) {
       node.children.forEach(child => {
-        const childCounts = this.calculateNodeTestCount(child);
+        const childCounts = this.recursivelyCalculateTestCounts(child);
         const executionTypes: TestExecutionType[] = ['SUCCESS', 'FAILURE', 'SKIPPED', 'ERROR'];
         for (const type of executionTypes) {
           counts[type] += childCounts[type];
         }
       });
-      return counts;
     }
-
+    node.testCount = counts;
     return counts;
   }
 }
