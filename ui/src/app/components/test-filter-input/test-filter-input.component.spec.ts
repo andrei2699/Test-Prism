@@ -37,7 +37,10 @@ describe('TestFilterInputComponent', () => {
     component.filterText.set(testFilterText);
     component.onFilterChange();
 
-    expect(spy).toHaveBeenCalledWith(testFilterText);
+    expect(spy).toHaveBeenCalledWith({
+      name: 'test filter',
+      statuses: [],
+    });
   });
 
   it('should update filterText signal when input value changes', async () => {
