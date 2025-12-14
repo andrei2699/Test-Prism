@@ -20,6 +20,7 @@ export class FolderOrganizationStrategy extends BaseTreeOrganizationStrategy {
     });
 
     this.calculateTotalDurations(rootNodes);
+    this.calculateTestCounts(rootNodes);
     return rootNodes;
   }
 

@@ -26,6 +26,7 @@ describe('FolderOrganizationStrategy', () => {
     expect(result).toHaveLength(1);
     expect(result[0].name).toBe('test1');
     expect(result[0].test).toEqual(tests[0]);
+    expect(result[0].testCount).toBeUndefined();
   });
 
   it('should create folder hierarchy', () => {
@@ -150,5 +151,53 @@ describe('FolderOrganizationStrategy', () => {
     const result = strategy.buildTree(tests);
 
     expect(result[0].totalDurationMs).toBe(2000);
+  });
+
+  it('should calculate test count for a single test', () => {
+    const tests: Test[] = [{ name: 'test1', path: '/test1', lastExecutionType: 'SUCCESS' }];
+
+    const result = strategy.buildTree(tests);
+
+    expect(result[0].testCount).toBeUndefined(); // Test nodes don't have testCount
+  });
+
+  it('should calculate test count for a folder with multiple tests', () => {
+    const tests: Test[] = [
+      { name: 'test1', path: '/folder/test1', lastExecutionType: 'SUCCESS' },
+      { name: 'test2', path: '/folder/test2', lastExecutionType: 'FAILURE' },
+    ];
+
+    const result = strategy.buildTree(tests);
+
+    expect(result[0].testCount).toBe(2);
+  });
+
+  it('should calculate test count recursively for nested folders', () => {
+    const tests: Test[] = [
+      { name: 'test1', path: '/a/b/test1', lastExecutionType: 'SUCCESS' },
+      { name: 'test2', path: '/a/b/test2', lastExecutionType: 'SUCCESS' },
+      { name: 'test3', path: '/a/c/test3', lastExecutionType: 'SUCCESS' },
+      { name: 'test4', path: '/a/test4', lastExecutionType: 'SUCCESS' },
+    ];
+
+    const result = strategy.buildTree(tests);
+    const folderA = result[0];
+
+    expect(folderA.testCount).toBe(4);
+    expect(folderA.children?.[0].testCount).toBe(2); // folder b
+    expect(folderA.children?.[1].testCount).toBe(1); // folder c
+  });
+
+  it('should calculate test count for mixed content (tests and subfolders)', () => {
+    const tests: Test[] = [
+      { name: 'test1', path: '/folder1/subfolder/test1', lastExecutionType: 'SUCCESS' },
+      { name: 'test2', path: '/folder1/test2', lastExecutionType: 'SUCCESS' },
+    ];
+
+    const result = strategy.buildTree(tests);
+    const folder1 = result[0];
+
+    expect(folder1.testCount).toBe(2);
+    expect(folder1.children?.[0].testCount).toBe(1); // subfolder
   });
 });

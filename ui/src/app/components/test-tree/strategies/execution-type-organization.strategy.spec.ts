@@ -96,4 +96,32 @@ describe('ExecutionTypeOrganizationStrategy', () => {
 
     expect(result[0].totalDurationMs).toBe(1500);
   });
+
+  it('should calculate test count for status groups', () => {
+    const tests: Test[] = [
+      { name: 'test1', path: '/test1', lastExecutionType: 'SUCCESS' },
+      { name: 'test2', path: '/test2', lastExecutionType: 'SUCCESS' },
+      { name: 'test3', path: '/test3', lastExecutionType: 'FAILURE' },
+    ];
+
+    const result = strategy.buildTree(tests);
+
+    const successGroup = result.find(n => n.name === 'SUCCESS');
+    const failureGroup = result.find(n => n.name === 'FAILURE');
+
+    expect(successGroup?.testCount).toBe(2);
+    expect(failureGroup?.testCount).toBe(1);
+  });
+
+  it('should sum test counts across multiple tests in same group', () => {
+    const tests: Test[] = [
+      { name: 'test1', path: '/test1', lastExecutionType: 'SUCCESS' },
+      { name: 'test2', path: '/test2', lastExecutionType: 'SUCCESS' },
+      { name: 'test3', path: '/test3', lastExecutionType: 'SUCCESS' },
+    ];
+
+    const result = strategy.buildTree(tests);
+
+    expect(result[0].testCount).toBe(3);
+  });
 });

@@ -24,6 +24,7 @@ export class ExecutionTypeOrganizationStrategy extends BaseTreeOrganizationStrat
     );
 
     this.calculateTotalDurations(sorted);
+    this.calculateTestCounts(sorted);
     return sorted;
   }
 }
