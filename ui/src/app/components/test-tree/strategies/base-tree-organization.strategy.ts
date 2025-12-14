@@ -1,6 +1,7 @@
 ﻿import { TestTreeNode } from '../test-tree';
 import { Test } from '../../../types/TestReport';
 import { TreeOrganizationStrategy } from './tree-organization-strategy.interface';
+import { EXECUTION_TYPE_COLORS } from '../../../shared/execution-type-colors';
 
 export abstract class BaseTreeOrganizationStrategy implements TreeOrganizationStrategy {
   abstract getName(): string;
@@ -31,18 +32,7 @@ export abstract class BaseTreeOrganizationStrategy implements TreeOrganizationSt
       return 'inherit';
     }
 
-    switch (node.test.lastExecutionType) {
-      case 'SUCCESS':
-        return '#4caf50';
-      case 'FAILURE':
-        return '#f44336';
-      case 'ERROR':
-        return '#ff9800';
-      case 'SKIPPED':
-        return '#9e9e9e';
-      default:
-        return 'inherit';
-    }
+    return EXECUTION_TYPE_COLORS[node.test.lastExecutionType] || 'inherit';
   }
 
   protected createTestNode(test: Test): TestTreeNode {

@@ -2,7 +2,12 @@ import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideBrowserGlobalErrorListeners(), provideRouter(routes)],
+  providers: [
+    provideBrowserGlobalErrorListeners(),
+    provideRouter(routes),
+    provideCharts(withDefaultRegisterables()),
+  ],
 };

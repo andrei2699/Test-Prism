@@ -2,4 +2,8 @@
   <h2>Tests Organized by folder</h2>
 </div>
 
-<app-test-tree [tests]="testReport().tests" [strategy]="strategy()" />
+<app-test-distribution-pie
+  [tests]="testReport().tests"
+  [strategy]="summaryOrganizationStrategy()" />
+
+<app-test-tree [tests]="testReport().tests" [strategy]="treeOrganizationStrategy()" />
