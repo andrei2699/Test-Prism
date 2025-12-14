@@ -7,3 +7,17 @@
     (ngModelChange)="onFilterChange()"
     placeholder="e.g. should display" />
 </mat-form-field>
+
+<div class="status-filter-container">
+  <label class="status-filter-label">Filter by status:</label>
+  <div class="status-checkboxes">
+    @for (status of statusOptions; track status) {
+      <mat-checkbox
+        [checked]="isStatusSelected(status)"
+        (change)="toggleStatus(status)">
+        {{ status }}
+      </mat-checkbox>
+    }
+  </div>
+</div>
+
