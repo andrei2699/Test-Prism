@@ -7,6 +7,44 @@ export abstract class BaseTreeOrganizationStrategy implements TreeOrganizationSt
 
   abstract buildTree(tests: Test[]): TestTreeNode[];
 
+  getIcon(node: TestTreeNode): string {
+    if (!node.test) {
+      return 'folder';
+    }
+
+    switch (node.test.lastExecutionType) {
+      case 'SUCCESS':
+        return 'check_circle';
+      case 'FAILURE':
+        return 'cancel';
+      case 'ERROR':
+        return 'error';
+      case 'SKIPPED':
+        return 'skip_next';
+      default:
+        return 'help';
+    }
+  }
+
+  getColor(node: TestTreeNode): string {
+    if (!node.test) {
+      return 'inherit';
+    }
+
+    switch (node.test.lastExecutionType) {
+      case 'SUCCESS':
+        return '#4caf50';
+      case 'FAILURE':
+        return '#f44336';
+      case 'ERROR':
+        return '#ff9800';
+      case 'SKIPPED':
+        return '#9e9e9e';
+      default:
+        return 'inherit';
+    }
+  }
+
   protected createTestNode(test: Test): TestTreeNode {
     return {
       name: test.name,

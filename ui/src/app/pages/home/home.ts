@@ -19,6 +19,7 @@ export class Home {
         lastExecutionType: 'SUCCESS',
         name: 'Test 1',
         path: '/folder/test1',
+        durationMs: 1500,
       },
     ],
   });

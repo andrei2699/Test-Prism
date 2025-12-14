@@ -1,7 +1,13 @@
 <mat-tree #tree [dataSource]="dataSource()" [childrenAccessor]="childrenAccessor">
   <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
     <button matIconButton disabled></button>
-    {{ node.name }}
+    <mat-icon [style.color]="getColor(node)">
+      {{ getIcon(node) }}
+    </mat-icon>
+    <span class="node-label">{{ node.name }}</span>
+    @if (node.test?.durationMs !== undefined) {
+      <span class="node-duration"> ({{ node.test!.durationMs | humanizeDuration }}) </span>
+    }
   </mat-tree-node>
 
   <mat-tree-node
@@ -14,6 +20,9 @@
         {{ tree.isExpanded(node) ? 'expand_more' : 'chevron_right' }}
       </mat-icon>
     </button>
-    {{ node.name }}
+    <mat-icon [style.color]="getColor(node)">
+      {{ getIcon(node) }}
+    </mat-icon>
+    <span class="node-label">{{ node.name }}</span>
   </mat-tree-node>
 </mat-tree>
