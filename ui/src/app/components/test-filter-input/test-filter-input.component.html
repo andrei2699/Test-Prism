@@ -12,12 +12,9 @@
   <label class="status-filter-label">Filter by status:</label>
   <div class="status-checkboxes">
     @for (status of statusOptions; track status) {
-      <mat-checkbox
-        [checked]="isStatusSelected(status)"
-        (change)="toggleStatus(status)">
+      <mat-checkbox [checked]="isStatusSelected(status)" (change)="toggleStatus(status)">
         {{ status }}
       </mat-checkbox>
     }
   </div>
 </div>
-
