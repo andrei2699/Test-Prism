@@ -1,0 +1,14 @@
+﻿.error-card {
+  color: var(--mat-sys-error);
+}
+
+.error-icon {
+  display: flex;
+  justify-content: center;
+}
+
+.hint {
+  font-size: 0.875rem;
+  opacity: 0.87;
+  font-style: italic;
+}
