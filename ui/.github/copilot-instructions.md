@@ -1,4 +1,4 @@
-﻿# Agent Instructions
+# Agent Instructions
 
 ## Code Comments
 
