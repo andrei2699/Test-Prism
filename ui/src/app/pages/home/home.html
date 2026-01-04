@@ -1,14 +1,23 @@
-<app-test-distribution-pie
-  [tests]="testReport().tests"
-  [strategy]="summaryOrganizationStrategy()" />
+@if (testData.isLoading()) {
+  <app-loading message="Loading test results..." />
+} @else if (testData.error()) {
+  <app-error-message
+    title="Error Loading Test Data"
+    [message]="testData.error()!.message"
+    hint="Ensure the TEST_RESULTS_FILE environment variable is set and points to a valid JSON file." />
+} @else if (testData.hasValue()) {
+  <app-test-distribution-pie
+    [tests]="testData.value().tests"
+    [strategy]="summaryOrganizationStrategy()" />
 
-<div>
-  <h2>Tests Organized by folder</h2>
-  <app-test-filter-input (filterChanged)="onFilterChange($event)" />
+  <div>
+    <h2>Tests Organized by folder</h2>
+    <app-test-filter-input (filterChanged)="onFilterChange($event)" />
 
-  <app-test-tree
-    [tests]="testReport().tests"
-    [strategy]="treeOrganizationStrategy()"
-    [filterStrategy]="filterStrategy()"
-    [sortStrategies]="sortStrategies()" />
-</div>
+    <app-test-tree
+      [tests]="testData.value().tests"
+      [strategy]="treeOrganizationStrategy()"
+      [filterStrategy]="filterStrategy()"
+      [sortStrategies]="sortStrategies()" />
+  </div>
+}
