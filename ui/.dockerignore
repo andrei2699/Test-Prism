@@ -1,0 +1,11 @@
+﻿node_modules
+npm-debug.log
+.angular
+.git
+.gitignore
+.editorconfig
+README.md
+.idea
+.vscode
+*.spec.ts
+src/test.ts
