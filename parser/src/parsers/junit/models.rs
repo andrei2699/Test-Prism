@@ -31,4 +31,31 @@ pub struct JunitTestCase {
     pub classname: String,
     #[serde(rename = "@time")]
     pub time: f64,
+    #[serde(rename = "failure", default)]
+    pub failure: Option<JunitFailure>,
+    #[serde(rename = "error", default)]
+    pub error: Option<JunitError>,
+    #[serde(rename = "skipped", default)]
+    pub skipped: Option<JunitSkipped>,
+}
+
+#[derive(Debug, PartialEq, Default, Deserialize)]
+#[serde(default)]
+pub struct JunitFailure {
+    #[serde(rename = "@message")]
+    pub message: String,
+}
+
+#[derive(Debug, PartialEq, Default, Deserialize)]
+#[serde(default)]
+pub struct JunitError {
+    #[serde(rename = "@message")]
+    pub message: String,
+}
+
+#[derive(Debug, PartialEq, Default, Deserialize)]
+#[serde(default)]
+pub struct JunitSkipped {
+    #[serde(rename = "@message")]
+    pub message: String,
 }
