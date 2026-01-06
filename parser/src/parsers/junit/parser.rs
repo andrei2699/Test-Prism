@@ -1,7 +1,7 @@
-﻿use crate::test::TestParser;
-use crate::test_models::TestSuite;
-use quick_xml::events::Event;
-use quick_xml::reader::Reader;
+﻿use crate::parsers::junit::models::JunitTestSuite;
+use crate::test::TestParser;
+use crate::test_models::{Test, TestStatus, TestSuite};
+use quick_xml::de::from_reader;
 use std::fs::File;
 use std::io::BufReader;
 use std::path::Path;
@@ -10,47 +10,28 @@ pub struct JunitParser;
 
 impl TestParser for JunitParser {
     fn parse(&self, file_path: &Path) -> Result<Vec<TestSuite>, String> {
-        let reader = Reader::from_file(file_path);
+        let file = File::open(file_path).map_err(|e| format!("I/O error: {}", e))?;
+        let reader = BufReader::new(file);
 
-        match reader {
-            Ok(reader) => self.parse_from_reader(reader),
-            Err(error) => Err(error.to_string()),
+        let junit_suite: JunitTestSuite = from_reader(reader).map_err(|e| e.to_string())?;
+
+        let mut methods = Vec::new();
+        for case in junit_suite.test_cases {
+            methods.push(Test {
+                name: case.name,
+                time: case.time,
+                status: TestStatus::Passed,
+            });
         }
-    }
-}
 
-impl JunitParser {
-    fn parse_from_reader(
-        &self,
-        mut reader: Reader<BufReader<File>>,
-    ) -> Result<Vec<TestSuite>, String> {
-        let mut buf = Vec::new();
-        let tests: Vec<TestSuite> = Vec::new();
+        let suite = TestSuite {
+            name: junit_suite.name,
+            duration: junit_suite.time,
+            timestamp: junit_suite.timestamp,
+            methods,
+        };
 
-        loop {
-            match reader.read_event_into(&mut buf) {
-                Err(e) => {
-                    return Err(e.to_string());
-                }
-                Ok(Event::Eof) => break,
-
-                // Ok(Event::Start(e)) => match e.name().as_ref() {
-                //     b"tag1" => println!(
-                //         "attributes values: {:?}",
-                //         e.attributes().map(|a| a.unwrap().value).collect::<Vec<_>>()
-                //     ),
-                //     b"tag2" => count += 1,
-                //     _ => (),
-                // },
-                // Ok(Event::Text(e)) => txt.push(e.decode().unwrap().into_owned()),
-                //
-                // // There are several other `Event`s we do not consider here
-                _ => todo!(),
-            };
-
-            buf.clear();
-        }
-        Ok(tests)
+        Ok(vec![suite])
     }
 }
 
@@ -80,7 +61,7 @@ mod tests {
         assert!(
             result
                 .unwrap_err()
-                .contains("I/O error: The system cannot find the file specified. (os error 2)")
+                .contains("I/O error: The system cannot find the file specified")
         );
     }
 
@@ -109,35 +90,33 @@ mod tests {
         assert_eq!(suite.methods.len(), 0);
     }
 
-    // #[test]
-    // fn empty_test_suite() {
-    //     let xml_content = r#"
-    //         <testsuite name="MyTestSuite" tests="2" failures="0" errors="0" skipped="0" time="0.123" timestamp="2023-10-27T10:00:00Z">
-    //             <testcase name="test_success_1" classname="com.example.MyClass" time="0.05"></testcase>
-    //             <testcase name="test_success_2" classname="com.example.MyClass" time="0.07"/>
-    //         </testsuite>
-    //     "#;
-    //     let path = create_temp_xml_file(xml_content);
-    //     let parser = JunitParser;
-    //     let result = parser.parse(&path);
-    //
-    //     assert!(result.is_ok());
-    //     let tests = result.unwrap();
-    //     assert_eq!(tests.len(), 1);
-    //     let suite = &tests[0];
-    //     assert_eq!(suite.name, "MyTestSuite");
-    //     assert_eq!(suite.duration, 0.123);
-    //     assert_eq!(suite.timestamp, "2023-10-27T10:00:00Z");
-    //     assert_eq!(suite.methods.len(), 2);
-    //
-    //     assert_eq!(suite.methods[0].name, "test_success_1");
-    //     assert_eq!(suite.methods[0].classname, "com.example.MyClass");
-    //     assert_eq!(suite.methods[0].time, 0.05);
-    //     assert_eq!(suite.methods[0].status, TestStatus::Passed);
-    //
-    //     assert_eq!(suite.methods[1].name, "test_success_2");
-    //     assert_eq!(suite.methods[1].classname, "com.example.MyClass");
-    //     assert_eq!(suite.methods[1].time, 0.07);
-    //     assert_eq!(suite.methods[1].status, TestStatus::Passed);
-    // }
+    #[test]
+    fn simple_test_suite() {
+        let xml_content = r#"
+            <testsuite name="MyTestSuite" tests="2" failures="0" errors="0" skipped="0" time="0.123" timestamp="2023-10-27T10:00:00Z">
+                <testcase name="test_success_1" classname="com.example.MyClass" time="0.05"></testcase>
+                <testcase name="test_success_2" classname="com.example.MyClass" time="0.07"/>
+            </testsuite>
+        "#;
+        let file = create_temp_xml_file(xml_content);
+        let parser = JunitParser;
+        let result = parser.parse(&file.path());
+
+        assert!(result.is_ok());
+        let tests = result.unwrap();
+        assert_eq!(tests.len(), 1);
+        let suite = &tests[0];
+        assert_eq!(suite.name, "MyTestSuite");
+        assert_eq!(suite.duration, 0.123);
+        assert_eq!(suite.timestamp, "2023-10-27T10:00:00Z");
+        assert_eq!(suite.methods.len(), 2);
+
+        assert_eq!(suite.methods[0].name, "test_success_1");
+        assert_eq!(suite.methods[0].time, 0.05);
+        assert_eq!(suite.methods[0].status, TestStatus::Passed);
+
+        assert_eq!(suite.methods[1].name, "test_success_2");
+        assert_eq!(suite.methods[1].time, 0.07);
+        assert_eq!(suite.methods[1].status, TestStatus::Passed);
+    }
 }

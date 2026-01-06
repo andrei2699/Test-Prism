@@ -2,22 +2,33 @@
 
 #[derive(Debug, PartialEq, Default, Deserialize)]
 #[serde(default)]
-struct JunitTestSuite {
-    name: String,
-    tests: u64,
-    failures: u64,
-    errors: u64,
-    skipped: u64,
-    time: f64,
-    timestamp: String,
-    #[serde(rename = "testcase")]
-    test_cases: Vec<JunitTestCase>,
+pub struct JunitTestSuite {
+    #[serde(rename = "@name")]
+    pub name: String,
+    #[serde(rename = "@tests")]
+    pub tests: u64,
+    #[serde(rename = "@failures")]
+    pub failures: u64,
+    #[serde(rename = "@errors")]
+    pub errors: u64,
+    #[serde(rename = "@skipped")]
+    pub skipped: u64,
+    #[serde(rename = "@time")]
+    pub time: f64,
+    #[serde(rename = "@timestamp")]
+    pub timestamp: String,
+
+    #[serde(rename = "testcase", default)]
+    pub test_cases: Vec<JunitTestCase>,
 }
 
 #[derive(Debug, PartialEq, Default, Deserialize)]
 #[serde(default)]
-struct JunitTestCase {
-    name: String,
-    classname: String,
-    time: f64,
+pub struct JunitTestCase {
+    #[serde(rename = "@name")]
+    pub name: String,
+    #[serde(rename = "@classname")]
+    pub classname: String,
+    #[serde(rename = "@time")]
+    pub time: f64,
 }
