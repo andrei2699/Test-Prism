@@ -6,6 +6,7 @@ use std::fs;
 use tempfile::tempdir;
 
 #[parameterized(input_file = {
+    "tests/data/junit/input/folder",
     "tests/data/junit/input/TEST-com.testprism.DisplayNameTest.xml",
     "tests/data/junit/input/TEST-com.testprism.FailedTest.xml",
     "tests/data/junit/input/TEST-com.testprism.NestedTests$DeeperNestedTest$EvenDeeperNestedTest.xml",
@@ -16,6 +17,7 @@ use tempfile::tempdir;
     "tests/data/junit/input/TEST-com.testprism.SuccessTest.xml",
     "tests/data/junit/input/TEST-com.testprism.TestWithMultipleTypes.xml",
 }, expected_output_file = {
+    "tests/data/junit/output/folder.json",
     "tests/data/junit/output/TEST-com.testprism.DisplayNameTest.json",
     "tests/data/junit/output/TEST-com.testprism.FailedTest.json",
     "tests/data/junit/output/TEST-com.testprism.NestedTests$DeeperNestedTest$EvenDeeperNestedTest.json",
