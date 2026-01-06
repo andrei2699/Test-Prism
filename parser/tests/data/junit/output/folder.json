@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "date": "2025-01-06T15:34:21.123Z",
+  "tests": [
+    {
+      "lastExecutionType": "SUCCESS",
+      "name": "test1",
+      "path": "Sample1",
+      "durationMs": 1000
+    },
+    {
+      "lastExecutionType": "SUCCESS",
+      "name": "test2",
+      "path": "Sample2",
+      "durationMs": 2000
+    }
+  ]
+}

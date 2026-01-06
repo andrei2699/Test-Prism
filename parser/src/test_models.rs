@@ -3,15 +3,15 @@ pub struct TestSuite {
     pub name: String,
     pub duration: f64,
     pub timestamp: String,
-    pub methods: Vec<Test>,
+    pub tests: Vec<Test>,
 }
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum TestStatus {
     Passed,
-    Skipped,
-    Failed,
-    Error,
+    Skipped(String),
+    Failed(String),
+    Error(String),
 }
 
 #[derive(Debug, Clone)]

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.testprism.FailedTest" tests="1" skipped="0" failures="1" errors="0"
+           timestamp="2026-01-06T13:06:33.796Z" hostname="ANDREI" time="0.017">
+    <properties/>
+    <testcase name="testFailed()" classname="com.testprism.FailedTest" time="0.017">
+        <failure message="org.opentest4j.AssertionFailedError" type="org.opentest4j.AssertionFailedError">
+            org.opentest4j.AssertionFailedError
+            at app//org.junit.jupiter.api.AssertionUtils.fail(AssertionUtils.java:34)
+            at app//org.junit.jupiter.api.Assertions.fail(Assertions.java:115)
+            at app//com.testprism.FailedTest.testFailed(FailedTest.java:10)
+            at java.base@21.0.3/java.lang.reflect.Method.invoke(Method.java:580)
+            at java.base@21.0.3/java.util.ArrayList.forEach(ArrayList.java:1596)
+            at java.base@21.0.3/java.util.ArrayList.forEach(ArrayList.java:1596)
+        </failure>
+    </testcase>
+    <system-out><![CDATA[]]></system-out>
+    <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.testprism.SkippedTest" tests="1" skipped="1" failures="0" errors="0"
+           timestamp="2026-01-06T13:06:33.967Z" hostname="ANDREI" time="0.004">
+    <properties/>
+    <testcase name="skippedTest()" classname="com.testprism.SkippedTest" time="0.004">
+        <skipped/>
+    </testcase>
+    <system-out><![CDATA[]]></system-out>
+    <system-err><![CDATA[]]></system-err>
+</testsuite>
