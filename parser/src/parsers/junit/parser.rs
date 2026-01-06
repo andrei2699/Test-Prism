@@ -1,5 +1,5 @@
 ﻿use crate::parsers::junit::models::JunitTestSuite;
-use crate::test::TestParser;
+use crate::test_parser::TestParser;
 use crate::test_models::{Test, TestStatus, TestSuite};
 use quick_xml::de::from_reader;
 use std::fs::File;

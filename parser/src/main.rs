@@ -1,3 +1,4 @@
+use chrono;
 use clap::Parser as ClapParser;
 use parser::commands::parse_command::parse_command;
 
@@ -12,7 +13,7 @@ struct Args {
 enum Commands {
     Parse {
         #[arg(short, long, help = "Type of the test report (e.g., junit)")]
-        report_type:  String,
+        report_type: String,
 
         #[arg(short, long, help = "Input file or directory path")]
         input: String,
@@ -30,6 +31,11 @@ fn main() {
             report_type,
             input,
             output,
-        } => parse_command(report_type, input, output),
+        } => parse_command(
+            report_type,
+            input,
+            output.unwrap_or("output.json".to_string()),
+            chrono::Utc::now().to_string(),
+        ),
     }
 }
