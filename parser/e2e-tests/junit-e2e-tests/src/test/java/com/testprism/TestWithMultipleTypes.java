@@ -18,7 +18,7 @@ public class TestWithMultipleTypes {
     }
 
     @Test
-    @Disabled
+    @Disabled("Skipping this test")
     void skippedTest() {
         assertTrue(true);
     }

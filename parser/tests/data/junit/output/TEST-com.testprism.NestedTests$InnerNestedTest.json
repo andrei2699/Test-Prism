@@ -4,9 +4,9 @@
   "tests": [
     {
       "lastExecutionType": "SUCCESS",
-      "name": "testSuccess()",
-      "path": "com.testprism.SuccessTest",
-      "durationMs": 3
+      "name": "innerTest()",
+      "path": "com.testprism.NestedTests$InnerNestedTest",
+      "durationMs": 1
     }
   ]
 }

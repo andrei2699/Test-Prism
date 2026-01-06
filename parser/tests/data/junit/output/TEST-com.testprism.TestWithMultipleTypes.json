@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "date": "2025-01-06T15:34:21.123Z",
+  "tests": [
+    {
+      "lastExecutionType": "SUCCESS",
+      "name": "successTest()",
+      "path": "com.testprism.TestWithMultipleTypes",
+      "durationMs": 3
+    },
+    {
+      "lastExecutionType": "SKIPPED",
+      "name": "skippedTest()",
+      "path": "com.testprism.TestWithMultipleTypes",
+      "durationMs": 1,
+      "message": ""
+    },
+    {
+      "lastExecutionType": "FAILURE",
+      "name": "failedTest()",
+      "path": "com.testprism.TestWithMultipleTypes",
+      "durationMs": 4,
+      "message": "org.opentest4j.AssertionFailedError"
+    }
+  ]
+}

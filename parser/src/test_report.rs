@@ -28,6 +28,7 @@ pub struct TestReportTest {
     pub path: String,
     #[serde(rename = "durationMs")]
     pub duration_ms: u64,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub message: Option<String>,
 }
 

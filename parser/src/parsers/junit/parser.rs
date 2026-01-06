@@ -1,6 +1,6 @@
 ﻿use crate::parsers::junit::models::JunitTestSuite;
-use crate::test_parser::TestParser;
 use crate::test_models::{Test, TestStatus, TestSuite};
+use crate::test_parser::TestParser;
 use quick_xml::de::from_reader;
 use std::fs::File;
 use std::io::BufReader;
@@ -178,6 +178,37 @@ mod tests {
             suite.tests[0].status,
             TestStatus::Skipped("Skipped test".to_string())
         );
+    }
+
+    #[test]
+    fn test_suite_with_skipped_tests_without_message() {
+        // Arrange
+        let xml_content = r#"
+            <testsuite name="MyTestSuite" tests="1" failures="0" errors="0" skipped="1" time="0.123" timestamp="2023-10-27T10:00:00Z">
+                <testcase name="test" classname="com.example.MyClass" time="0.05">
+                    <skipped/>
+                </testcase>
+            </testsuite>
+        "#;
+        let file = create_temp_xml_file(xml_content);
+
+        // Act
+        let parser = JunitParser;
+        let result = parser.parse(&file.path());
+
+        // Assert
+        assert!(result.is_ok());
+        let tests = result.unwrap();
+        assert_eq!(tests.len(), 1);
+        let suite = &tests[0];
+        assert_eq!(suite.name, "MyTestSuite");
+        assert_eq!(suite.duration, 0.123);
+        assert_eq!(suite.timestamp, "2023-10-27T10:00:00Z");
+        assert_eq!(suite.tests.len(), 1);
+
+        assert_eq!(suite.tests[0].name, "test");
+        assert_eq!(suite.tests[0].time, 0.05);
+        assert_eq!(suite.tests[0].status, TestStatus::Skipped("".to_string()));
     }
 
     #[test]

@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "date": "2025-01-06T15:34:21.123Z",
+  "tests": [
+    {
+      "lastExecutionType": "FAILURE",
+      "name": "testFailed()",
+      "path": "com.testprism.FailedTest",
+      "durationMs": 17,
+      "message": "org.opentest4j.AssertionFailedError"
+    }
+  ]
+}

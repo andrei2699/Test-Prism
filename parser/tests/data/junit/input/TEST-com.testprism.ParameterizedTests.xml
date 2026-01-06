@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.testprism.ParameterizedTests" tests="3" skipped="0" failures="1" errors="0"
+           timestamp="2026-01-06T13:06:33.888Z" hostname="ANDREI" time="0.071">
+    <properties/>
+    <testcase name="[1] one" classname="com.testprism.ParameterizedTests" time="0.044"/>
+    <testcase name="[2] two" classname="com.testprism.ParameterizedTests" time="0.015">
+        <failure message="org.opentest4j.AssertionFailedError: Intentional failure for input: two"
+                 type="org.opentest4j.AssertionFailedError">org.opentest4j.AssertionFailedError: Intentional failure for
+            input: two
+            at app//org.junit.jupiter.api.AssertionUtils.fail(AssertionUtils.java:38)
+            at app//org.junit.jupiter.api.Assertions.fail(Assertions.java:134)
+            at app//com.testprism.ParameterizedTests.testParameterized(ParameterizedTests.java:13)
+            at java.base@21.0.3/java.lang.reflect.Method.invoke(Method.java:580)
+            at java.base@21.0.3/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:184)
+            at java.base@21.0.3/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+            at java.base@21.0.3/java.util.stream.ReferencePipeline$2$1.accept(ReferencePipeline.java:179)
+            at java.base@21.0.3/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+            at java.base@21.0.3/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:184)
+            at java.base@21.0.3/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+            at java.base@21.0.3/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+            at java.base@21.0.3/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+            at java.base@21.0.3/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:184)
+            at java.base@21.0.3/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+            at java.base@21.0.3/java.util.Spliterators$ArraySpliterator.forEachRemaining(Spliterators.java:1024)
+            at java.base@21.0.3/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:509)
+            at java.base@21.0.3/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+            at java.base@21.0.3/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:151)
+            at java.base@21.0.3/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:174)
+            at java.base@21.0.3/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+            at java.base@21.0.3/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:596)
+            at java.base@21.0.3/java.util.stream.ReferencePipeline$7$1.accept(ReferencePipeline.java:276)
+            at java.base@21.0.3/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+            at java.base@21.0.3/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+            at java.base@21.0.3/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+            at java.base@21.0.3/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1708)
+            at java.base@21.0.3/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:509)
+            at java.base@21.0.3/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+            at java.base@21.0.3/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:151)
+            at java.base@21.0.3/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:174)
+            at java.base@21.0.3/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+            at java.base@21.0.3/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:596)
+            at java.base@21.0.3/java.util.stream.ReferencePipeline$7$1.accept(ReferencePipeline.java:276)
+            at java.base@21.0.3/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1708)
+            at java.base@21.0.3/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:509)
+            at java.base@21.0.3/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+            at java.base@21.0.3/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:151)
+            at java.base@21.0.3/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:174)
+            at java.base@21.0.3/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+            at java.base@21.0.3/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:596)
+            at java.base@21.0.3/java.util.ArrayList.forEach(ArrayList.java:1596)
+            at java.base@21.0.3/java.util.ArrayList.forEach(ArrayList.java:1596)
+        </failure>
+    </testcase>
+    <testcase name="[3] three" classname="com.testprism.ParameterizedTests" time="0.001"/>
+    <system-out><![CDATA[]]></system-out>
+    <system-err><![CDATA[]]></system-err>
+</testsuite>
