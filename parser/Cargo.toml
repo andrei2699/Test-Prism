@@ -2,5 +2,13 @@
 name = "parser"
 version = "0.1.0"
 edition = "2024"
+license = "Apache-2.0"
 
 [dependencies]
+clap = { version = "4.5.54", features = ["derive"] }
+quick-xml = { version = "0.38.4", features = ["serialize"] }
+tempfile = "3.24.0"
+serde = { version = "1.0.228", features = ["derive"] }
+
+[dev-dependencies]
+parameterized = "2.1.0"
