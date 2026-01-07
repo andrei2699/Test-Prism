@@ -51,7 +51,7 @@ In the same directory, create a file named `Dockerfile` with the following conte
 
 ```dockerfile
 # Start from the official Test Prism UI base image
-FROM test-prism-ui:latest
+FROM andreitimar/test-prism:ui-latest
 
 # Copy your test results into the image
 COPY test-results.json /test-results/results.json
