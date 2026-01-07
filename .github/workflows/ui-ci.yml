@@ -33,7 +33,23 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Get Playwright version
+        id: playwright-version
+        shell: bash
+        run: |
+          PLAYWRIGHT_VERSION=$(npm list @vitest/browser-playwright --json | jq -r '.dependencies["@vitest/browser-playwright"].version')
+          echo "PLAYWRIGHT_VERSION=$PLAYWRIGHT_VERSION" >> $GITHUB_ENV
+
+      - name: Cache Playwright binaries
+        uses: actions/cache@v4
+        id: playwright-cache
+        with:
+          path: |
+            ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ env.PLAYWRIGHT_VERSION }}
+
       - name: Install Playwright Browsers
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: npx playwright install chromium --with-deps
 
       - name: Run Tests
