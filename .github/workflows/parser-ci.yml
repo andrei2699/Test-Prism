@@ -1,0 +1,36 @@
+﻿name: Parser CI
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'parser/**'
+      - '.github/workflows/parser-ci.yml'
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - 'parser/**'
+      - '.github/workflows/parser-ci.yml'
+
+jobs:
+  build-and-test:
+    name: Build and Test
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Run Tests
+        working-directory: ./parser
+        run: cargo test --verbose
+
+      - name: Build
+        working-directory: ./parser
+        run: cargo build --release --verbose

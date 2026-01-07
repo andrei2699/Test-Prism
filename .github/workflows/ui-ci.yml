@@ -1,0 +1,43 @@
+﻿name: UI CI
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'ui/**'
+      - '.github/workflows/ui-ci.yml'
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - 'ui/**'
+      - '.github/workflows/ui-ci.yml'
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./ui
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: 'npm'
+          cache-dependency-path: ui/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright Browsers
+        run: npx playwright install chromium --with-deps
+
+      - name: Run Tests
+        run: npm run test:ci
+
+      - name: Build
+        run: npm run build
