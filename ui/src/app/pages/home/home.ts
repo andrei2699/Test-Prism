@@ -1,21 +1,24 @@
-import { Component, inject } from '@angular/core';
-import { TestTree } from '../../components/test-tree/test-tree';
-import { TestDistributionPie } from '../../components/test-distribution-pie/test-distribution-pie';
+import { Component, computed, inject, signal } from '@angular/core';
 import {
-  TestFilterInputComponent,
   FilterState,
+  TestFilterInputComponent,
 } from '../../components/test-filter-input/test-filter-input.component';
 import { LoadingComponent } from '../../components/loading/loading.component';
 import { ErrorMessageComponent } from '../../components/error-message/error-message.component';
 import { TestExecutionType } from '../../types/TestReport';
-import { TreeOrganizationStrategyFactory } from '../../components/test-tree/strategies/organization/tree-organization-strategy.factory';
-import { DistributionStrategyFactory } from '../../components/test-distribution-pie/strategies/distribution-strategy.factory';
-import { NameFilterStrategy } from '../../components/test-tree/strategies/filter/name-filter.strategy';
-import { StatusFilterStrategy } from '../../components/test-tree/strategies/filter/status-filter.strategy';
-import { CompositeFilterStrategy } from '../../components/test-tree/strategies/filter/composite-filter.strategy';
-import { TreeSortStrategyFactory } from '../../components/test-tree/strategies/sort/tree-sort-strategy.factory';
+import { TreeOrganizationStrategyFactory } from '../../components/widgets/test-tree/strategies/organization/tree-organization-strategy.factory';
+import { NameFilterStrategy } from '../../components/widgets/test-tree/strategies/filter/name-filter.strategy';
+import { StatusFilterStrategy } from '../../components/widgets/test-tree/strategies/filter/status-filter.strategy';
+import { CompositeFilterStrategy } from '../../components/widgets/test-tree/strategies/filter/composite-filter.strategy';
+import { TreeSortStrategyFactory } from '../../components/widgets/test-tree/strategies/sort/tree-sort-strategy.factory';
 import { TestDataService } from '../../services/test-data.service';
-import { signal } from '@angular/core';
+import { Layout, Page } from '../../types/Layout';
+import { TestTree } from '../../components/widgets/test-tree/test-tree';
+import {
+  TestDistributionPie,
+  TestDistributionPieParameters,
+} from '../../components/widgets/test-distribution-pie/test-distribution-pie';
+import { PageRenderer } from '../../components/renderers/page-renderer/page-renderer';
 
 @Component({
   selector: 'app-home',
