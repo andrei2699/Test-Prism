@@ -1,0 +1,15 @@
+.nav-bar-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.nav-bar-drawer {
+  flex: 1;
+  overflow: hidden;
+}
+
+.home {
+  cursor: pointer;
+}

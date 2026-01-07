@@ -6,6 +6,7 @@
 export interface Page {
   title: string;
   path: string;
+  navIcon?: string;
   widgets: Widget[];
 }
 

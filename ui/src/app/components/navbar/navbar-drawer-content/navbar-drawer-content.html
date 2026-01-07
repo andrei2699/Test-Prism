@@ -1,0 +1,19 @@
+<mat-selection-list>
+  @if (layout.isLoading()) {
+    <app-loading message="Loading sections..." />
+  } @else if (layout.error()) {
+    <app-error-message
+      title="Error Loading Layout Sections"
+      [message]="layout.error()!.message"
+      hint="Ensure the LAYOUT_FILE environment variable is set and points to a valid JSON file." />
+  } @else if (layout.hasValue()) {
+    @for (page of layout.value().pages; track page.path) {
+      <mat-list-item (click)="navigate(page)">
+        @if (page.navIcon) {
+          <mat-icon matListItemIcon>{{ page.navIcon }}</mat-icon>
+        }
+        <div matListItemTitle>{{ page.title }}</div>
+      </mat-list-item>
+    }
+  }
+</mat-selection-list>
