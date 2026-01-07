@@ -1,0 +1,7 @@
+<mat-drawer-container class="drawer-container">
+  <mat-drawer mode="over">
+    <app-navbar-drawer-content (onNavigate)="close()" />
+  </mat-drawer>
+
+  <ng-content></ng-content>
+</mat-drawer-container>

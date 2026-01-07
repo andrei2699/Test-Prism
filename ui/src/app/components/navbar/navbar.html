@@ -1,3 +1,15 @@
-<mat-toolbar>
-  <span>Test Prism</span>
-</mat-toolbar>
+<div class="nav-bar-container">
+  <mat-toolbar>
+    @if (layout.hasValue() && layout.value().pages.length > 1) {
+      <button matIconButton aria-label="more button" (click)="onToggleSideNav()">
+        <mat-icon>menu</mat-icon>
+      </button>
+    }
+
+    <span class="home" (click)="navigateHome()">Test Prism</span>
+  </mat-toolbar>
+
+  <app-navbar-drawer class="nav-bar-drawer">
+    <ng-content></ng-content>
+  </app-navbar-drawer>
+</div>

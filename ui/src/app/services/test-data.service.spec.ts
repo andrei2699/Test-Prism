@@ -1,4 +1,4 @@
-﻿import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+﻿import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestDataService } from './test-data.service';
@@ -33,10 +33,6 @@ describe('TestDataService', () => {
 
   afterEach(() => {
     httpMock.verify();
-  });
-
-  it('should be created', () => {
-    expect(service).toBeTruthy();
   });
 
   it('should throw error when TEST_RESULTS_FILE env var is not set', async () => {

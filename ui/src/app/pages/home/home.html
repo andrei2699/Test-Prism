@@ -6,5 +6,14 @@
     [message]="testData.error()!.message"
     hint="Ensure the TEST_RESULTS_FILE environment variable is set and points to a valid JSON file." />
 } @else if (testData.hasValue()) {
-  <app-page-renderer [page]="currentPage()" [tests]="testData.value().tests" />
+  @if (layout.isLoading()) {
+    <app-loading message="Loading test page..." />
+  } @else if (layout.error()) {
+    <app-error-message
+      title="Error Loading PAge"
+      [message]="layout.error()!.message"
+      hint="Ensure the LAYOUT_FILE environment variable is set and points to a valid JSON file." />
+  } @else if (layout.hasValue()) {
+    <app-page-renderer [page]="this.layout.value().pages[0]" [tests]="testData.value().tests" />
+  }
 }
