@@ -82,4 +82,4 @@ docker run -p 8080:80 my-test-report
 
 This command starts the container and maps port `8080` on your local machine to port `80` inside the container.
 
-You can now open your web browser and navigate to **http://localhost:8080** to see your test results visualized in the Test Prism dashboard.
+You can now open your web browser and navigate to `http://localhost:8080` to see your test results visualized in the Test Prism dashboard.
