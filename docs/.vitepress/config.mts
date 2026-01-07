@@ -9,6 +9,7 @@ export default defineConfig({
       { text: 'Home', link: '/' },
       { text: 'Dashboard Guide', link: '/ui-documentation' },
       { text: 'Displaying Tests', link: '/displaying-tests' },
+      { text: 'Parser Usage', link: '/parser-usage' },
       { text: 'Development', link: '/development-guide' },
     ],
     sidebar: [
@@ -17,6 +18,7 @@ export default defineConfig({
         items: [
           { text: 'Dashboard Features', link: '/ui-documentation' },
           { text: 'Displaying Test Results', link: '/displaying-tests' },
+          { text: 'Parser CLI', link: '/parser-usage' },
         ],
       },
       {

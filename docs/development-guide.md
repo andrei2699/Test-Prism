@@ -78,10 +78,4 @@ The UI can be containerized using the provided `Dockerfile`.
    cargo run -- --help
    ```
 
-### Example Usage
-
-To parse a JUnit report and generate the JSON output:
-
-```bash
-cargo run -- parse --report-type junit --input /path/to/your/report.xml --output /path/to/output.json
-```
+For detailed usage instructions and command-line arguments, please refer to the [Parser Usage Guide](./parser-usage.md).
