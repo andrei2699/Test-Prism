@@ -43,4 +43,22 @@ describe('WidgetRenderer', () => {
     const pieElement = fixture.debugElement.query(By.css('app-test-distribution-pie'));
     expect(pieElement).toBeTruthy();
   });
+
+  it('should render test tree widget', async () => {
+    const widget: Widget = {
+      id: 'test-widget',
+      type: 'tree',
+      data: {
+        dataSourceId: 'id',
+      },
+    };
+
+    fixture.componentRef.setInput('widget', widget);
+    fixture.componentRef.setInput('tests', tests);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const treeElement = fixture.debugElement.query(By.css('app-test-tree'));
+    expect(treeElement).toBeTruthy();
+  });
 });
