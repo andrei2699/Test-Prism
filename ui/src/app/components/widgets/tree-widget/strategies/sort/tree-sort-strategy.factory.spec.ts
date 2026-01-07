@@ -1,6 +1,6 @@
 ﻿import { describe, it, expect } from 'vitest';
 import { TreeSortStrategyFactory } from './tree-sort-strategy.factory';
-import { TestTreeNode } from '../../test-tree';
+import { TestTreeNode } from '../../test-tree/test-tree';
 
 describe('TreeSortStrategyFactory', () => {
   it('should create a name sort strategy', () => {

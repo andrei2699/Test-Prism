@@ -4,13 +4,13 @@ import { MatTreeModule } from '@angular/material/tree';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { Test, TestExecutionType } from '../../../types/TestReport';
-import { TreeOrganizationStrategy } from './strategies/organization/tree-organization-strategy.interface';
-import { TreeOrganizationStrategyFactory } from './strategies/organization/tree-organization-strategy.factory';
-import { TreeSortStrategy } from './strategies/sort/tree-sort-strategy.interface';
-import { TestFilterStrategy } from './strategies/filter/test-filter-strategy.interface';
-import { HumanizeDurationPipe } from '../../../pipes/humanize-duration.pipe';
-import { TestCountDisplayComponent } from './test-count-display/test-count-display';
+import { Test, TestExecutionType } from '../../../../types/TestReport';
+import { TreeOrganizationStrategy } from '../strategies/organization/tree-organization-strategy.interface';
+import { TreeOrganizationStrategyFactory } from '../strategies/organization/tree-organization-strategy.factory';
+import { TreeSortStrategy } from '../strategies/sort/tree-sort-strategy.interface';
+import { TestFilterStrategy } from '../strategies/filter/test-filter-strategy.interface';
+import { HumanizeDurationPipe } from '../../../../pipes/humanize-duration.pipe';
+import { TestCountDisplayComponent } from '../test-count-display/test-count-display';
 
 export interface TestTreeNode {
   name: string;

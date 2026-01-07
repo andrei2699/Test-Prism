@@ -1,5 +1,5 @@
 ﻿import { Test } from '../../../../../types/TestReport';
-import { TestTreeNode } from '../../test-tree';
+import { TestTreeNode } from '../../test-tree/test-tree';
 import { BaseTreeOrganizationStrategy } from './base-tree-organization.strategy';
 
 export class FolderOrganizationStrategy extends BaseTreeOrganizationStrategy {

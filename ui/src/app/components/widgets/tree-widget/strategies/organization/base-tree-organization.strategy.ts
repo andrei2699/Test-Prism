@@ -1,4 +1,4 @@
-﻿import { TestTreeNode } from '../../test-tree';
+﻿import { TestTreeNode } from '../../test-tree/test-tree';
 import { Test, TestExecutionType } from '../../../../../types/TestReport';
 import { TreeOrganizationStrategy } from './tree-organization-strategy.interface';
 import { EXECUTION_TYPE_COLORS } from '../../../../../shared/execution-type-colors';

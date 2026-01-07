@@ -6,18 +6,7 @@
     [message]="testData.error()!.message"
     hint="Ensure the TEST_RESULTS_FILE environment variable is set and points to a valid JSON file." />
 } @else if (testData.hasValue()) {
-  <app-test-distribution-pie
-    [tests]="testData.value().tests"
-    [parameters]="summaryOrganizationParameters()" />
+  <app-page-renderer [page]="currentPage()" [tests]="testData.value().tests" />
 
-  <div>
-    <h2>Tests Organized by folder</h2>
-    <app-test-filter-input (filterChanged)="onFilterChange($event)" />
-
-    <app-test-tree
-      [tests]="testData.value().tests"
-      [strategy]="treeOrganizationStrategy()"
-      [filterStrategy]="filterStrategy()"
-      [sortStrategies]="sortStrategies()" />
-  </div>
+  <app-tree-widget [tests]="testData.value().tests" />
 }

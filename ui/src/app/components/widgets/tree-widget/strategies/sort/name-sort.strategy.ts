@@ -1,4 +1,4 @@
-﻿import { TestTreeNode } from '../../test-tree';
+﻿import { TestTreeNode } from '../../test-tree/test-tree';
 import { TreeSortStrategy } from './tree-sort-strategy.interface';
 
 export class NameSortStrategy implements TreeSortStrategy {

@@ -1,6 +1,6 @@
 ﻿import { ExecutionTypeOrganizationStrategy } from './execution-type-organization.strategy';
 import { Test } from '../../../../../types/TestReport';
-import { TestTreeNode } from '../../test-tree';
+import { TestTreeNode } from '../../test-tree/test-tree';
 
 describe('ExecutionTypeOrganizationStrategy', () => {
   let strategy: ExecutionTypeOrganizationStrategy;

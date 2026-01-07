@@ -1,10 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TestTree, TestTreeNode } from './test-tree';
-import { FolderOrganizationStrategy } from './strategies/organization/folder-organization.strategy';
-import { TreeOrganizationStrategy } from './strategies/organization/tree-organization-strategy.interface';
-import { Test, TestExecutionType } from '../../../types/TestReport';
-import { TestFilterStrategy } from './strategies/filter/test-filter-strategy.interface';
-import { TreeSortStrategy } from './strategies/sort/tree-sort-strategy.interface';
+import { FolderOrganizationStrategy } from '../strategies/organization/folder-organization.strategy';
+import { TreeOrganizationStrategy } from '../strategies/organization/tree-organization-strategy.interface';
+import { Test, TestExecutionType } from '../../../../types/TestReport';
+import { TestFilterStrategy } from '../strategies/filter/test-filter-strategy.interface';
+import { TreeSortStrategy } from '../strategies/sort/tree-sort-strategy.interface';
 import { vi } from 'vitest';
 
 const defaultTestCounts: Record<TestExecutionType, number> = {

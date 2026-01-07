@@ -1,4 +1,4 @@
-﻿import { TestTreeNode } from '../../test-tree';
+﻿import { TestTreeNode } from '../../test-tree/test-tree';
 import { Test } from '../../../../../types/TestReport';
 
 export interface TreeOrganizationStrategy {
