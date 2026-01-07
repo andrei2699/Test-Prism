@@ -2,7 +2,8 @@
 
 **Test Prism** is a unified test result parser and visualization dashboard. It provides a high-performance Rust-based CLI to normalize various test reports into a standard JSON format, and a modern Angular dashboard to visualize the results.
 
-![Dashboard Screenshot](./docs/public/dashboard-view.png)
+[//]: # (TODO: update image link)
+[//]: # (![Dashboard Screenshot]&#40;./docs/public/dashboard-view.png&#41;)
 
 The goal is to provide a clear, interactive, and insightful view into your test execution cycles, helping you identify failures, track performance, and understand trends.
 

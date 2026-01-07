@@ -3,6 +3,7 @@ import { defineConfig } from 'vitepress';
 export default defineConfig({
   title: 'Test Prism',
   description: 'A unified test result parser and visualization dashboard.',
+  base: '/Test-Prism/',
   themeConfig: {
     nav: [
       { text: 'Home', link: '/' },
