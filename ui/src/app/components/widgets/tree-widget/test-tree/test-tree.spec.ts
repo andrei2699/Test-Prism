@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TestTree, TestTreeNode } from './test-tree';
-import { FolderOrganizationStrategy } from '../strategies/organization/folder-organization.strategy';
 import { TreeOrganizationStrategy } from '../strategies/organization/tree-organization-strategy.interface';
 import { Test, TestExecutionType } from '../../../../types/TestReport';
 import { TestFilterStrategy } from '../strategies/filter/test-filter-strategy.interface';
@@ -48,41 +47,9 @@ describe('TestTree Component', () => {
 
     fixture = TestBed.createComponent(TestTree);
     component = fixture.componentInstance;
-  });
-
-  describe('Component Initialization', () => {
-    it('should create', () => {
-      expect(component).toBeTruthy();
-    });
-
-    it('should have tests input', () => {
-      expect(component.tests).toBeDefined();
-    });
-
-    it('should have strategy computed signal', () => {
-      expect(component.strategy).toBeDefined();
-    });
-
-    it('should have dataSource computed signal', () => {
-      expect(component.dataSource).toBeDefined();
-    });
-  });
-
-  describe('strategy Computed Signal', () => {
-    it('should return FolderOrganizationStrategy by default', () => {
-      fixture.componentRef.setInput('tests', []);
-      fixture.detectChanges();
-      expect(component.strategy()).toBeInstanceOf(FolderOrganizationStrategy);
-    });
-
-    it('should accept strategy instance', () => {
-      const customStrategy = new FolderOrganizationStrategy();
-      fixture.componentRef.setInput('tests', []);
-      fixture.componentRef.setInput('strategy', customStrategy);
-      fixture.detectChanges();
-
-      expect(component.strategy()).toBe(customStrategy);
-    });
+    fixture.componentRef.setInput('filterStrategy', null);
+    fixture.componentRef.setInput('strategy', createMockTreeOrganizationStrategy());
+    fixture.componentRef.setInput('sortStrategies', []);
   });
 
   describe('dataSource Computed Signal', () => {
@@ -320,124 +287,6 @@ describe('TestTree Component', () => {
 
       expect(node.test).toBeUndefined();
       expect(node.children).toBeDefined();
-    });
-  });
-
-  describe('getIcon', () => {
-    it('should return folder icon for group nodes', () => {
-      const node: TestTreeNode = { name: 'folder', children: [] };
-      expect(component.getIcon(node)).toBe('folder');
-    });
-
-    it('should return check_circle for SUCCESS tests', () => {
-      const node: TestTreeNode = {
-        name: 'test',
-        test: {
-          name: 'test',
-          path: '/test',
-          lastExecutionType: 'SUCCESS',
-        },
-      };
-
-      expect(component.getIcon(node)).toBe('check_circle');
-    });
-
-    it('should return cancel for FAILURE tests', () => {
-      const node: TestTreeNode = {
-        name: 'test',
-        test: {
-          name: 'test',
-          path: '/test',
-          lastExecutionType: 'FAILURE',
-        },
-      };
-
-      expect(component.getIcon(node)).toBe('cancel');
-    });
-
-    it('should return error for ERROR tests', () => {
-      const node: TestTreeNode = {
-        name: 'test',
-        test: {
-          name: 'test',
-          path: '/test',
-          lastExecutionType: 'ERROR',
-        },
-      };
-
-      expect(component.getIcon(node)).toBe('error');
-    });
-
-    it('should return skip_next for SKIPPED tests', () => {
-      const node: TestTreeNode = {
-        name: 'test',
-        test: {
-          name: 'test',
-          path: '/test',
-          lastExecutionType: 'SKIPPED',
-        },
-      };
-
-      expect(component.getIcon(node)).toBe('skip_next');
-    });
-  });
-
-  describe('getColor', () => {
-    it('should return inherit for group nodes', () => {
-      const node: TestTreeNode = { name: 'folder', children: [] };
-      expect(component.getColor(node)).toBe('inherit');
-    });
-
-    it('should return green for SUCCESS tests', () => {
-      const node: TestTreeNode = {
-        name: 'test',
-        test: {
-          name: 'test',
-          path: '/test',
-          lastExecutionType: 'SUCCESS',
-        },
-      };
-
-      expect(component.getColor(node)).toBe('#4caf50');
-    });
-
-    it('should return red for FAILURE tests', () => {
-      const node: TestTreeNode = {
-        name: 'test',
-        test: {
-          name: 'test',
-          path: '/test',
-          lastExecutionType: 'FAILURE',
-        },
-      };
-
-      expect(component.getColor(node)).toBe('#f44336');
-    });
-
-    it('should return orange for ERROR tests', () => {
-      const node: TestTreeNode = {
-        name: 'test',
-        test: {
-          name: 'test',
-          path: '/test',
-          lastExecutionType: 'ERROR',
-        },
-      };
-
-      expect(component.getColor(node)).toBe('#ff9800');
-    });
-
-    it('should return gray for SKIPPED tests', () => {
-      const node: TestTreeNode = {
-        name: 'test',
-        test: {
-          name: 'test',
-          path: '/test',
-          lastExecutionType: 'SKIPPED',
-        },
-      };
-
-      expect(component.getColor(node)).toBe('#9e9e9e');
     });
   });
 

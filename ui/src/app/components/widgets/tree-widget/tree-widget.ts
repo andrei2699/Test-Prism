@@ -1,4 +1,4 @@
-import { Component, input, signal } from '@angular/core';
+import { Component, computed, input, signal } from '@angular/core';
 import {
   FilterState,
   TestFilterInputComponent,
@@ -10,6 +10,12 @@ import { NameFilterStrategy } from './strategies/filter/name-filter.strategy';
 import { StatusFilterStrategy } from './strategies/filter/status-filter.strategy';
 import { CompositeFilterStrategy } from './strategies/filter/composite-filter.strategy';
 import { TreeOrganizationStrategyFactory } from './strategies/organization/tree-organization-strategy.factory';
+import { TreeSortStrategy } from './strategies/sort/tree-sort-strategy.interface';
+
+export interface TreeWidgetParameters {
+  strategy: string;
+  sortStrategies?: string[];
+}
 
 @Component({
   selector: 'app-tree-widget',
@@ -20,11 +26,22 @@ import { TreeOrganizationStrategyFactory } from './strategies/organization/tree-
 export class TreeWidget {
   tests = input.required<Test[]>();
 
+  parameters = input<TreeWidgetParameters>({
+    strategy: 'folder',
+    sortStrategies: [],
+  });
+
   filterText = signal('');
   selectedStatuses = signal<TestExecutionType[]>([]);
   filterStrategy = signal(this.createFilterStrategy('', []));
-  treeOrganizationStrategy = signal(TreeOrganizationStrategyFactory.create('folder'));
-  sortStrategies = signal([TreeSortStrategyFactory.create('name')]);
+  treeOrganizationStrategy = computed(() =>
+    TreeOrganizationStrategyFactory.create(this.parameters().strategy),
+  );
+  sortStrategies = computed<TreeSortStrategy[]>(() =>
+    (this.parameters().sortStrategies ?? []).map(strategy =>
+      TreeSortStrategyFactory.create(strategy),
+    ),
+  );
 
   onFilterChange(filterState: FilterState): void {
     this.filterText.set(filterState.name);

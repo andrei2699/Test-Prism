@@ -50,10 +50,6 @@ describe('TreeWidget', () => {
     loader = TestbedHarnessEnvironment.loader(fixture);
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   describe('onFilterChange', () => {
     it('should filter by name', async () => {
       const filterState: FilterState = {

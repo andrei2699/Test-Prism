@@ -6,7 +6,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Test, TestExecutionType } from '../../../../types/TestReport';
 import { TreeOrganizationStrategy } from '../strategies/organization/tree-organization-strategy.interface';
-import { TreeOrganizationStrategyFactory } from '../strategies/organization/tree-organization-strategy.factory';
 import { TreeSortStrategy } from '../strategies/sort/tree-sort-strategy.interface';
 import { TestFilterStrategy } from '../strategies/filter/test-filter-strategy.interface';
 import { HumanizeDurationPipe } from '../../../../pipes/humanize-duration.pipe';
@@ -39,12 +38,9 @@ export interface TestTreeNode {
 })
 export class TestTree {
   tests = input.required<Test[]>();
-
-  strategy = input<TreeOrganizationStrategy>(TreeOrganizationStrategyFactory.create('folder'));
-
-  filterStrategy = input<TestFilterStrategy | null>(null);
-
-  sortStrategies = input<TreeSortStrategy[]>([]);
+  strategy = input.required<TreeOrganizationStrategy>();
+  filterStrategy = input.required<TestFilterStrategy | null>();
+  sortStrategies = input.required<TreeSortStrategy[]>();
 
   filteredTests = computed<Test[]>(() => {
     const filter = this.filterStrategy();
