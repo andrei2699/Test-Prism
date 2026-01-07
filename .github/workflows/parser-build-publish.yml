@@ -4,9 +4,6 @@ on:
   push:
     tags:
       - 'v*'
-    paths:
-      - 'parser/**'
-      - '.github/workflows/parser-build-publish.yml'
 
 jobs:
   build-binaries:
@@ -87,8 +84,8 @@ jobs:
           file: parser/Dockerfile
           push: true
           tags: |
-            ${{ secrets.DOCKER_USERNAME }}/test-prism-parser:latest
-            ${{ secrets.DOCKER_USERNAME }}/test-prism-parser:${{ steps.meta.outputs.version }}
+            ${{ secrets.DOCKER_USERNAME }}/test-prism:parser-latest
+            ${{ secrets.DOCKER_USERNAME }}/test-prism:parser-${{ steps.meta.outputs.version }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
