@@ -80,11 +80,7 @@ mod tests {
         let result = parser.parse(&path);
 
         assert!(result.is_err());
-        assert!(
-            result
-                .unwrap_err()
-                .contains("I/O error: The system cannot find the file specified")
-        );
+        assert!(result.unwrap_err().contains("I/O error:"));
     }
 
     #[parameterized(content = {
