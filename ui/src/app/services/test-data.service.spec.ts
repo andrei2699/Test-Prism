@@ -1,9 +1,6 @@
 ﻿import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { TestBed } from '@angular/core/testing';
-import {
-  HttpTestingController,
-  provideHttpClientTesting,
-} from '@angular/common/http/testing';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestDataService } from './test-data.service';
 import { TestReport } from '../types/TestReport';
 import { provideHttpClient } from '@angular/common/http';
@@ -27,11 +24,7 @@ describe('TestDataService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        provideHttpClient(),
-        provideHttpClientTesting(),
-        TestDataService,
-      ],
+      providers: [provideHttpClient(), provideHttpClientTesting(), TestDataService],
     });
 
     service = TestBed.inject(TestDataService);
