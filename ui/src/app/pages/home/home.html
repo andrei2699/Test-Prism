@@ -7,6 +7,4 @@
     hint="Ensure the TEST_RESULTS_FILE environment variable is set and points to a valid JSON file." />
 } @else if (testData.hasValue()) {
   <app-page-renderer [page]="currentPage()" [tests]="testData.value().tests" />
-
-  <app-tree-widget [tests]="testData.value().tests" />
 }

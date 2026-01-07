@@ -4,12 +4,11 @@ import { ErrorMessageComponent } from '../../components/error-message/error-mess
 import { TestDataService } from '../../services/test-data.service';
 import { Layout, Page } from '../../types/Layout';
 import { PageRenderer } from '../../components/renderers/page-renderer/page-renderer';
-import { TreeWidget } from '../../components/widgets/tree-widget/tree-widget';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [LoadingComponent, ErrorMessageComponent, PageRenderer, TreeWidget],
+  imports: [LoadingComponent, ErrorMessageComponent, PageRenderer],
   templateUrl: './home.html',
   styleUrl: './home.css',
 })
@@ -33,6 +32,13 @@ export class Home {
           {
             id: 'overview-distribution-pie',
             type: 'distribution-pie',
+            data: {
+              dataSourceId: 'main',
+            },
+          },
+          {
+            id: 'tests-tree',
+            type: 'tree',
             data: {
               dataSourceId: 'main',
             },
