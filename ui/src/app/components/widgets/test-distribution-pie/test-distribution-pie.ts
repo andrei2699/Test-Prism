@@ -6,6 +6,11 @@ import { DistributionDataItem } from './strategies/distribution-data.interface';
 import { DistributionStrategy } from './strategies/distribution-strategy.interface';
 import { DistributionStrategyFactory } from './strategies/distribution-strategy.factory';
 
+export interface TestDistributionPieParameters {
+  strategy: string;
+  // TODO: add and use colors
+}
+
 interface PieChartData extends DistributionDataItem {
   percentage: number;
 }
@@ -19,7 +24,13 @@ interface PieChartData extends DistributionDataItem {
 })
 export class TestDistributionPie {
   tests = input.required<Test[]>();
-  strategy = input<DistributionStrategy>(DistributionStrategyFactory.create('status'));
+  parameters = input<TestDistributionPieParameters>({
+    strategy: 'status',
+  });
+
+  strategy = computed<DistributionStrategy>(() =>
+    DistributionStrategyFactory.create(this.parameters().strategy),
+  );
 
   chartData = computed<PieChartData[]>(() => {
     const distribution: DistributionDataItem[] = this.strategy().calculateDistribution(

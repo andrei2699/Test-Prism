@@ -3,27 +3,27 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { Test } from '../../../types/TestReport';
-import { TestDistributionPie } from './test-distribution-pie';
+import { TestDistributionPie, TestDistributionPieParameters } from './test-distribution-pie';
 import { BaseChartDirective, provideCharts, withDefaultRegisterables } from 'ng2-charts';
-import { DistributionStrategy } from './strategies/distribution-strategy.interface';
-import { ExecutionTypeDistributionStrategy } from './strategies/execution-type-distribution.strategy';
 
 @Component({
-  template: '<app-test-distribution-pie [tests]="tests()" [strategy]="strategy()" />',
+  template: '<app-test-distribution-pie [tests]="tests()" [parameters]="parameters()" />',
   standalone: true,
   imports: [TestDistributionPie],
 })
 class TestHostComponent {
   tests = input.required<Test[]>();
-  strategy = input.required<DistributionStrategy>();
+  parameters = input.required<TestDistributionPieParameters>();
 }
 
 describe('TestDistributionPie', () => {
   let fixture: ComponentFixture<TestHostComponent>;
-  let executionTypeStrategy: ExecutionTypeDistributionStrategy;
+  let parameters: TestDistributionPieParameters;
 
   beforeEach(async () => {
-    executionTypeStrategy = new ExecutionTypeDistributionStrategy();
+    parameters = {
+      strategy: 'status',
+    };
 
     await TestBed.configureTestingModule({
       imports: [TestHostComponent],
@@ -31,7 +31,7 @@ describe('TestDistributionPie', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(TestHostComponent);
-    fixture.componentRef.setInput('strategy', executionTypeStrategy);
+    fixture.componentRef.setInput('parameters', parameters);
   });
 
   afterEach(() => {

@@ -8,7 +8,7 @@
 } @else if (testData.hasValue()) {
   <app-test-distribution-pie
     [tests]="testData.value().tests"
-    [strategy]="summaryOrganizationStrategy()" />
+    [parameters]="summaryOrganizationParameters()" />
 
   <div>
     <h2>Tests Organized by folder</h2>

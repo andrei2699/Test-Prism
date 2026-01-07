@@ -38,7 +38,9 @@ export class Home {
 
   testData = this.testDataService.testData;
 
-  summaryOrganizationStrategy = signal(DistributionStrategyFactory.create('status'));
+  summaryOrganizationParameters = signal<TestDistributionPieParameters>({
+    strategy: 'status',
+  });
   treeOrganizationStrategy = signal(TreeOrganizationStrategyFactory.create('folder'));
 
   filterText = signal('');
