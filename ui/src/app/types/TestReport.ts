@@ -9,6 +9,7 @@ export interface Test {
   name: string;
   path: string;
   durationMs?: number;
+  tags?: string[];
 }
 
 export type TestExecutionType = 'SUCCESS' | 'FAILURE' | 'SKIPPED' | 'ERROR';

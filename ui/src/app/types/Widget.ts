@@ -28,6 +28,25 @@ export interface WidgetData {
   filter?: DataFilter;
 }
 
+export type LogicalOperator = 'AND' | 'OR';
+export type ConditionOperator =
+  | '=='
+  | 'equals'
+  | '!='
+  | 'not equals'
+  | 'in'
+  | 'not in'
+  | 'contains';
+
+export type FieldValue = object | string | number | boolean | null | FieldValue[];
+
+export interface Condition {
+  field: string;
+  operator: ConditionOperator;
+  value: FieldValue;
+}
+
 export interface DataFilter {
-  // TODO: add missing properties
+  operator: LogicalOperator;
+  conditions: (DataFilter | Condition)[];
 }
