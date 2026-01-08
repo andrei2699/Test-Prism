@@ -14,6 +14,9 @@
       [message]="layout.error()!.message"
       hint="Ensure the LAYOUT_FILE environment variable is set and points to a valid JSON file." />
   } @else if (layout.hasValue()) {
-    <app-page-renderer [page]="this.layout.value().pages[0]" [tests]="testData.value().tests" />
+    <app-page-renderer
+      [pages]="this.layout.value().pages"
+      [tests]="testData.value().tests"
+      [path]="path()" />
   }
 }
