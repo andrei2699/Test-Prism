@@ -1,14 +1,15 @@
-import { Component, computed, inject, input } from '@angular/core';
+import { Component, computed, forwardRef, inject, input } from '@angular/core';
 import { TestDistributionPie } from '../../widgets/test-distribution-pie/test-distribution-pie';
 import { Test, TestReport } from '../../../types/TestReport';
 import { TreeWidget } from '../../widgets/tree-widget/tree-widget';
 import { DataSourceId } from '../../../types/DataSource';
 import { Widget } from '../../../types/Widget';
 import { DataFilterService } from '../../../services/data-filter.service';
+import { ContainerWidget } from '../../widgets/container-widget/container-widget';
 
 @Component({
   selector: 'app-widget-renderer',
-  imports: [TestDistributionPie, TreeWidget],
+  imports: [TestDistributionPie, TreeWidget, forwardRef(() => ContainerWidget)],
   templateUrl: './widget-renderer.html',
   styleUrl: './widget-renderer.css',
 })

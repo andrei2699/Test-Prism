@@ -1,3 +1,1 @@
-@for (widget of page().widgets; track widget.id) {
-  <app-widget-renderer [widget]="widget" [testReports]="testReports()" />
-}
+<app-container-widget [children]="page().widgets" [testReports]="testReports()" />

@@ -1,0 +1,3 @@
+﻿@for (child of children(); track child.id) {
+  <app-widget-renderer [widget]="child" [testReports]="testReports()"></app-widget-renderer>
+}
