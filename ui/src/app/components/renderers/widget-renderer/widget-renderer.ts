@@ -6,10 +6,11 @@ import { DataSourceId } from '../../../types/DataSource';
 import { Widget } from '../../../types/Widget';
 import { DataFilterService } from '../../../services/data-filter.service';
 import { ContainerWidget } from '../../widgets/container-widget/container-widget';
+import { NgStyle } from '@angular/common';
 
 @Component({
   selector: 'app-widget-renderer',
-  imports: [TestDistributionPie, TreeWidget, forwardRef(() => ContainerWidget)],
+  imports: [TestDistributionPie, TreeWidget, forwardRef(() => ContainerWidget), NgStyle],
   templateUrl: './widget-renderer.html',
   styleUrl: './widget-renderer.css',
 })

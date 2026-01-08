@@ -89,4 +89,24 @@ describe('WidgetRenderer', () => {
     expect(fixture.componentInstance.tests().length).toBe(1);
     expect(fixture.componentInstance.tests()[0].name).toBe('Test 2');
   });
+
+  it('should apply style to the widget container', () => {
+    const widget: Widget = {
+      id: 'test-widget',
+      type: 'tree',
+      data: {
+        dataSourceId: 'id',
+      },
+      style: {
+        backgroundColor: 'red',
+      } as CSSStyleDeclaration,
+    };
+
+    fixture.componentRef.setInput('widget', widget);
+    fixture.componentRef.setInput('testReports', testReports);
+    fixture.detectChanges();
+
+    const container = fixture.debugElement.query(By.css('div'));
+    expect(container.nativeElement.style.backgroundColor).toBe('red');
+  });
 });
