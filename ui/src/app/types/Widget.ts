@@ -1,8 +1,9 @@
 ﻿import { DataSourceId } from './DataSource';
 import { TreeWidgetParameters } from '../components/widgets/tree-widget/tree-widget';
 import { TestDistributionPieParameters } from '../components/widgets/test-distribution-pie/test-distribution-pie';
+import { SummaryWidgetParameters } from '../components/widgets/summary-widget/summary-widget';
 
-export type WidgetType = 'container' | 'tree' | 'distribution-pie' | 'analysis-summary';
+export type WidgetType = 'container' | 'tree' | 'distribution-pie' | 'summary';
 
 interface BaseWidget {
   id: string;
@@ -21,12 +22,17 @@ interface TestDistributionWidget extends BaseWidget {
   parameters?: TestDistributionPieParameters;
 }
 
+export interface SummaryWidget extends BaseWidget {
+  type: 'summary';
+  parameters?: SummaryWidgetParameters;
+}
+
 export interface ContainerWidget extends BaseWidget {
   type: 'container';
   children: Widget[];
 }
 
-export type Widget = TreeWidget | TestDistributionWidget | ContainerWidget;
+export type Widget = TreeWidget | TestDistributionWidget | ContainerWidget | SummaryWidget;
 
 export interface WidgetData {
   dataSourceId: DataSourceId;

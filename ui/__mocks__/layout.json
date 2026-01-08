@@ -12,6 +12,16 @@
       "path": "/",
       "widgets": [
         {
+          "id": "summary",
+          "type": "summary",
+          "data": {
+            "dataSourceId": "main"
+          },
+          "parameters": {
+            "title": "My Tests"
+          }
+        },
+        {
           "id": "overview-distribution-pie",
           "type": "distribution-pie",
           "data": {

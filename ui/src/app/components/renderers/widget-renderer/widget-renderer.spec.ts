@@ -67,6 +67,24 @@ describe('WidgetRenderer', () => {
     expect(treeElement).toBeTruthy();
   });
 
+  it('should render summary widget', async () => {
+    const widget: Widget = {
+      id: 'test-widget',
+      type: 'summary',
+      data: {
+        dataSourceId: 'id',
+      },
+    };
+
+    fixture.componentRef.setInput('widget', widget);
+    fixture.componentRef.setInput('testReports', testReports);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const summaryElement = fixture.debugElement.query(By.css('app-summary-widget'));
+    expect(summaryElement).toBeTruthy();
+  });
+
   it('should filter tests based on widget data filter', () => {
     const filter: DataFilter = {
       operator: 'AND',

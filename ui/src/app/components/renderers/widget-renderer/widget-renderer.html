@@ -10,6 +10,9 @@
       @case ('container') {
         <app-container-widget [children]="w.children" [testReports]="testReports()" />
       }
+      @case ('summary') {
+        <app-summary-widget [tests]="tests()" [date]="date()" [parameters]="w.parameters" />
+      }
     }
   </div>
 }
