@@ -8,7 +8,7 @@ hero:
   actions:
     - theme: brand
       text: Features
-      link: /ui-documentation
+      link: /features
     - theme: brand
       text: Displaying Tests
       link: /displaying-tests

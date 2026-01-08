@@ -125,6 +125,10 @@ array of these types. |
 | `in`                 | Checks if the field's value is present in the provided array.                                                                             |
 | `not in`             | Checks if the field's value is not present in the provided array.                                                                         |
 | `contains`           | For string fields, checks if the string contains the value. For array fields, checks if the array contains an element equal to the value. |
+| `>=`                 | Checks if a numeric field is greater than or equal to the value.                                                                          |
+| `>`                  | Checks if a numeric field is strictly greater than the value.                                                                             |
+| `<`                  | Checks if a numeric field is strictly less than the value.                                                                                |
+| `<=`                 | Checks if a numeric field is less than or equal to the value.                                                                             |
 
 ## Examples
 
