@@ -36,7 +36,11 @@ export type ConditionOperator =
   | 'not equals'
   | 'in'
   | 'not in'
-  | 'contains';
+  | 'contains'
+  | '>='
+  | '>'
+  | '<'
+  | '<=';
 
 export type FieldValue = object | string | number | boolean | null | FieldValue[];
 

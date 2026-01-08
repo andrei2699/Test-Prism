@@ -55,6 +55,11 @@ export class DataFilterService {
           return testValue.some(v => this.isEqual(v, value));
         }
         return false;
+      case '>=':
+      case '>':
+      case '<':
+      case '<=':
+        return this.compare(testValue, operator, value);
       default:
         return false;
     }
@@ -84,5 +89,26 @@ export class DataFilterService {
     }
 
     return a == null && b == null;
+  }
+
+  private compare(
+    a: FieldValue | undefined,
+    operator: '>=' | '>' | '<' | '<=',
+    b: FieldValue,
+  ): boolean {
+    if (typeof a !== 'number' || typeof b !== 'number') {
+      return false;
+    }
+
+    switch (operator) {
+      case '>=':
+        return a >= b;
+      case '>':
+        return a > b;
+      case '<':
+        return a < b;
+      case '<=':
+        return a <= b;
+    }
   }
 }

@@ -167,6 +167,50 @@ describe('DataFilterService', () => {
 
       expect(result).toEqual([tests[0], tests[2]]);
     });
+
+    it('should filter with ">="', () => {
+      const filter: DataFilter = {
+        operator: 'AND',
+        conditions: [{ field: 'durationMs', operator: '>=', value: 150 }],
+      };
+
+      const result = service.applyFilter(tests, filter);
+
+      expect(result).toEqual([tests[1], tests[2]]);
+    });
+
+    it('should filter with ">"', () => {
+      const filter: DataFilter = {
+        operator: 'AND',
+        conditions: [{ field: 'durationMs', operator: '>', value: 150 }],
+      };
+
+      const result = service.applyFilter(tests, filter);
+
+      expect(result).toEqual([tests[1]]);
+    });
+
+    it('should filter with "<="', () => {
+      const filter: DataFilter = {
+        operator: 'AND',
+        conditions: [{ field: 'durationMs', operator: '<=', value: 100 }],
+      };
+
+      const result = service.applyFilter(tests, filter);
+
+      expect(result).toEqual([tests[0], tests[3]]);
+    });
+
+    it('should filter with "<"', () => {
+      const filter: DataFilter = {
+        operator: 'AND',
+        conditions: [{ field: 'durationMs', operator: '<', value: 100 }],
+      };
+
+      const result = service.applyFilter(tests, filter);
+
+      expect(result).toEqual([tests[3]]);
+    });
   });
 
   describe('Logical Combinations', () => {
