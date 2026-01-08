@@ -1,12 +1,12 @@
 import { Component, computed, input } from '@angular/core';
 import { Page } from '../../../types/Layout';
-import { WidgetRenderer } from '../widget-renderer/widget-renderer';
 import { TestReport } from '../../../types/TestReport';
 import { DataSourceId } from '../../../types/DataSource';
+import { ContainerWidget } from '../../widgets/container-widget/container-widget';
 
 @Component({
   selector: 'app-page-renderer',
-  imports: [WidgetRenderer],
+  imports: [ContainerWidget],
   templateUrl: './page-renderer.html',
   styleUrl: './page-renderer.css',
 })

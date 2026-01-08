@@ -2,7 +2,7 @@
 import { TreeWidgetParameters } from '../components/widgets/tree-widget/tree-widget';
 import { TestDistributionPieParameters } from '../components/widgets/test-distribution-pie/test-distribution-pie';
 
-export type WidgetType = 'tree' | 'distribution-pie' | 'analysis-summary';
+export type WidgetType = 'container' | 'tree' | 'distribution-pie' | 'analysis-summary';
 
 interface BaseWidget {
   id: string;
@@ -21,7 +21,12 @@ interface TestDistributionWidget extends BaseWidget {
   parameters?: TestDistributionPieParameters;
 }
 
-export type Widget = TreeWidget | TestDistributionWidget;
+export interface ContainerWidget extends BaseWidget {
+  type: 'container';
+  children: Widget[];
+}
+
+export type Widget = TreeWidget | TestDistributionWidget | ContainerWidget;
 
 export interface WidgetData {
   dataSourceId: DataSourceId;

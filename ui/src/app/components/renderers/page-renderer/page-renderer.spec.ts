@@ -3,18 +3,21 @@ import { PageRenderer } from './page-renderer';
 import { Page } from '../../../types/Layout';
 import { Test, TestReport } from '../../../types/TestReport';
 import { By } from '@angular/platform-browser';
-import { WidgetRenderer } from '../widget-renderer/widget-renderer';
 import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 import { Component, input } from '@angular/core';
 import { Widget } from '../../../types/Widget';
+import { ContainerWidget } from '../../widgets/container-widget/container-widget';
 
 @Component({
-  selector: 'app-widget-renderer',
-  template: '<div class="mock-widget" [attr.data-widget-id]="widget().id"></div>',
-  standalone: true,
+  selector: 'app-container-widget',
+  template: `
+    @for (widget of children(); track widget.id) {
+      <div class="mock-widget" [attr.data-widget-id]="widget.id"></div>
+    }
+  `,
 })
-class MockWidgetRenderer {
-  widget = input.required<Widget>();
+class MockContainerWidget {
+  children = input.required<Widget[]>();
   testReports = input.required<TestReport[]>();
 }
 
@@ -66,8 +69,8 @@ describe('PageRenderer', () => {
       providers: [provideCharts(withDefaultRegisterables())],
     })
       .overrideComponent(PageRenderer, {
-        remove: { imports: [WidgetRenderer] },
-        add: { imports: [MockWidgetRenderer] },
+        remove: { imports: [ContainerWidget] },
+        add: { imports: [MockContainerWidget] },
       })
       .compileComponents();
 

@@ -1,8 +1,15 @@
-@switch (widget().type) {
-  @case ('distribution-pie') {
-    <app-test-distribution-pie [tests]="tests()" [parameters]="widget().parameters" />
-  }
-  @case ('tree') {
-    <app-tree-widget [tests]="tests()" [parameters]="widget().parameters" />
-  }
+@if (widget(); as w) {
+  <div [ngStyle]="w.style">
+    @switch (w.type) {
+      @case ('distribution-pie') {
+        <app-test-distribution-pie [tests]="tests()" [parameters]="w.parameters" />
+      }
+      @case ('tree') {
+        <app-tree-widget [tests]="tests()" [parameters]="w.parameters" />
+      }
+      @case ('container') {
+        <app-container-widget [children]="w.children" [testReports]="testReports()" />
+      }
+    }
+  </div>
 }
