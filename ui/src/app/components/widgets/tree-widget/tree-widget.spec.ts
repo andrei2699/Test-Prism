@@ -62,6 +62,24 @@ describe('TreeWidget', () => {
     loader = TestbedHarnessEnvironment.loader(fixture);
   });
 
+  it('should not display a title when not provided', () => {
+    const titleElement = fixture.nativeElement.querySelector('h2');
+    expect(titleElement).toBeNull();
+  });
+
+  it('should display a title when provided', () => {
+    const newParameters: TreeWidgetParameters = {
+      ...parameters,
+      title: 'Test Title',
+    };
+    fixture.componentRef.setInput('parameters', newParameters);
+    fixture.detectChanges();
+
+    const titleElement = fixture.nativeElement.querySelector('h2');
+    expect(titleElement).not.toBeNull();
+    expect(titleElement.textContent).toBe('Test Title');
+  });
+
   describe('onFilterChange', () => {
     it('should filter by name', async () => {
       const filterState: FilterState = {

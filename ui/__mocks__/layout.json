@@ -43,6 +43,9 @@
                 }
               ]
             }
+          },
+          "parameters": {
+            "title": "Tests"
           }
         }
       ]

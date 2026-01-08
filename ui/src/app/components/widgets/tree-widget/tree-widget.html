@@ -1,5 +1,7 @@
 <div>
-  <h2>Tests Organized by folder</h2>
+  @if (parameters()?.title) {
+    <h2>{{ parameters()?.title }}</h2>
+  }
   <app-test-filter-input (filterChanged)="onFilterChange($event)" />
 
   <app-test-tree

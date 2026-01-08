@@ -111,6 +111,7 @@ tests.
 
 | Field            | Type       | Description                                                                                                    |
 | ---------------- | ---------- | -------------------------------------------------------------------------------------------------------------- |
+| `title`          | `string`   | (Optional) The title of the widget.                                                                            |
 | `strategy`       | `string`   | The organization strategy for the tree. Possible values are `'folder'` (default) and `'status'`.               |
 | `sortStrategies` | `string[]` | An array of sorting strategies to apply to the tree. Currently, the only possible value is `'name'` (default). |
 

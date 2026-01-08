@@ -14,6 +14,7 @@ import { TreeSortStrategy } from './strategies/sort/tree-sort-strategy.interface
 import { TestColors } from '../../../types/Layout';
 
 export interface TreeWidgetParameters {
+  title?: string;
   strategy: string;
   sortStrategies?: string[];
 }
