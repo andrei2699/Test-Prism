@@ -1,6 +1,7 @@
 ﻿# Development Guide
 
-This guide provides instructions for setting up and running the Test Prism project locally for development or contribution purposes.
+This guide provides instructions for setting up and running the Test Prism project locally for development or
+contribution purposes.
 
 ## UI (Angular Dashboard)
 
@@ -57,6 +58,47 @@ The UI can be containerized using the provided `Dockerfile`.
    ```bash
    docker run -p 80:80 test-prism-ui
    ```
+
+## Docs (VitePress)
+
+### Prerequisites
+
+- Node.js (v18 or later)
+- npm (v9 or later)
+
+### Installation
+
+1. Navigate to the `docs` directory:
+
+   ```bash
+   cd docs
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+### Running Locally
+
+Start the VitePress development server:
+
+```bash
+npm run docs:dev
+```
+
+This will start a local development server and open up a browser window. Most changes are reflected live without having
+to restart the server.
+
+### Building for Production
+
+To build the documentation for production:
+
+```bash
+npm run docs:build
+```
+
+The build artifacts will be stored in the `.vitepress/dist` directory.
 
 ## Parser (Rust CLI)
 
