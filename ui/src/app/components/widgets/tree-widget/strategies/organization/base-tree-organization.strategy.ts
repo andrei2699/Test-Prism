@@ -1,7 +1,7 @@
 ﻿import { TestTreeNode } from '../../test-tree/test-tree';
 import { Test, TestExecutionType } from '../../../../../types/TestReport';
 import { TreeOrganizationStrategy } from './tree-organization-strategy.interface';
-import { EXECUTION_TYPE_COLORS } from '../../../../../shared/execution-type-colors';
+import { TestColors } from '../../../../../types/Layout';
 
 export abstract class BaseTreeOrganizationStrategy implements TreeOrganizationStrategy {
   abstract getName(): string;
@@ -27,12 +27,12 @@ export abstract class BaseTreeOrganizationStrategy implements TreeOrganizationSt
     }
   }
 
-  getColor(node: TestTreeNode): string {
+  getColor(node: TestTreeNode, colors: TestColors): string {
     if (!node.test) {
       return 'inherit';
     }
 
-    return EXECUTION_TYPE_COLORS[node.test.lastExecutionType] || 'inherit';
+    return colors[node.test.lastExecutionType] || 'inherit';
   }
 
   protected createTestNode(test: Test): TestTreeNode {

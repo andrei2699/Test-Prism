@@ -11,6 +11,7 @@ import { StatusFilterStrategy } from './strategies/filter/status-filter.strategy
 import { CompositeFilterStrategy } from './strategies/filter/composite-filter.strategy';
 import { TreeOrganizationStrategyFactory } from './strategies/organization/tree-organization-strategy.factory';
 import { TreeSortStrategy } from './strategies/sort/tree-sort-strategy.interface';
+import { TestColors } from '../../../types/Layout';
 
 export interface TreeWidgetParameters {
   strategy: string;
@@ -24,6 +25,7 @@ export interface TreeWidgetParameters {
   styleUrl: './tree-widget.css',
 })
 export class TreeWidget {
+  colors = input.required<TestColors>();
   tests = input.required<Test[]>();
   parameters = input.required<TreeWidgetParameters | undefined>();
 

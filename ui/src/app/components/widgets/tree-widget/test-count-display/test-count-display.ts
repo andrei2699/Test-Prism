@@ -1,7 +1,7 @@
 ﻿import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TestExecutionType } from '../../../../types/TestReport';
-import { EXECUTION_TYPE_COLORS } from '../../../../shared/execution-type-colors';
+import { TestColors } from '../../../../types/Layout';
 
 @Component({
   selector: 'app-test-count-display',
@@ -11,6 +11,7 @@ import { EXECUTION_TYPE_COLORS } from '../../../../shared/execution-type-colors'
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TestCountDisplayComponent {
+  colors = input.required<TestColors>();
   testCounts = input.required<Record<TestExecutionType, number>>();
 
   totalCount = computed<number>(() => {
@@ -22,10 +23,8 @@ export class TestCountDisplayComponent {
     return total;
   });
 
-  protected readonly EXECUTION_TYPE_COLORS = EXECUTION_TYPE_COLORS;
-
   getExecutionTypeColor(typeKey: string): string {
     const executionType = typeKey as TestExecutionType;
-    return this.EXECUTION_TYPE_COLORS[executionType];
+    return this.colors()[executionType];
   }
 }
