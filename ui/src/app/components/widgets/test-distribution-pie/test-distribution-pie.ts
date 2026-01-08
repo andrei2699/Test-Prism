@@ -24,13 +24,13 @@ interface PieChartData extends DistributionDataItem {
 })
 export class TestDistributionPie {
   tests = input.required<Test[]>();
-  parameters = input<TestDistributionPieParameters>({
-    strategy: 'status',
-  });
+  parameters = input.required<TestDistributionPieParameters | undefined>();
 
-  strategy = computed<DistributionStrategy>(() =>
-    DistributionStrategyFactory.create(this.parameters().strategy),
-  );
+  strategy = computed<DistributionStrategy>(() => {
+    const strategy = this.parameters()?.strategy ?? 'status';
+
+    return DistributionStrategyFactory.create(strategy);
+  });
 
   chartData = computed<PieChartData[]>(() => {
     const distribution: DistributionDataItem[] = this.strategy().calculateDistribution(

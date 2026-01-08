@@ -3,8 +3,8 @@ import { TestBed } from '@angular/core/testing';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestDataService } from './test-data.service';
 import { TestReport } from '../types/TestReport';
-import { DataSource } from '../types/Layout';
 import { firstValueFrom } from 'rxjs';
+import { DataSource } from '../types/DataSource';
 
 describe('TestDataService', () => {
   const mockTestReport: TestReport = {

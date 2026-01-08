@@ -1,7 +1,8 @@
 import { Component, computed, input } from '@angular/core';
-import { DataSourceId, Page } from '../../../types/Layout';
+import { Page } from '../../../types/Layout';
 import { WidgetRenderer } from '../widget-renderer/widget-renderer';
 import { TestReport } from '../../../types/TestReport';
+import { DataSourceId } from '../../../types/DataSource';
 
 @Component({
   selector: 'app-page-renderer',
