@@ -4,6 +4,7 @@ import { Widget } from '../../../types/Widget';
 import { Component, input } from '@angular/core';
 import { DataSourceId } from '../../../types/DataSource';
 import { TestReport } from '../../../types/TestReport';
+import { WidgetRenderer } from '../../renderers/widget-renderer/widget-renderer';
 
 @Component({
   selector: 'app-widget-renderer',
@@ -30,11 +31,10 @@ describe('ContainerWidget', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ContainerWidget],
-      declarations: [],
     })
       .overrideComponent(ContainerWidget, {
         remove: {
-          imports: [],
+          imports: [WidgetRenderer],
         },
         add: {
           imports: [MockWidgetRenderer],

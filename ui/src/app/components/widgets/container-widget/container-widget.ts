@@ -1,4 +1,4 @@
-﻿import { Component, input } from '@angular/core';
+﻿import { Component, forwardRef, input } from '@angular/core';
 import { Widget } from '../../../types/Widget';
 import { WidgetRenderer } from '../../renderers/widget-renderer/widget-renderer';
 import { TestReport } from '../../../types/TestReport';
@@ -6,7 +6,7 @@ import { DataSourceId } from '../../../types/DataSource';
 
 @Component({
   selector: 'app-container-widget',
-  imports: [WidgetRenderer],
+  imports: [forwardRef(() => WidgetRenderer)],
   templateUrl: './container-widget.html',
   styleUrl: './container-widget.css',
 })
