@@ -3,7 +3,7 @@
 The `Layout` object defines the structure and content of the pages in the application. It is the root of the
 configuration.
 
-See the [Example](#example) at the end of this document for a complete `Layout` definition.
+See the [Examples](#examples) at the end of this document for a complete `Layout` definition.
 
 ## `Layout`
 
@@ -95,17 +95,150 @@ A `DataSource` defines how to fetch data from a remote source.
 
 ## `DataFilter`
 
-The `DataFilter` is used to filter the data returned from a `DataSource`.
+The `DataFilter` is used to filter the data returned from a `DataSource`. It allows for building complex queries by
+nesting conditions.
 
-The `DataFilter` will allow you to specify conditions that the data must meet to be included in the result set. For
-example, you could filter a list of test results to only show the tests that have failed.
+A `DataFilter` object has a recursive structure:
 
-The exact structure of the `DataFilter` is still being determined, but it will likely involve a combination of logical
-operators (`AND`, `OR`, `NOT`) and comparison operators (`=`, `!=`, `>`, `<`, etc.).
+| Field        | Type                             | Description                                                                                              |
+| ------------ | -------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| `operator`   | `LogicalOperator`                | The logical operator to apply to the `conditions` array. Can be `'AND'` or `'OR'`.                       |
+| `conditions` | `Array<DataFilter \| Condition>` | An array that can contain either `Condition` objects or other `DataFilter` objects for nested filtering. |
 
-## Example
+### `Condition`
 
-Here is a complete example of a `Layout` configuration:
+A `Condition` object represents a single rule in the filter.
+
+| Field | Type | Description -
+| `field` | `string` | The property of the data object to evaluate. Use dot notation for nested
+properties (e.g., `details.author`). -
+| `operator` | `ConditionOperator` | The comparison operator to use. -
+| `value` | `FieldValue` | The value to compare against. This can be a string, number, boolean, null, or an
+array of these types. |
+
+### `ConditionOperator`
+
+| Operator             | Description                                                                                                                               |
+| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `==` or `equals`     | Checks for strict equality (`===`).                                                                                                       |
+| `!=` or `not equals` | Checks for strict inequality (`!==`).                                                                                                     |
+| `in`                 | Checks if the field's value is present in the provided array.                                                                             |
+| `not in`             | Checks if the field's value is not present in the provided array.                                                                         |
+| `contains`           | For string fields, checks if the string contains the value. For array fields, checks if the array contains an element equal to the value. |
+| `>=`                 | Checks if a numeric field is greater than or equal to the value.                                                                          |
+| `>`                  | Checks if a numeric field is strictly greater than the value.                                                                             |
+| `<`                  | Checks if a numeric field is strictly less than the value.                                                                                |
+| `<=`                 | Checks if a numeric field is less than or equal to the value.                                                                             |
+
+## Examples
+
+### Basic Page with a Single Widget
+
+This example shows a minimal layout with one data source and one page, which displays a single `tree` widget.
+
+```json
+{
+  "dataSources": [
+    {
+      "id": "main-run",
+      "url": "https://api.example.com/tests/latest"
+    }
+  ],
+  "pages": [
+    {
+      "title": "Test Results",
+      "path": "/",
+      "widgets": [
+        {
+          "id": "main-test-tree",
+          "type": "tree",
+          "data": {
+            "dataSourceId": "main-run"
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Filtering Widget Data
+
+This example demonstrates how to use a `DataFilter` to show only the tests that have failed.
+
+```json
+{
+  "dataSources": [
+    {
+      "id": "main-run",
+      "url": "https://api.example.com/tests/latest"
+    }
+  ],
+  "pages": [
+    {
+      "title": "Failed Tests",
+      "path": "/failed",
+      "widgets": [
+        {
+          "id": "failed-test-tree",
+          "type": "tree",
+          "data": {
+            "dataSourceId": "main-run",
+            "filter": {
+              "operator": "AND",
+              "conditions": [
+                {
+                  "field": "lastExecutionType",
+                  "operator": "==",
+                  "value": "FAILURE"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Using Widget Parameters
+
+This example shows how to configure a `distribution-pie` widget to group data by `duration` instead of the default
+`status`.
+
+```json
+{
+  "dataSources": [
+    {
+      "id": "main-run",
+      "url": "https://api.example.com/tests/latest"
+    }
+  ],
+  "pages": [
+    {
+      "title": "Duration Analysis",
+      "path": "/durations",
+      "widgets": [
+        {
+          "id": "duration-pie-chart",
+          "type": "distribution-pie",
+          "parameters": {
+            "strategy": "duration"
+          },
+          "data": {
+            "dataSourceId": "main-run"
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Comprehensive Layout
+
+Here is a complete example of a `Layout` configuration that combines multiple pages, widgets, and a complex filter.
 
 ```json
 {
@@ -143,21 +276,56 @@ Here is a complete example of a `Layout` configuration:
           "id": "test-tree",
           "type": "tree",
           "data": {
-            "dataSourceId": "latest-run"
+            "dataSourceId": "latest-run",
+            "filter": {
+              "operator": "AND",
+              "conditions": [
+                {
+                  "field": "lastExecutionType",
+                  "operator": "!=",
+                  "value": "SKIPPED"
+                },
+                {
+                  "operator": "OR",
+                  "conditions": [
+                    {
+                      "field": "tags",
+                      "operator": "contains",
+                      "value": "smoke"
+                    },
+                    {
+                      "field": "durationMs",
+                      "operator": "==",
+                      "value": 200
+                    }
+                  ]
+                }
+              ]
+            }
           }
         }
       ]
     },
     {
-      "title": "Previous Run",
-      "path": "/previous",
-      "navIcon": "history",
+      "title": "Failed Tests",
+      "path": "/failed",
+      "navIcon": "error",
       "widgets": [
         {
-          "id": "previous-test-tree",
+          "id": "failed-test-tree",
           "type": "tree",
           "data": {
-            "dataSourceId": "previous-run"
+            "dataSourceId": "latest-run",
+            "filter": {
+              "operator": "AND",
+              "conditions": [
+                {
+                  "field": "lastExecutionType",
+                  "operator": "==",
+                  "value": "FAILURE"
+                }
+              ]
+            }
           }
         }
       ]

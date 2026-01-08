@@ -22,7 +22,17 @@
           "id": "tests-tree",
           "type": "tree",
           "data": {
-            "dataSourceId": "main"
+            "dataSourceId": "main",
+            "filter": {
+              "operator": "AND",
+              "conditions": [
+                {
+                  "field": "lastExecutionType",
+                  "operator": "!=",
+                  "value": "SKIPPED"
+                }
+              ]
+            }
           }
         }
       ]
