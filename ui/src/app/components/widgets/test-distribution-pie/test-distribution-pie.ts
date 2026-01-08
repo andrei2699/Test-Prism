@@ -6,10 +6,11 @@ import { DistributionDataItem } from './strategies/distribution-data.interface';
 import { DistributionStrategy } from './strategies/distribution-strategy.interface';
 import { DistributionStrategyFactory } from './strategies/distribution-strategy.factory';
 import { TestColors } from '../../../types/Layout';
+import { DurationDistributionStrategyParameters } from './strategies/duration-distribution.strategy';
 
 export interface TestDistributionPieParameters {
-  strategy: string;
-  // TODO: add and use colors
+  strategy: 'status' | 'duration';
+  strategyParameters?: DurationDistributionStrategyParameters;
 }
 
 interface PieChartData extends DistributionDataItem {
@@ -29,9 +30,10 @@ export class TestDistributionPie {
   parameters = input.required<TestDistributionPieParameters | undefined>();
 
   strategy = computed<DistributionStrategy>(() => {
-    const strategy = this.parameters()?.strategy ?? 'status';
+    const params = this.parameters();
+    const strategy = params?.strategy ?? 'status';
 
-    return DistributionStrategyFactory.create(strategy);
+    return DistributionStrategyFactory.create(strategy, params?.strategyParameters);
   });
 
   chartData = computed<PieChartData[]>(() => {

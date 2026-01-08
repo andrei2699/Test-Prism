@@ -1,57 +1,118 @@
-﻿import { DURATION_COLORS, DurationDistributionStrategy } from './duration-distribution.strategy';
+﻿import { DurationDistributionStrategy, DurationInterval } from './duration-distribution.strategy';
 import { Test } from '../../../../types/TestReport';
 
+const defaultIntervals: DurationInterval[] = [
+  {
+    max: 1000,
+    color: '#4CAF50',
+  },
+  {
+    min: 1000,
+    max: 5000,
+    color: '#FFC107',
+  },
+  {
+    min: 5000,
+    color: '#F44336',
+  },
+];
+
 describe('DurationDistributionStrategy', () => {
-  let strategy: DurationDistributionStrategy;
+  describe('with default intervals', () => {
+    let strategy: DurationDistributionStrategy;
 
-  beforeEach(() => {
-    strategy = new DurationDistributionStrategy();
+    beforeEach(() => {
+      strategy = new DurationDistributionStrategy({ intervals: defaultIntervals });
+    });
+
+    it('should correctly categorize tests by duration', () => {
+      const tests: Test[] = [
+        { durationMs: 50 } as Test,
+        { durationMs: 999 } as Test,
+        { durationMs: 1000 } as Test,
+        { durationMs: 4999 } as Test,
+        { durationMs: 5000 } as Test,
+        { durationMs: 10000 } as Test,
+        { durationMs: 0 } as Test,
+      ];
+
+      const distribution = strategy.calculateDistribution(tests);
+
+      expect(distribution).toEqual([
+        { label: 'Under 1 second', count: 3, color: '#4CAF50' },
+        { label: '1 second - 5 seconds', count: 2, color: '#FFC107' },
+        { label: 'Over 5 seconds', count: 2, color: '#F44336' },
+      ]);
+    });
+
+    it('should handle empty test array', () => {
+      const tests: Test[] = [];
+      const distribution = strategy.calculateDistribution(tests);
+
+      expect(distribution).toEqual([
+        { label: 'Under 1 second', count: 0, color: '#4CAF50' },
+        { label: '1 second - 5 seconds', count: 0, color: '#FFC107' },
+        { label: 'Over 5 seconds', count: 0, color: '#F44336' },
+      ]);
+    });
+
+    it('should handle tests with only one category', () => {
+      const tests: Test[] = [
+        { durationMs: 10 } as Test,
+        { durationMs: 20 } as Test,
+        { durationMs: 30 } as Test,
+      ];
+      const distribution = strategy.calculateDistribution(tests);
+
+      expect(distribution).toEqual([
+        { label: 'Under 1 second', count: 3, color: '#4CAF50' },
+        { label: '1 second - 5 seconds', count: 0, color: '#FFC107' },
+        { label: 'Over 5 seconds', count: 0, color: '#F44336' },
+      ]);
+    });
   });
 
-  it('should correctly categorize tests by duration', () => {
-    const tests: Test[] = [
-      { durationMs: 50 } as Test,
-      { durationMs: 499 } as Test,
-      { durationMs: 500 } as Test,
-      { durationMs: 1500 } as Test,
-      { durationMs: 1999 } as Test,
-      { durationMs: 2000 } as Test,
-      { durationMs: 2500 } as Test,
-      { durationMs: 0 } as Test,
-    ];
+  describe('with custom intervals', () => {
+    it('should correctly categorize tests with custom intervals', () => {
+      const intervals: DurationInterval[] = [
+        { label: 'Fast', color: 'blue', max: 100 },
+        { label: 'Medium', color: 'green', min: 100, max: 1000 },
+        { label: 'Slow', color: 'orange', min: 1000 },
+      ];
+      const strategy = new DurationDistributionStrategy({ intervals });
+      const tests: Test[] = [
+        { durationMs: 50 } as Test,
+        { durationMs: 100 } as Test,
+        { durationMs: 500 } as Test,
+        { durationMs: 1000 } as Test,
+        { durationMs: 2000 } as Test,
+      ];
 
-    const distribution = strategy.calculateDistribution(tests);
+      const distribution = strategy.calculateDistribution(tests);
 
-    expect(distribution).toEqual([
-      { label: 'Under 500ms', count: 3, color: DURATION_COLORS.SHORT },
-      { label: '500ms - 2s', count: 3, color: DURATION_COLORS.MEDIUM },
-      { label: 'Over 2s', count: 2, color: DURATION_COLORS.LONG },
-    ]);
-  });
+      expect(distribution).toEqual([
+        { label: 'Fast', count: 1, color: 'blue' },
+        { label: 'Medium', count: 2, color: 'green' },
+        { label: 'Slow', count: 2, color: 'orange' },
+      ]);
+    });
 
-  it('should handle empty test array', () => {
-    const tests: Test[] = [];
-    const distribution = strategy.calculateDistribution(tests);
+    it('should generate labels if not provided', () => {
+      const intervals: DurationInterval[] = [
+        { color: 'blue', max: 100 },
+        { color: 'green', min: 100, max: 1000 },
+        { color: 'orange', min: 1000 },
+      ];
+      const strategy = new DurationDistributionStrategy({ intervals });
+      const tests: Test[] = [];
 
-    expect(distribution).toEqual([
-      { label: 'Under 500ms', count: 0, color: DURATION_COLORS.SHORT },
-      { label: '500ms - 2s', count: 0, color: DURATION_COLORS.MEDIUM },
-      { label: 'Over 2s', count: 0, color: DURATION_COLORS.LONG },
-    ]);
-  });
+      const distribution = strategy.calculateDistribution(tests);
 
-  it('should handle tests with only one category', () => {
-    const tests: Test[] = [
-      { durationMs: 10 } as Test,
-      { durationMs: 20 } as Test,
-      { durationMs: 30 } as Test,
-    ];
-    const distribution = strategy.calculateDistribution(tests);
-
-    expect(distribution).toEqual([
-      { label: 'Under 500ms', count: 3, color: DURATION_COLORS.SHORT },
-      { label: '500ms - 2s', count: 0, color: DURATION_COLORS.MEDIUM },
-      { label: 'Over 2s', count: 0, color: DURATION_COLORS.LONG },
-    ]);
+      expect(distribution.map(d => d.label)).toEqual([
+        'Under 0.1 seconds',
+        '0.1 seconds - 1 second',
+        'Over 1 second',
+      ]);
+    });
   });
 });
