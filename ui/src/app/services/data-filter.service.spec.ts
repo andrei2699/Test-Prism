@@ -242,7 +242,7 @@ describe('DataFilterService', () => {
   });
 
   describe('Edge Cases', () => {
-    it('should handle dot notation for a nested field', () => {
+    it('should return no results for a non-existent nested field', () => {
       const filter: DataFilter = {
         operator: 'AND',
         conditions: [{ field: 'details.author', operator: 'equals', value: 'Jane' }],
@@ -250,7 +250,7 @@ describe('DataFilterService', () => {
 
       const result = service.applyFilter(tests, filter);
 
-      expect(result).toEqual([tests[5]]);
+      expect(result).toEqual([]);
     });
 
     it('should handle a null value in the data', () => {

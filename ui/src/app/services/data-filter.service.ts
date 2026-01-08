@@ -7,15 +7,11 @@ import { Condition, DataFilter, FieldValue } from '../types/Widget';
 })
 export class DataFilterService {
   applyFilter(tests: Test[], filter: DataFilter | null | undefined): Test[] {
-    if (this.isFilterEmpty(filter)) {
+    if (!filter || !filter.conditions || filter.conditions.length === 0) {
       return tests;
     }
 
     return tests.filter(test => this.evaluateFilter(test, filter));
-  }
-
-  private isFilterEmpty(filter: DataFilter | null | undefined): filter is null | undefined {
-    return !filter || !filter.conditions || filter.conditions.length === 0;
   }
 
   private evaluateFilter(test: Test, filter: DataFilter): boolean {
@@ -32,7 +28,7 @@ export class DataFilterService {
     }
 
     const { field, operator, value } = condition;
-    const testValue = this.getTestField(test, field);
+    const testValue = this.getTestFieldValue(test, field);
 
     switch (operator) {
       case '==':
@@ -64,19 +60,18 @@ export class DataFilterService {
     }
   }
 
-  private getTestField(obj: object, field: string): FieldValue | undefined {
-    return field.split('.').reduce((acc: FieldValue | undefined, part: string) => {
-      if (acc === null || acc === undefined) {
+  private getTestFieldValue(obj: object, field: string): FieldValue | undefined {
+    let current: any = obj;
+    for (const part of field.split('.')) {
+      if (current == null) {
         return undefined;
       }
-      if (typeof acc === 'object' && !Array.isArray(acc)) {
-        return (acc as { [key: string]: FieldValue })[part];
-      }
-      return undefined;
-    }, obj);
+      current = current[part];
+    }
+    return current;
   }
 
-  private isEqual(a: FieldValue | undefined, b: FieldValue): boolean {
+  private isEqual(a: FieldValue | undefined, b: FieldValue | undefined): boolean {
     if (a === b) {
       return true;
     }
@@ -88,6 +83,6 @@ export class DataFilterService {
       return a.every((val, index) => this.isEqual(val, b[index]));
     }
 
-    return a === null && b === null;
+    return a == null && b == null;
   }
 }
