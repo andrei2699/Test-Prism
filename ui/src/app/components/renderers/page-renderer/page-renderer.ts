@@ -1,7 +1,7 @@
 import { Component, computed, input } from '@angular/core';
-import { Page } from '../../../types/Layout';
+import { DataSourceId, Page } from '../../../types/Layout';
 import { WidgetRenderer } from '../widget-renderer/widget-renderer';
-import { Test } from '../../../types/TestReport';
+import { TestReport } from '../../../types/TestReport';
 
 @Component({
   selector: 'app-page-renderer',
@@ -11,7 +11,7 @@ import { Test } from '../../../types/TestReport';
 })
 export class PageRenderer {
   pages = input.required<Page[]>();
-  tests = input.required<Test[]>();
+  testReports = input.required<Record<DataSourceId, TestReport>>();
   path = input.required<string | null>();
 
   page = computed<Page>(() => {

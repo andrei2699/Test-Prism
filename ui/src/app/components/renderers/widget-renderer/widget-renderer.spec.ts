@@ -1,9 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { WidgetRenderer } from './widget-renderer';
 import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 import { Widget } from '../../../types/Layout';
-import { Test } from '../../../types/TestReport';
+import { Test, TestReport } from '../../../types/TestReport';
 import { By } from '@angular/platform-browser';
 
 describe('WidgetRenderer', () => {
@@ -16,6 +15,8 @@ describe('WidgetRenderer', () => {
       durationMs: 2,
     },
   ];
+
+  const testReports: TestReport[] = [{ tests: tests, version: 0, date: '2025-01-01T00:00:00Z' }];
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -36,7 +37,7 @@ describe('WidgetRenderer', () => {
     };
 
     fixture.componentRef.setInput('widget', widget);
-    fixture.componentRef.setInput('tests', tests);
+    fixture.componentRef.setInput('testReports', testReports);
     fixture.detectChanges();
     await fixture.whenStable();
 
@@ -54,7 +55,7 @@ describe('WidgetRenderer', () => {
     };
 
     fixture.componentRef.setInput('widget', widget);
-    fixture.componentRef.setInput('tests', tests);
+    fixture.componentRef.setInput('testReports', testReports);
     fixture.detectChanges();
     await fixture.whenStable();
 

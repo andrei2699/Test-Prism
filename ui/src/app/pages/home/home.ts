@@ -5,6 +5,7 @@ import { TestDataService } from '../../services/test-data.service';
 import { PageRenderer } from '../../components/renderers/page-renderer/page-renderer';
 import { LayoutService } from '../../services/layout.service';
 import { ActivatedRoute } from '@angular/router';
+import { rxResource } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-home',
@@ -18,10 +19,22 @@ export class Home {
   private layoutService = inject(LayoutService);
   private activatedRoute = inject(ActivatedRoute);
 
-  testData = this.testDataService.testData;
   layout = this.layoutService.layout;
 
   path = signal<string | null>(null);
+
+  dataSourcesTestReports = rxResource({
+    params: () => {
+      if (!this.layout.hasValue()) {
+        return {
+          dataSources: [],
+        };
+      }
+      return { dataSources: this.layout.value()?.dataSources };
+    },
+    stream: ({ params }) =>
+      this.testDataService.getTestReportsFromAllDataSources(params.dataSources),
+  });
 
   constructor() {
     this.activatedRoute.params.subscribe(params => {

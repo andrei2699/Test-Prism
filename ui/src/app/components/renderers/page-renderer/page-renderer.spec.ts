@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PageRenderer } from './page-renderer';
 import { Page, Widget } from '../../../types/Layout';
-import { Test } from '../../../types/TestReport';
+import { Test, TestReport } from '../../../types/TestReport';
 import { By } from '@angular/platform-browser';
 import { WidgetRenderer } from '../widget-renderer/widget-renderer';
 import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 
 @Component({
   selector: 'app-widget-renderer',
-  template: '<div class="mock-widget" [attr.data-widget-id]="widget.id"></div>',
+  template: '<div class="mock-widget" [attr.data-widget-id]="widget().id"></div>',
   standalone: true,
 })
 class MockWidgetRenderer {
-  @Input({ required: true }) widget!: Widget;
-  @Input({ required: true }) tests!: Test[];
+  widget = input.required<Widget>();
+  testReports = input.required<TestReport[]>();
 }
 
 describe('PageRenderer', () => {
@@ -27,6 +27,10 @@ describe('PageRenderer', () => {
       name: 'name',
       durationMs: 2,
     },
+  ];
+
+  const mockTestReports: TestReport[] = [
+    { tests: mockTests, version: 0, date: '2023-01-01T00:00:00Z' },
   ];
 
   const page1: Page = {
@@ -69,7 +73,7 @@ describe('PageRenderer', () => {
     fixture = TestBed.createComponent(PageRenderer);
 
     fixture.componentRef.setInput('pages', pages);
-    fixture.componentRef.setInput('tests', mockTests);
+    fixture.componentRef.setInput('testReports', mockTestReports);
   });
 
   it('should render the first page when path is not provided', () => {

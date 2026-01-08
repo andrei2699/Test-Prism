@@ -7,6 +7,8 @@
   </mat-card-header>
   <mat-card-content>
     <p>{{ message() }}</p>
-    <p class="hint">{{ hint() }}</p>
+    @if (hint()) {
+      <p class="hint">{{ hint() }}</p>
+    }
   </mat-card-content>
 </mat-card>

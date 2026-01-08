@@ -1,22 +1,22 @@
-@if (testData.isLoading()) {
-  <app-loading message="Loading test results..." />
-} @else if (testData.error()) {
+@if (layout.isLoading()) {
+  <app-loading message="Loading test page..." />
+} @else if (layout.error()) {
   <app-error-message
-    title="Error Loading Test Data"
-    [message]="testData.error()!.message"
-    hint="Ensure the TEST_RESULTS_FILE environment variable is set and points to a valid JSON file." />
-} @else if (testData.hasValue()) {
-  @if (layout.isLoading()) {
-    <app-loading message="Loading test page..." />
-  } @else if (layout.error()) {
+    title="Error Loading Page"
+    [message]="layout.error()!.message"
+    hint="Ensure the LAYOUT_URL environment variable is set and points to a valid JSON file." />
+} @else if (layout.hasValue()) {
+  @if (dataSourcesTestReports.isLoading()) {
+    <app-loading message="Loading test results..." />
+  } @else if (dataSourcesTestReports.error()) {
     <app-error-message
-      title="Error Loading Page"
-      [message]="layout.error()!.message"
-      hint="Ensure the LAYOUT_URL environment variable is set and points to a valid JSON file." />
-  } @else if (layout.hasValue()) {
+      title="Error Loading Test Data"
+      [message]="dataSourcesTestReports.error()!.message"
+      hint="Ensure the TEST_RESULTS_FILE environment variable is set and points to a valid JSON file." />
+  } @else if (dataSourcesTestReports.hasValue()) {
     <app-page-renderer
       [pages]="this.layout.value().pages"
-      [tests]="testData.value().tests"
+      [testReports]="dataSourcesTestReports.value()"
       [path]="path()" />
   }
 }

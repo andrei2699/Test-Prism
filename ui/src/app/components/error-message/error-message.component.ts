@@ -12,5 +12,5 @@ import { MatCardModule } from '@angular/material/card';
 export class ErrorMessageComponent {
   title = input.required<string>();
   message = input.required<string>();
-  hint = input.required<string>();
+  hint = input.required<string | null>();
 }
