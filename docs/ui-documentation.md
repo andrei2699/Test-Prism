@@ -4,6 +4,10 @@ The Test Prism UI provides an interactive dashboard to explore and analyze test 
 
 This guide explains how to interpret and use the features of the dashboard.
 
+## Layout Definition
+
+The layout of the dashboard is configured using a `Layout` object. For more information on the `Layout Definition`, see the [Layout Definition documentation](layout-definition.md).
+
 ## Dashboard Overview
 
 The main dashboard is the first screen you see. It provides a high-level summary of the most recent test run.

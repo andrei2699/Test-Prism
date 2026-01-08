@@ -8,15 +8,16 @@ export default defineConfig({
     nav: [
       { text: 'Home', link: '/' },
       { text: 'Dashboard Guide', link: '/ui-documentation' },
+      { text: 'Layout Definition', link: '/layout-definition' },
       { text: 'Displaying Tests', link: '/displaying-tests' },
       { text: 'Parser Usage', link: '/parser-usage' },
-      { text: 'Development', link: '/development-guide' },
     ],
     sidebar: [
       {
         text: 'User Guide',
         items: [
           { text: 'Dashboard Features', link: '/ui-documentation' },
+          { text: 'Layout Definition', link: '/layout-definition' },
           { text: 'Displaying Test Results', link: '/displaying-tests' },
           { text: 'Parser CLI', link: '/parser-usage' },
         ],
