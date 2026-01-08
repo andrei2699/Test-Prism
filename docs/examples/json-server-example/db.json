@@ -1,0 +1,75 @@
+﻿{
+  "layout": {
+    "dataSources": [
+      {
+        "id": "main",
+        "url": "http://localhost:3000/results"
+      }
+    ],
+    "pages": [
+      {
+        "title": "Main Report",
+        "path": "/",
+        "widgets": [
+          {
+            "id": "summary",
+            "type": "summary",
+            "data": {
+              "dataSourceId": "main"
+            }
+          },
+          {
+            "id": "overview-distribution-pie",
+            "type": "distribution-pie",
+            "data": {
+              "dataSourceId": "main"
+            }
+          },
+          {
+            "id": "tests-tree",
+            "type": "tree",
+            "data": {
+              "dataSourceId": "main"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "results": {
+    "version": 1,
+    "date": "2024-01-04T12:00:00Z",
+    "tests": [
+      {
+        "name": "should initialize",
+        "path": "/src/app/components/navbar",
+        "lastExecutionType": "SUCCESS",
+        "durationMs": 150
+      },
+      {
+        "name": "should render",
+        "path": "/src/app/components/test-tree",
+        "lastExecutionType": "SUCCESS",
+        "durationMs": 200
+      },
+      {
+        "name": "should handle error",
+        "path": "/src/app/services/auth",
+        "lastExecutionType": "FAILURE",
+        "durationMs": 100
+      },
+      {
+        "name": "should be skipped",
+        "path": "/src/app/services/auth",
+        "lastExecutionType": "SKIPPED",
+        "durationMs": 100
+      },
+      {
+        "name": "should have an error",
+        "path": "/src/app/services/auth",
+        "lastExecutionType": "ERROR",
+        "durationMs": 100
+      }
+    ]
+  }
+}

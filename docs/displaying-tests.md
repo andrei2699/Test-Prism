@@ -1,85 +1,109 @@
 ﻿# Displaying Test Results
 
-Test Prism is designed to visualize test data that has been parsed into its standard JSON format.
+Test Prism is designed to visualize test data that has been parsed into its standard JSON format. This guide will walk you through the two main methods for displaying your test results.
 
-## Method 1: Custom Docker Image
+## Method 1: Self-Hosted Reports in a Custom Docker Image
 
-This approach creates a self-contained Docker image that includes both the UI and your specific test results. This is the simplest way to get your test data visualized.
+This approach creates a self-contained Docker image that includes the UI, test results, and layout configuration. This is the simplest way to get your test data visualized.
 
-### Step 1: Obtain Your Test Data
+An example of the setup described below can be found at [`docs/examples/docker-example`](https://github.com/andrei2699/Test-Prism/tree/main/docs/examples/docker-example).
 
-First, use the [Test Prism Parser](./development-guide.md#parser-rust-cli) to convert your test report (e.g., a JUnit XML file) into the required `test-results.json` format.
+### Step 1: Create a Directory and Test Data
 
-For this guide, we will use the following example `test-results.json` file. Place it in a new, empty directory.
+Create a new directory to hold your report files. Then, use the [Test Prism Parser](./parser-usage.md) to convert your test report (e.g., a JUnit XML file) into the required `test-results.json` format and place it in the directory you created.
+
+### Step 2: Create a `layout.json`
+
+In the same directory, create a `layout.json` file. This file defines the structure of your dashboard.
 
 ```json
 {
-  "version": 1,
-  "date": "2024-01-04T12:00:00Z",
-  "tests": [
+  "dataSources": [
     {
-      "name": "should initialize",
-      "path": "/src/app/components/navbar",
-      "lastExecutionType": "SUCCESS",
-      "durationMs": 150
-    },
+      "id": "main",
+      "url": "/test-results.json"
+    }
+  ],
+  "pages": [
     {
-      "name": "should render",
-      "path": "/src/app/components/test-tree",
-      "lastExecutionType": "SUCCESS",
-      "durationMs": 200
-    },
-    {
-      "name": "should handle error",
-      "path": "/src/app/services/auth",
-      "lastExecutionType": "FAILURE",
-      "durationMs": 100
-    },
-    {
-      "name": "should navigate",
-      "path": "/src/app/pages/home",
-      "lastExecutionType": "SKIPPED",
-      "durationMs": 0
+      "title": "Main Report",
+      "path": "/",
+      "widgets": [
+        {
+          "id": "summary",
+          "type": "summary",
+          "data": {
+            "dataSourceId": "main"
+          }
+        }
+      ]
     }
   ]
 }
 ```
 
-### Step 2: Create a Dockerfile
+### Step 3: Create an `app-config.json`
 
-In the same directory, create a file named `Dockerfile` with the following content:
+Create an `app-config.json` file to specify the location of your `layout.json`.
+
+```json
+{
+  "layoutUrl": "/layout.json"
+}
+```
+
+### Step 4: Create a Dockerfile
+
+Create a `Dockerfile` to bundle your files with the Test Prism UI.
 
 ```dockerfile
 # Start from the official Test Prism UI base image
 FROM andreitimar/test-prism:ui-latest
 
-# Copy your test results into the image
-COPY test-results.json /test-results/results.json
+# Copy your test results, layout and app config into the image
+COPY app-config.json /usr/share/nginx/html/app-config.json
+COPY layout.json /usr/share/nginx/html/layout.json
+COPY test-results.json /usr/share/nginx/html/test-results.json
 
-# Set the environment variable to point to your file
-ENV TEST_RESULTS_FILE=/test-results/results.json
 ```
 
-This Dockerfile uses the base UI image, copies your JSON data into a specific directory inside the container, and then tells the application where to find it.
+### Step 5: Build and Run
 
-### Step 3: Build the Custom Image
-
-Now, build your custom Docker image. Open a terminal in the directory containing your `Dockerfile` and `test-results.json` and run the following command:
+Build and run the Docker image:
 
 ```bash
 docker build -t my-test-report .
-```
-
-You can replace `my-test-report` with any name you prefer for your image.
-
-### Step 4: Run the Container
-
-Finally, run your newly created image as a container:
-
-```bash
 docker run -p 8080:80 my-test-report
 ```
 
-This command starts the container and maps port `8080` on your local machine to port `80` inside the container.
+Your test report will be available at `http://localhost:8080`.
 
-You can now open your web browser and navigate to `http://localhost:8080` to see your test results visualized in the Test Prism dashboard.
+## Method 2: Using an External Server for Reports
+
+This method uses the official Test Prism Docker image and an external server to serve your test results and layout file.
+
+An example of this setup can be found at [`docs/examples/json-server-example`](https://github.com/andrei2699/Test-Prism/tree/main/docs/examples/json-server-example).
+
+### Step 1: Host Your JSON Files
+
+Host your `layout.json` and `test-results.json` files on any web server. For a quick local setup, you can use `json-server`.
+
+### Step 2: Create an `app-config.json`
+
+Create an `app-config.json` file that points to the URL of your hosted `layout.json`.
+
+```json
+{
+  "layoutUrl": "http://localhost:3000/layout"
+}
+```
+
+### Step 3: Run the Test Prism Docker Container
+
+Run the official Test Prism Docker image and mount your `app-config.json` file.
+
+```bash
+docker run -p 8080:80 -v ./app-config.json:/usr/share/nginx/html/app-config.json andreitimar/test-prism:ui-latest
+```
+
+Your dashboard will be available at `http://localhost:8080`.

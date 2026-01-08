@@ -1,0 +1,37 @@
+﻿{
+  "dataSources": [
+    {
+      "id": "main",
+      "url": "/test-results.json"
+    }
+  ],
+  "pages": [
+    {
+      "title": "Main Report",
+      "path": "/",
+      "widgets": [
+        {
+          "id": "summary",
+          "type": "summary",
+          "data": {
+            "dataSourceId": "main"
+          }
+        },
+        {
+          "id": "overview-distribution-pie",
+          "type": "distribution-pie",
+          "data": {
+            "dataSourceId": "main"
+          }
+        },
+        {
+          "id": "tests-tree",
+          "type": "tree",
+          "data": {
+            "dataSourceId": "main"
+          }
+        }
+      ]
+    }
+  ]
+}
