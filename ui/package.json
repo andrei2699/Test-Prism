@@ -8,7 +8,8 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "test:ci": "npm test -- --watch=false",
-    "prettier:fix": "prettier --write ."
+    "prettier:fix": "prettier --write .",
+    "json-server": "node __mocks__/server.js"
   },
   "prettier": {
     "printWidth": 100,
@@ -54,6 +55,7 @@
     "@types/humanize-duration": "^3.27.4",
     "@vitest/browser-playwright": "^4.0.16",
     "jsdom": "^27.4.0",
+    "json-server": "0.17.4",
     "prettier": "^3.7.4",
     "typescript": "~5.9.3",
     "vitest": "^4.0.16"

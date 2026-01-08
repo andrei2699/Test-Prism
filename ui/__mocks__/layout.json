@@ -1,0 +1,59 @@
+﻿{
+  "dataSources": [
+    {
+      "id": "main",
+      "url": "http://localhost:3000/large_data_set"
+    }
+  ],
+  "pages": [
+    {
+      "title": "Main Report",
+      "navIcon": "home",
+      "path": "/",
+      "widgets": [
+        {
+          "id": "overview-distribution-pie",
+          "type": "distribution-pie",
+          "data": {
+            "dataSourceId": "main"
+          }
+        },
+        {
+          "id": "tests-tree",
+          "type": "tree",
+          "data": {
+            "dataSourceId": "main"
+          }
+        }
+      ]
+    },
+    {
+      "title": "The same Page",
+      "path": "/path",
+      "navIcon": "category",
+      "widgets": [
+        {
+          "id": "overview-distribution-pie",
+          "type": "distribution-pie",
+          "data": {
+            "dataSourceId": "main"
+          }
+        }
+      ]
+    },
+    {
+      "title": "yet another one",
+      "path": "another-one",
+      "navIcon": "place",
+      "widgets": [
+        {
+          "id": "tree",
+          "type": "tree",
+          "data": {
+            "dataSourceId": "main"
+          }
+        }
+      ]
+    }
+  ]
+}
