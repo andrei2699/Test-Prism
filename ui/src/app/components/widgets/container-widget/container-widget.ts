@@ -3,6 +3,7 @@ import { Widget } from '../../../types/Widget';
 import { WidgetRenderer } from '../../renderers/widget-renderer/widget-renderer';
 import { TestReport } from '../../../types/TestReport';
 import { DataSourceId } from '../../../types/DataSource';
+import { TestColors } from '../../../types/Layout';
 
 @Component({
   selector: 'app-container-widget',
@@ -11,6 +12,7 @@ import { DataSourceId } from '../../../types/DataSource';
   styleUrl: './container-widget.css',
 })
 export class ContainerWidget {
+  colors = input.required<TestColors>();
   children = input.required<Widget[]>();
   testReports = input.required<Record<DataSourceId, TestReport>>();
 }

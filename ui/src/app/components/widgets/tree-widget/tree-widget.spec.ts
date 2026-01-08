@@ -5,6 +5,7 @@ import { Test } from '../../../types/TestReport';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { MatTreeNodeHarness } from '@angular/material/tree/testing';
+import { TestColors } from '../../../types/Layout';
 
 const tests: Test[] = [
   {
@@ -51,6 +52,12 @@ describe('TreeWidget', () => {
     component = fixture.componentInstance;
     fixture.componentRef.setInput('tests', tests);
     fixture.componentRef.setInput('parameters', parameters);
+    fixture.componentRef.setInput('colors', {
+      SUCCESS: 'green',
+      FAILURE: 'red',
+      SKIPPED: 'yellow',
+      ERROR: 'orange',
+    } satisfies TestColors);
     fixture.detectChanges();
     loader = TestbedHarnessEnvironment.loader(fixture);
   });

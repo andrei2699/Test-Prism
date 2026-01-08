@@ -2,19 +2,7 @@
 import { TestCountDisplayComponent } from './test-count-display';
 import { TestExecutionType } from '../../../../types/TestReport';
 import { By } from '@angular/platform-browser';
-import { EXECUTION_TYPE_COLORS } from '../../../../shared/execution-type-colors';
-
-function hexToRgb(hex: string): string | null {
-  const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-  hex = hex.replace(shorthandRegex, function (_, r, g, b) {
-    return r + r + g + g + b + b;
-  });
-
-  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  return result
-    ? `rgb(${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)})`
-    : null;
-}
+import { TestColors } from '../../../../types/Layout';
 
 describe('TestCountDisplayComponent', () => {
   let fixture: ComponentFixture<TestCountDisplayComponent>;
@@ -25,6 +13,12 @@ describe('TestCountDisplayComponent', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(TestCountDisplayComponent);
+    fixture.componentRef.setInput('colors', {
+      SUCCESS: 'green',
+      FAILURE: 'red',
+      SKIPPED: 'yellow',
+      ERROR: 'orange',
+    } satisfies TestColors);
   });
 
   it('should display the total count and individual execution type counts with correct colors', () => {
@@ -49,23 +43,21 @@ describe('TestCountDisplayComponent', () => {
       el => el.nativeElement.textContent.trim() === '5',
     );
     expect(successElement).toBeTruthy();
-    expect(successElement?.nativeElement.style.color).toBe(hexToRgb(EXECUTION_TYPE_COLORS.SUCCESS));
+    expect(successElement?.nativeElement.style.color).toBe('green');
 
     const failureElement = executionCountElements.find(
       el => el.nativeElement.textContent.trim() === '2',
     );
     expect(failureElement).toBeTruthy();
-    expect(failureElement?.nativeElement.style.color).toBe(hexToRgb(EXECUTION_TYPE_COLORS.FAILURE));
+    expect(failureElement?.nativeElement.style.color).toBe('red');
 
     const skippedElement = executionCountElements.find(
       el => el.nativeElement.textContent.trim() === '1',
     );
     expect(skippedElement).toBeTruthy();
-    expect(skippedElement?.nativeElement.style.color).toBe(hexToRgb(EXECUTION_TYPE_COLORS.SKIPPED));
+    expect(skippedElement?.nativeElement.style.color).toBe('yellow');
 
-    const errorCountElement = fixture.debugElement.query(
-      By.css(`[style*="color: ${hexToRgb(EXECUTION_TYPE_COLORS.ERROR)}"]`),
-    );
+    const errorCountElement = fixture.debugElement.query(By.css(`[style*="color: orange"]`));
     expect(errorCountElement).toBeNull();
   });
 
@@ -101,9 +93,7 @@ describe('TestCountDisplayComponent', () => {
     expect(executionCountElements.length).toBe(1);
 
     expect(executionCountElements[0].nativeElement.textContent).toContain('3');
-    expect(executionCountElements[0].nativeElement.style.color).toBe(
-      hexToRgb(EXECUTION_TYPE_COLORS.ERROR),
-    );
+    expect(executionCountElements[0].nativeElement.style.color).toBe('orange');
   });
 
   it('should display tooltips with correct information for each execution type', () => {

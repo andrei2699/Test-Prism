@@ -5,6 +5,7 @@ import { Test, TestExecutionType } from '../../../../types/TestReport';
 import { TestFilterStrategy } from '../strategies/filter/test-filter-strategy.interface';
 import { TreeSortStrategy } from '../strategies/sort/tree-sort-strategy.interface';
 import { vi } from 'vitest';
+import { TestColors } from '../../../../types/Layout';
 
 const defaultTestCounts: Record<TestExecutionType, number> = {
   SUCCESS: 0,
@@ -50,6 +51,12 @@ describe('TestTree Component', () => {
     fixture.componentRef.setInput('filterStrategy', null);
     fixture.componentRef.setInput('strategy', createMockTreeOrganizationStrategy());
     fixture.componentRef.setInput('sortStrategies', []);
+    fixture.componentRef.setInput('colors', {
+      SUCCESS: 'green',
+      FAILURE: 'red',
+      SKIPPED: 'yellow',
+      ERROR: 'orange',
+    } satisfies TestColors);
   });
 
   describe('dataSource Computed Signal', () => {

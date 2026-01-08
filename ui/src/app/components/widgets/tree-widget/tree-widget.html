@@ -3,6 +3,7 @@
   <app-test-filter-input (filterChanged)="onFilterChange($event)" />
 
   <app-test-tree
+    [colors]="colors()"
     [tests]="tests()"
     [strategy]="treeOrganizationStrategy()"
     [filterStrategy]="filterStrategy()"

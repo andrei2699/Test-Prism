@@ -1,7 +1,14 @@
 ﻿import { describe, expect, it } from 'vitest';
 import { ExecutionTypeDistributionStrategy } from './execution-type-distribution.strategy';
 import { Test } from '../../../../types/TestReport';
-import { EXECUTION_TYPE_COLORS } from '../../../../shared/execution-type-colors';
+import { TestColors } from '../../../../types/Layout';
+
+const colors: TestColors = {
+  SUCCESS: 'green',
+  FAILURE: 'red',
+  SKIPPED: 'yellow',
+  ERROR: 'orange',
+};
 
 describe('ExecutionTypeDistributionStrategy', () => {
   it('should calculate the distribution of tests by execution type', () => {
@@ -14,13 +21,13 @@ describe('ExecutionTypeDistributionStrategy', () => {
       { lastExecutionType: 'ERROR', name: 'test5', path: '/test5' },
     ];
 
-    const distribution = strategy.calculateDistribution(tests);
+    const distribution = strategy.calculateDistribution(tests, colors);
 
     expect(distribution).toEqual([
-      { label: 'SUCCESS', count: 2, color: EXECUTION_TYPE_COLORS.SUCCESS },
-      { label: 'FAILURE', count: 1, color: EXECUTION_TYPE_COLORS.FAILURE },
-      { label: 'SKIPPED', count: 1, color: EXECUTION_TYPE_COLORS.SKIPPED },
-      { label: 'ERROR', count: 1, color: EXECUTION_TYPE_COLORS.ERROR },
+      { label: 'SUCCESS', count: 2, color: 'green' },
+      { label: 'FAILURE', count: 1, color: 'red' },
+      { label: 'SKIPPED', count: 1, color: 'yellow' },
+      { label: 'ERROR', count: 1, color: 'orange' },
     ]);
   });
 
@@ -28,7 +35,7 @@ describe('ExecutionTypeDistributionStrategy', () => {
     const strategy = new ExecutionTypeDistributionStrategy();
     const tests: Test[] = [];
 
-    const distribution = strategy.calculateDistribution(tests);
+    const distribution = strategy.calculateDistribution(tests, colors);
 
     expect(distribution).toEqual([]);
   });

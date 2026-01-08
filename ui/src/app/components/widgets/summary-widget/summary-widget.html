@@ -6,20 +6,20 @@
     <p>Date: {{ date() | date: 'fullDate' }}</p>
     <mat-chip-listbox>
       <mat-chip-option [selectable]="false" [style.background-color]="'#e0e0e0'"
-        >Total: {{ summary().total }}</mat-chip-option
-      >
-      <mat-chip-option [selectable]="false" [style.background-color]="EXECUTION_TYPE_COLORS.SUCCESS"
-        >Passed: {{ summary().passed }}</mat-chip-option
-      >
-      <mat-chip-option [selectable]="false" [style.background-color]="EXECUTION_TYPE_COLORS.FAILURE"
-        >Failed: {{ summary().failed }}</mat-chip-option
-      >
-      <mat-chip-option [selectable]="false" [style.background-color]="EXECUTION_TYPE_COLORS.SKIPPED"
-        >Skipped: {{ summary().skipped }}</mat-chip-option
-      >
-      <mat-chip-option [selectable]="false" [style.background-color]="EXECUTION_TYPE_COLORS.ERROR"
-        >Error: {{ summary().error }}</mat-chip-option
-      >
+        >Total: {{ summary().total }}
+      </mat-chip-option>
+      <mat-chip-option [selectable]="false" [style.background-color]="colors().SUCCESS"
+        >Passed: {{ summary().passed }}
+      </mat-chip-option>
+      <mat-chip-option [selectable]="false" [style.background-color]="colors().FAILURE"
+        >Failed: {{ summary().failed }}
+      </mat-chip-option>
+      <mat-chip-option [selectable]="false" [style.background-color]="colors().SKIPPED"
+        >Skipped: {{ summary().skipped }}
+      </mat-chip-option>
+      <mat-chip-option [selectable]="false" [style.background-color]="colors().ERROR"
+        >Error: {{ summary().error }}
+      </mat-chip-option>
     </mat-chip-listbox>
   </mat-card-content>
 </mat-card>

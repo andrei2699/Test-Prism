@@ -3,7 +3,7 @@ import { MatCardModule } from '@angular/material/card';
 import { DatePipe } from '@angular/common';
 import { MatChipsModule } from '@angular/material/chips';
 import { Test } from '../../../types/TestReport';
-import { EXECUTION_TYPE_COLORS } from '../../../shared/execution-type-colors';
+import { TestColors } from '../../../types/Layout';
 
 export interface SummaryWidgetParameters {
   title: string;
@@ -16,11 +16,10 @@ export interface SummaryWidgetParameters {
   imports: [MatCardModule, DatePipe, MatChipsModule],
 })
 export class SummaryWidgetComponent {
+  colors = input.required<TestColors>();
   tests = input.required<Test[]>();
   date = input.required<string | null>();
   parameters = input<SummaryWidgetParameters>();
-
-  protected readonly EXECUTION_TYPE_COLORS = EXECUTION_TYPE_COLORS;
 
   title = computed(() => this.parameters()?.title || 'Analysis Summary');
 

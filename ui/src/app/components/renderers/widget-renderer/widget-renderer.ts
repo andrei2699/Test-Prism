@@ -8,6 +8,7 @@ import { DataFilterService } from '../../../services/data-filter.service';
 import { ContainerWidget } from '../../widgets/container-widget/container-widget';
 import { NgStyle } from '@angular/common';
 import { SummaryWidgetComponent } from '../../widgets/summary-widget/summary-widget';
+import { TestColors } from '../../../types/Layout';
 
 @Component({
   selector: 'app-widget-renderer',
@@ -22,6 +23,7 @@ import { SummaryWidgetComponent } from '../../widgets/summary-widget/summary-wid
   styleUrl: './widget-renderer.css',
 })
 export class WidgetRenderer {
+  colors = input.required<TestColors>();
   widget = input.required<Widget>();
   testReports = input.required<Record<DataSourceId, TestReport>>();
 

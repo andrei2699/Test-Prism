@@ -10,6 +10,7 @@ import { TreeSortStrategy } from '../strategies/sort/tree-sort-strategy.interfac
 import { TestFilterStrategy } from '../strategies/filter/test-filter-strategy.interface';
 import { HumanizeDurationPipe } from '../../../../pipes/humanize-duration.pipe';
 import { TestCountDisplayComponent } from '../test-count-display/test-count-display';
+import { TestColors } from '../../../../types/Layout';
 
 export interface TestTreeNode {
   name: string;
@@ -37,6 +38,7 @@ export interface TestTreeNode {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TestTree {
+  colors = input.required<TestColors>();
   tests = input.required<Test[]>();
   strategy = input.required<TreeOrganizationStrategy>();
   filterStrategy = input.required<TestFilterStrategy | null>();
@@ -61,5 +63,5 @@ export class TestTree {
 
   getIcon = (node: TestTreeNode): string => this.strategy().getIcon(node);
 
-  getColor = (node: TestTreeNode): string => this.strategy().getColor(node);
+  getColor = (node: TestTreeNode): string => this.strategy().getColor(node, this.colors());
 }

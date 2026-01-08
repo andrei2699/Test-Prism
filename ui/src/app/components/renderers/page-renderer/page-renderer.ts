@@ -1,5 +1,5 @@
 import { Component, computed, input } from '@angular/core';
-import { Page } from '../../../types/Layout';
+import { Page, TestColors } from '../../../types/Layout';
 import { TestReport } from '../../../types/TestReport';
 import { DataSourceId } from '../../../types/DataSource';
 import { ContainerWidget } from '../../widgets/container-widget/container-widget';
@@ -11,6 +11,7 @@ import { ContainerWidget } from '../../widgets/container-widget/container-widget
   styleUrl: './page-renderer.css',
 })
 export class PageRenderer {
+  colors = input.required<TestColors>();
   pages = input.required<Page[]>();
   testReports = input.required<Record<DataSourceId, TestReport>>();
   path = input.required<string | null>();

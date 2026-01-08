@@ -1,10 +1,10 @@
 ﻿import { DistributionStrategy } from './distribution-strategy.interface';
 import { DistributionDataItem } from './distribution-data.interface';
 import { Test, TestExecutionType } from '../../../../types/TestReport';
-import { EXECUTION_TYPE_COLORS } from '../../../../shared/execution-type-colors';
+import { TestColors } from '../../../../types/Layout';
 
 export class ExecutionTypeDistributionStrategy implements DistributionStrategy {
-  calculateDistribution(tests: Test[]): DistributionDataItem[] {
+  calculateDistribution(tests: Test[], colors: TestColors): DistributionDataItem[] {
     const counts: Record<TestExecutionType, number> = {
       SUCCESS: 0,
       FAILURE: 0,
@@ -22,7 +22,7 @@ export class ExecutionTypeDistributionStrategy implements DistributionStrategy {
         (executionType): DistributionDataItem => ({
           label: executionType,
           count: counts[executionType],
-          color: EXECUTION_TYPE_COLORS[executionType],
+          color: colors[executionType],
         }),
       )
       .filter(item => item.count > 0);

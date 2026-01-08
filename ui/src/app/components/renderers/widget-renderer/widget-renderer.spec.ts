@@ -4,6 +4,7 @@ import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 import { DataFilter, Widget } from '../../../types/Widget';
 import { Test, TestReport } from '../../../types/TestReport';
 import { By } from '@angular/platform-browser';
+import { TestColors } from '../../../types/Layout';
 
 describe('WidgetRenderer', () => {
   let fixture: ComponentFixture<WidgetRenderer>;
@@ -29,6 +30,12 @@ describe('WidgetRenderer', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(WidgetRenderer);
+    fixture.componentRef.setInput('colors', {
+      SUCCESS: 'green',
+      FAILURE: 'red',
+      SKIPPED: 'yellow',
+      ERROR: 'orange',
+    } satisfies TestColors);
   });
 
   it('should render test distribution pie widget', async () => {
