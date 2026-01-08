@@ -3,7 +3,6 @@ import { vi } from 'vitest';
 import { NavbarDrawer } from './navbar-drawer';
 import { MatDrawer } from '@angular/material/sidenav';
 import { LayoutService } from '../../../services/layout.service';
-import { of } from 'rxjs';
 
 describe('NavbarDrawer', () => {
   let component: NavbarDrawer;

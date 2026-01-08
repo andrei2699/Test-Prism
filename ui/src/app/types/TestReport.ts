@@ -1,6 +1,6 @@
 ﻿export interface TestReport {
   version: number;
-  date: Date;
+  date: string;
   tests: Test[];
 }
 

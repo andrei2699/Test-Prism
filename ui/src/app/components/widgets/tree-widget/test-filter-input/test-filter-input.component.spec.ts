@@ -26,10 +26,6 @@ describe('TestFilterInputComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should emit filterChanged event when filter text changes', () => {
     const spy = vi.spyOn(component.filterChanged, 'emit');
     const testFilterText = 'test filter';

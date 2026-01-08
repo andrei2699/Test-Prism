@@ -1,4 +1,4 @@
-﻿import { describe, it, expect } from 'vitest';
+﻿import { describe, expect, it } from 'vitest';
 import { CompositeFilterStrategy } from './composite-filter.strategy';
 import { NameFilterStrategy } from './name-filter.strategy';
 import { StatusFilterStrategy } from './status-filter.strategy';
