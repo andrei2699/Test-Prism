@@ -8,14 +8,14 @@ See the [Example](#example) at the end of this document for a complete `Layout` 
 ## `Layout`
 
 | Field         | Type                          | Description                                                                |
-|---------------|-------------------------------|----------------------------------------------------------------------------|
+| ------------- | ----------------------------- | -------------------------------------------------------------------------- |
 | `pages`       | `Page[]`                      | An array of `Page` objects, each representing a page in the application.   |
 | `dataSources` | `[DataSource](#datasource)[]` | An array of `DataSource` objects that can be used by widgets on the pages. |
 
 ## `Page`
 
 | Field     | Type       | Description                                                                      |
-|-----------|------------|----------------------------------------------------------------------------------|
+| --------- | ---------- | -------------------------------------------------------------------------------- |
 | `title`   | `string`   | The title of the page, displayed in the UI.                                      |
 | `path`    | `string`   | The URL path for the page.                                                       |
 | `navIcon` | `string`   | (Optional) The name of the icon to display in the navigation menu for this page. |
@@ -31,7 +31,7 @@ parameters.
 All widgets have the following base fields:
 
 | Field   | Type                        | Description                                                      |
-|---------|-----------------------------|------------------------------------------------------------------|
+| ------- | --------------------------- | ---------------------------------------------------------------- |
 | `id`    | `string`                    | A unique identifier for the widget.                              |
 | `type`  | `WidgetType`                | The type of the widget. See `WidgetType` for possible values.    |
 | `data`  | `[WidgetData](#widgetdata)` | An object that specifies the data to be displayed by the widget. |
@@ -48,16 +48,46 @@ The `WidgetType` can be one of the following:
 ### `WidgetData`
 
 | Field          | Type                        | Description                                                                                 |
-|----------------|-----------------------------|---------------------------------------------------------------------------------------------|
+| -------------- | --------------------------- | ------------------------------------------------------------------------------------------- |
 | `dataSourceId` | `DataSourceId`              | The ID of the `DataSource` to use for this widget.                                          |
 | `filter`       | `[DataFilter](#datafilter)` | (Optional) A `DataFilter` object that can be used to filter the data from the `DataSource`. |
+
+## Available Widgets
+
+This section describes the available widgets and their parameters.
+
+### Tree Widget (`tree`)
+
+The Tree Widget displays test results in a hierarchical tree structure. It allows for filtering and sorting of the
+tests.
+
+[//]: # "'TODO: add image of tree widget'"
+
+#### Parameters (`TreeWidgetParameters`)
+
+| Field            | Type       | Description                                                                                                    |
+| ---------------- | ---------- | -------------------------------------------------------------------------------------------------------------- |
+| `strategy`       | `string`   | The organization strategy for the tree. Possible values are `'folder'` (default) and `'status'`.               |
+| `sortStrategies` | `string[]` | An array of sorting strategies to apply to the tree. Currently, the only possible value is `'name'` (default). |
+
+### Test Distribution Pie (`distribution-pie`)
+
+The Test Distribution Pie widget displays a pie chart showing the distribution of test results.
+
+[//]: # " 'TODO: add image of distribution pie widget'"
+
+#### Parameters (`TestDistributionPieParameters`)
+
+| Field      | Type     | Description                                                                                             |
+| ---------- | -------- | ------------------------------------------------------------------------------------------------------- |
+| `strategy` | `string` | The distribution strategy for the pie chart. Possible values are `'status'` (default) and `'duration'`. |
 
 ## `DataSource`
 
 A `DataSource` defines how to fetch data from a remote source.
 
 | Field         | Type                     | Description                                                            |
-|---------------|--------------------------|------------------------------------------------------------------------|
+| ------------- | ------------------------ | ---------------------------------------------------------------------- |
 | `id`          | `DataSourceId`           | A unique identifier for the data source.                               |
 | `url`         | `string`                 | The URL to fetch the data from.                                        |
 | `headers`     | `Record<string, string>` | (Optional) An object containing HTTP headers to send with the request. |
