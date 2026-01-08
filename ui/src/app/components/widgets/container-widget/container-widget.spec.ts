@@ -5,6 +5,7 @@ import { DataSourceId } from '../../../types/DataSource';
 import { TestReport } from '../../../types/TestReport';
 import { WidgetRenderer } from '../../renderers/widget-renderer/widget-renderer';
 import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
+import { TestColors } from '../../../types/Layout';
 
 describe('ContainerWidget', () => {
   let fixture: ComponentFixture<ContainerWidget>;
@@ -24,6 +25,12 @@ describe('ContainerWidget', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(ContainerWidget);
+    fixture.componentRef.setInput('colors', {
+      SUCCESS: 'green',
+      FAILURE: 'red',
+      SKIPPED: 'yellow',
+      ERROR: 'orange',
+    } satisfies TestColors);
   });
 
   it('should render all its children', () => {

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PageRenderer } from './page-renderer';
-import { Page } from '../../../types/Layout';
+import { Page, TestColors } from '../../../types/Layout';
 import { Test, TestReport } from '../../../types/TestReport';
 import { By } from '@angular/platform-browser';
 import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
@@ -19,6 +19,7 @@ import { ContainerWidget } from '../../widgets/container-widget/container-widget
 class MockContainerWidget {
   children = input.required<Widget[]>();
   testReports = input.required<TestReport[]>();
+  colors = input.required<TestColors>();
 }
 
 describe('PageRenderer', () => {
@@ -78,6 +79,12 @@ describe('PageRenderer', () => {
 
     fixture.componentRef.setInput('pages', pages);
     fixture.componentRef.setInput('testReports', mockTestReports);
+    fixture.componentRef.setInput('colors', {
+      SUCCESS: 'green',
+      FAILURE: 'red',
+      SKIPPED: 'yellow',
+      ERROR: 'orange',
+    } satisfies TestColors);
   });
 
   it('should render the first page when path is not provided', () => {

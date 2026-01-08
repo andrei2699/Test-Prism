@@ -15,6 +15,7 @@
       hint="Ensure the TEST_RESULTS_FILE environment variable is set and points to a valid JSON file." />
   } @else if (dataSourcesTestReports.hasValue()) {
     <app-page-renderer
+      [colors]="colors()"
       [pages]="this.layout.value().pages"
       [testReports]="dataSourcesTestReports.value()"
       [path]="path()" />

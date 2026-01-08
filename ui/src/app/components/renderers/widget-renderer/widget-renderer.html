@@ -8,10 +8,17 @@
         <app-tree-widget [tests]="tests()" [parameters]="w.parameters" />
       }
       @case ('container') {
-        <app-container-widget [children]="w.children" [testReports]="testReports()" />
+        <app-container-widget
+          [colors]="colors()"
+          [children]="w.children"
+          [testReports]="testReports()" />
       }
       @case ('summary') {
-        <app-summary-widget [tests]="tests()" [date]="date()" [parameters]="w.parameters" />
+        <app-summary-widget
+          [colors]="colors()"
+          [tests]="tests()"
+          [date]="date()"
+          [parameters]="w.parameters" />
       }
     }
   </div>
