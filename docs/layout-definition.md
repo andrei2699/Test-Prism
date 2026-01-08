@@ -41,6 +41,7 @@ All widgets have the following base fields:
 
 The `WidgetType` can be one of the following:
 
+- `'container'`: A widget that groups other widgets.
 - `'tree'`: A widget that displays data in a tree structure.
 - `'distribution-pie'`: A widget that displays data in a pie chart.
 - `'analysis-summary'`: A widget that displays a summary of the analysis.
@@ -55,6 +56,14 @@ The `WidgetType` can be one of the following:
 ## Available Widgets
 
 This section describes the available widgets and their parameters.
+
+### Container Widget (`container`)
+
+The Container Widget is used to group other widgets together. This is useful for organizing the layout of a page.
+
+#### Children
+
+The `container` widget has a `children` field, which is an array of `Widget` objects. These are the widgets that will be rendered inside the container.
 
 ### Tree Widget (`tree`)
 
@@ -155,6 +164,54 @@ This example shows a minimal layout with one data source and one page, which dis
           "data": {
             "dataSourceId": "main-run"
           }
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Using a Container Widget
+
+This example shows how to use a `container` widget to group two widgets together.
+
+```json
+{
+  "dataSources": [
+    {
+      "id": "main-run",
+      "url": "https://api.example.com/tests/latest"
+    }
+  ],
+  "pages": [
+    {
+      "title": "Dashboard",
+      "path": "/",
+      "widgets": [
+        {
+          "id": "main-container",
+          "type": "container",
+          "style": {
+            "display": "flex",
+            "flex-direction": "row",
+            "gap": "16px"
+          },
+          "children": [
+            {
+              "id": "main-test-tree",
+              "type": "tree",
+              "data": {
+                "dataSourceId": "main-run"
+              }
+            },
+            {
+              "id": "main-distribution-pie",
+              "type": "distribution-pie",
+              "data": {
+                "dataSourceId": "main-run"
+              }
+            }
+          ]
         }
       ]
     }
