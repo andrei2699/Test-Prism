@@ -7,10 +7,11 @@ See the [Examples](#examples) at the end of this document for a complete `Layout
 
 ## `Layout`
 
-| Field         | Type                          | Description                                                                |
-| ------------- | ----------------------------- | -------------------------------------------------------------------------- |
-| `pages`       | `Page[]`                      | An array of `Page` objects, each representing a page in the application.   |
-| `dataSources` | `[DataSource](#datasource)[]` | An array of `DataSource` objects that can be used by widgets on the pages. |
+| Field         | Type                          | Description                                                                          |
+| ------------- | ----------------------------- | ------------------------------------------------------------------------------------ |
+| `pages`       | `Page[]`                      | An array of `Page` objects, each representing a page in the application.             |
+| `dataSources` | `[DataSource](#datasource)[]` | An array of `DataSource` objects that can be used by widgets on the pages.           |
+| `colors`      | `[TestColors](#testcolors)`   | (Optional) An object that defines the colors for the different test execution types. |
 
 ## `Page`
 
@@ -20,6 +21,30 @@ See the [Examples](#examples) at the end of this document for a complete `Layout
 | `path`    | `string`   | The URL path for the page.                                                       |
 | `navIcon` | `string`   | (Optional) The name of the icon to display in the navigation menu for this page. |
 | `widgets` | `Widget[]` | An array of `Widget` objects to display on the page.                             |
+
+## `TestColors`
+
+The `TestColors` object is a mapping from a `TestExecutionType` to a color string. The color can be any valid CSS color string, such as a hex code, RGB value, or color name.
+
+The possible values for `TestExecutionType` are:
+
+- `'SUCCESS'`
+- `'FAILURE'`
+- `'SKIPPED'`
+- `'ERROR'`
+
+### Example
+
+```json
+{
+  "colors": {
+    "SUCCESS": "#4CAF50",
+    "FAILURE": "#F44336",
+    "SKIPPED": "#FFC107",
+    "ERROR": "#FF9800"
+  }
+}
+```
 
 ## `Widget`
 
@@ -309,6 +334,12 @@ Here is a complete example of a `Layout` configuration that combines multiple pa
 
 ```json
 {
+  "colors": {
+    "SUCCESS": "#4CAF50",
+    "FAILURE": "#F44336",
+    "SKIPPED": "#FFC107",
+    "ERROR": "#FF9800"
+  },
   "dataSources": [
     {
       "id": "latest-run",
