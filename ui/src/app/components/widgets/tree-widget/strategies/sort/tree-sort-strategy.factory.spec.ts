@@ -1,4 +1,4 @@
-﻿import { describe, it, expect } from 'vitest';
+﻿import { describe, expect, it } from 'vitest';
 import { TreeSortStrategyFactory } from './tree-sort-strategy.factory';
 import { TestTreeNode } from '../../test-tree/test-tree';
 

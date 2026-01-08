@@ -1,7 +1,7 @@
 ﻿import { TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { describe, it, expect, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { LayoutService } from './layout.service';
 import { AppConfigService } from './app-config.service';
 

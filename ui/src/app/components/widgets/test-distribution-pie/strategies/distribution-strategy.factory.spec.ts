@@ -1,4 +1,4 @@
-﻿import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+﻿import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { DistributionStrategyFactory } from './distribution-strategy.factory';
 import { ExecutionTypeDistributionStrategy } from './execution-type-distribution.strategy';
 import { DistributionStrategy } from './distribution-strategy.interface';
