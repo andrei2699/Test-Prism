@@ -4,11 +4,10 @@ import { MatCardModule } from '@angular/material/card';
 import { Test } from '../../../types/TestReport';
 import { DatePipe } from '@angular/common';
 import { By } from '@angular/platform-browser';
-import { EXECUTION_TYPE_COLORS } from '../../../shared/execution-type-colors';
 import { MatChipsModule } from '@angular/material/chips';
+import { TestColors } from '../../../types/Layout';
 
 describe('SummaryWidgetComponent', () => {
-  let component: SummaryWidgetComponent;
   let fixture: ComponentFixture<SummaryWidgetComponent>;
 
   beforeEach(async () => {
@@ -17,16 +16,12 @@ describe('SummaryWidgetComponent', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(SummaryWidgetComponent);
-    component = fixture.componentInstance;
-  });
-
-  it('should create', () => {
-    fixture.componentRef.setInput('tests', []);
-    fixture.componentRef.setInput('date', new Date().toISOString());
-
-    fixture.detectChanges();
-
-    expect(component).toBeTruthy();
+    fixture.componentRef.setInput('colors', {
+      SUCCESS: 'green',
+      FAILURE: 'red',
+      SKIPPED: 'yellow',
+      ERROR: 'orange',
+    } satisfies TestColors);
   });
 
   it('should display the date in a human-readable format', () => {

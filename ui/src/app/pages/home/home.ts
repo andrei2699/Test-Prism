@@ -38,7 +38,10 @@ export class Home {
   });
 
   colors = computed<TestColors>(() => {
-    return this.layout.value()?.colors ?? DEFAULT_TEST_COLORS;
+    return {
+      ...DEFAULT_TEST_COLORS,
+      ...this.layout.value()?.colors,
+    };
   });
 
   constructor() {
