@@ -123,9 +123,27 @@ The Test Distribution Pie widget displays a pie chart showing the distribution o
 
 #### Parameters (`TestDistributionPieParameters`)
 
-| Field      | Type     | Description                                                                                             |
-| ---------- | -------- | ------------------------------------------------------------------------------------------------------- |
-| `strategy` | `string` | The distribution strategy for the pie chart. Possible values are `'status'` (default) and `'duration'`. |
+| Field                | Type     | Description                                                                                             |
+| -------------------- | -------- | ------------------------------------------------------------------------------------------------------- |
+| `strategy`           | `string` | The distribution strategy for the pie chart. Possible values are `'status'` (default) and `'duration'`. |
+| `strategyParameters` | `object` | (Optional) Parameters for the selected strategy.                                                        |
+
+The `strategyParameters` object depends on the selected `strategy`.
+
+##### `duration` Strategy Parameters
+
+When `strategy` is set to `'duration'`, the `strategyParameters` object can contain the following fields:
+
+| Field | Type | Description - |
+| `intervals` | `[DurationInterval](#durationinterval)[]` | An array of `DurationInterval` objects that define the duration ranges for the pie chart. |
+
+###### `DurationInterval`
+
+| Field | Type | Description - |
+| `label` | `string` | (Optional) The label for the duration interval. If not provided, a label will be generated automatically based on the duration range. |
+| `color` | `string` | The color for the duration interval. This can be any valid CSS color string. - |
+| `min` | `number` | (Optional) The minimum duration (in milliseconds) for this interval. - |
+| `max` | `number` | (Optional) The maximum duration (in milliseconds) for this interval. - |
 
 ## `DataSource`
 
@@ -317,7 +335,27 @@ This example shows how to configure a `distribution-pie` widget to group data by
           "id": "duration-pie-chart",
           "type": "distribution-pie",
           "parameters": {
-            "strategy": "duration"
+            "strategy": "duration",
+            "strategyParameters": {
+              "intervals": [
+                {
+                  "label": "Fast",
+                  "color": "green",
+                  "max": 1000
+                },
+                {
+                  "label": "Medium",
+                  "color": "orange",
+                  "min": 1000,
+                  "max": 5000
+                },
+                {
+                  "label": "Slow",
+                  "color": "red",
+                  "min": 5000
+                }
+              ]
+            }
           },
           "data": {
             "dataSourceId": "main-run"
@@ -374,6 +412,9 @@ Here is a complete example of a `Layout` configuration that combines multiple pa
         {
           "id": "test-tree",
           "type": "tree",
+          "parameters": {
+            "title": "Tests"
+          },
           "data": {
             "dataSourceId": "latest-run",
             "filter": {
