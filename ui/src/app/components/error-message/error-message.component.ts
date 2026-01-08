@@ -4,7 +4,6 @@ import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-error-message',
-  standalone: true,
   imports: [MatIconModule, MatCardModule],
   templateUrl: './error-message.component.html',
   styleUrl: './error-message.component.css',

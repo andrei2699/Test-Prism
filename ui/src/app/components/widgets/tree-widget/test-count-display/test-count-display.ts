@@ -5,7 +5,6 @@ import { EXECUTION_TYPE_COLORS } from '../../../../shared/execution-type-colors'
 
 @Component({
   selector: 'app-test-count-display',
-  standalone: true,
   imports: [CommonModule],
   templateUrl: './test-count-display.html',
   styleUrl: './test-count-display.css',

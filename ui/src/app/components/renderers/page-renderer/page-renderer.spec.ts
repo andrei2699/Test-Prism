@@ -15,7 +15,6 @@ import { ContainerWidget } from '../../widgets/container-widget/container-widget
       <div class="mock-widget" [attr.data-widget-id]="widget.id"></div>
     }
   `,
-  standalone: true,
 })
 class MockContainerWidget {
   children = input.required<Widget[]>();

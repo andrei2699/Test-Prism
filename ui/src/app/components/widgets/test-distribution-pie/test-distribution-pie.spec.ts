@@ -8,7 +8,6 @@ import { BaseChartDirective, provideCharts, withDefaultRegisterables } from 'ng2
 
 @Component({
   template: '<app-test-distribution-pie [tests]="tests()" [parameters]="parameters()" />',
-  standalone: true,
   imports: [TestDistributionPie],
 })
 class TestHostComponent {
