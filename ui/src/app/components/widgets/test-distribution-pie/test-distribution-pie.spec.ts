@@ -5,12 +5,15 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { Test } from '../../../types/TestReport';
 import { TestDistributionPie, TestDistributionPieParameters } from './test-distribution-pie';
 import { BaseChartDirective, provideCharts, withDefaultRegisterables } from 'ng2-charts';
+import { TestColors } from '../../../types/Layout';
 
 @Component({
-  template: '<app-test-distribution-pie [tests]="tests()" [parameters]="parameters()" />',
+  template:
+    '<app-test-distribution-pie [colors]="colors()" [tests]="tests()" [parameters]="parameters()" />',
   imports: [TestDistributionPie],
 })
 class TestHostComponent {
+  colors = input.required<TestColors>();
   tests = input.required<Test[]>();
   parameters = input.required<TestDistributionPieParameters>();
 }
@@ -31,6 +34,12 @@ describe('TestDistributionPie', () => {
 
     fixture = TestBed.createComponent(TestHostComponent);
     fixture.componentRef.setInput('parameters', parameters);
+    fixture.componentRef.setInput('colors', {
+      SUCCESS: 'green',
+      FAILURE: 'red',
+      SKIPPED: 'yellow',
+      ERROR: 'orange',
+    } satisfies TestColors);
   });
 
   afterEach(() => {

@@ -5,6 +5,7 @@ import { Test } from '../../../types/TestReport';
 import { DistributionDataItem } from './strategies/distribution-data.interface';
 import { DistributionStrategy } from './strategies/distribution-strategy.interface';
 import { DistributionStrategyFactory } from './strategies/distribution-strategy.factory';
+import { TestColors } from '../../../types/Layout';
 
 export interface TestDistributionPieParameters {
   strategy: string;
@@ -23,6 +24,7 @@ interface PieChartData extends DistributionDataItem {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TestDistributionPie {
+  colors = input.required<TestColors>();
   tests = input.required<Test[]>();
   parameters = input.required<TestDistributionPieParameters | undefined>();
 
@@ -35,6 +37,7 @@ export class TestDistributionPie {
   chartData = computed<PieChartData[]>(() => {
     const distribution: DistributionDataItem[] = this.strategy().calculateDistribution(
       this.tests(),
+      this.colors(),
     );
     const total = this.tests().length;
 
