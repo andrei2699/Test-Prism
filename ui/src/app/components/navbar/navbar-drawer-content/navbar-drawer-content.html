@@ -5,7 +5,7 @@
     <app-error-message
       title="Error Loading Layout Sections"
       [message]="layout.error()!.message"
-      hint="Ensure the LAYOUT_FILE environment variable is set and points to a valid JSON file." />
+      hint="Ensure the LAYOUT_URL environment variable is set and points to a valid JSON file." />
   } @else if (layout.hasValue()) {
     @for (page of layout.value().pages; track page.path) {
       <mat-list-item (click)="navigate(page)">

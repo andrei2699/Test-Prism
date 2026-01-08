@@ -1,26 +1,19 @@
-﻿import { inject, Injectable, resource } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { lastValueFrom } from 'rxjs';
+﻿import { inject, Injectable } from '@angular/core';
+import { httpResource } from '@angular/common/http';
 import { Layout } from '../types/Layout';
+import { AppConfigService } from './app-config.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LayoutService {
-  private http = inject(HttpClient);
+  private appConfigService = inject(AppConfigService);
 
-  layout = resource({
-    loader: async () => {
-      const path = this.getLayoutPath();
-      if (!path) {
-        throw new Error('LAYOUT_FILE environment variable is not set');
-      }
-      return lastValueFrom(this.http.get<Layout>(path));
-    },
+  layout = httpResource<Layout>(() => {
+    const path = this.appConfigService.config?.layoutUrl;
+    if (!path) {
+      throw new Error('Layout URL is not configured in app-config.json');
+    }
+    return path;
   });
-
-  private getLayoutPath(): string | null {
-    const windowEnv = (window as any)['ENV'];
-    return windowEnv?.LAYOUT_FILE || null;
-  }
 }

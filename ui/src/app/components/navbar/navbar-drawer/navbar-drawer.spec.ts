@@ -2,6 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { vi } from 'vitest';
 import { NavbarDrawer } from './navbar-drawer';
 import { MatDrawer } from '@angular/material/sidenav';
+import { LayoutService } from '../../../services/layout.service';
+import { of } from 'rxjs';
 
 describe('NavbarDrawer', () => {
   let component: NavbarDrawer;
@@ -11,6 +13,19 @@ describe('NavbarDrawer', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [NavbarDrawer],
+      providers: [
+        {
+          provide: LayoutService,
+          useValue: {
+            layout: {
+              isLoading: () => false,
+              error: () => null,
+              hasValue: () => true,
+              value: () => ({ pages: [], dataSources: [] }),
+            },
+          },
+        },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(NavbarDrawer);
