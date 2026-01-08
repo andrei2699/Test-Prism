@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { WidgetRenderer } from './widget-renderer';
 import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
-import { Widget } from '../../../types/Layout';
+import { Widget } from '../../../types/Widget';
 import { Test, TestReport } from '../../../types/TestReport';
 import { By } from '@angular/platform-browser';
 

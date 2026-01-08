@@ -1,11 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PageRenderer } from './page-renderer';
-import { Page, Widget } from '../../../types/Layout';
+import { Page } from '../../../types/Layout';
 import { Test, TestReport } from '../../../types/TestReport';
 import { By } from '@angular/platform-browser';
 import { WidgetRenderer } from '../widget-renderer/widget-renderer';
 import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 import { Component, input } from '@angular/core';
+import { Widget } from '../../../types/Widget';
 
 @Component({
   selector: 'app-widget-renderer',

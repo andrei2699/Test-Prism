@@ -2,7 +2,7 @@
 import { HttpClient } from '@angular/common/http';
 import { TestReport } from '../types/TestReport';
 import { forkJoin, Observable, of } from 'rxjs';
-import { DataSource, DataSourceId } from '../types/Layout';
+import { DataSource, DataSourceId } from '../types/DataSource';
 
 @Injectable({
   providedIn: 'root',

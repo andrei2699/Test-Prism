@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TreeWidget } from './tree-widget';
+import { TreeWidget, TreeWidgetParameters } from './tree-widget';
 import { FilterState } from './test-filter-input/test-filter-input.component';
 import { Test } from '../../../types/TestReport';
 import { HarnessLoader } from '@angular/cdk/testing';
@@ -32,6 +32,10 @@ const tests: Test[] = [
     path: 'User.API',
   },
 ];
+const parameters: TreeWidgetParameters = {
+  strategy: 'folder',
+  sortStrategies: ['name'],
+};
 
 describe('TreeWidget', () => {
   let component: TreeWidget;
@@ -46,6 +50,7 @@ describe('TreeWidget', () => {
     fixture = TestBed.createComponent(TreeWidget);
     component = fixture.componentInstance;
     fixture.componentRef.setInput('tests', tests);
+    fixture.componentRef.setInput('parameters', parameters);
     fixture.detectChanges();
     loader = TestbedHarnessEnvironment.loader(fixture);
   });

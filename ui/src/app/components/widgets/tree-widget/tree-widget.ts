@@ -25,23 +25,21 @@ export interface TreeWidgetParameters {
 })
 export class TreeWidget {
   tests = input.required<Test[]>();
-
-  parameters = input<TreeWidgetParameters>({
-    strategy: 'folder',
-    sortStrategies: [],
-  });
+  parameters = input.required<TreeWidgetParameters | undefined>();
 
   filterText = signal('');
   selectedStatuses = signal<TestExecutionType[]>([]);
   filterStrategy = signal(this.createFilterStrategy('', []));
-  treeOrganizationStrategy = computed(() =>
-    TreeOrganizationStrategyFactory.create(this.parameters().strategy),
-  );
-  sortStrategies = computed<TreeSortStrategy[]>(() =>
-    (this.parameters().sortStrategies ?? []).map(strategy =>
-      TreeSortStrategyFactory.create(strategy),
-    ),
-  );
+  treeOrganizationStrategy = computed(() => {
+    const strategy = this.parameters()?.strategy ?? 'folder';
+
+    return TreeOrganizationStrategyFactory.create(strategy);
+  });
+  sortStrategies = computed<TreeSortStrategy[]>(() => {
+    const sortStrategies = this.parameters()?.sortStrategies ?? ['name'];
+
+    return sortStrategies.map(strategy => TreeSortStrategyFactory.create(strategy));
+  });
 
   onFilterChange(filterState: FilterState): void {
     this.filterText.set(filterState.name);

@@ -1,8 +1,9 @@
 import { Component, computed, input } from '@angular/core';
-import { DataSourceId, Widget } from '../../../types/Layout';
 import { TestDistributionPie } from '../../widgets/test-distribution-pie/test-distribution-pie';
 import { Test, TestReport } from '../../../types/TestReport';
 import { TreeWidget } from '../../widgets/tree-widget/tree-widget';
+import { DataSourceId } from '../../../types/DataSource';
+import { Widget } from '../../../types/Widget';
 
 @Component({
   selector: 'app-widget-renderer',
