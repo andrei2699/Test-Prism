@@ -3,17 +3,19 @@
 The `Layout` object defines the structure and content of the pages in the application. It is the root of the
 configuration.
 
+See the [Example](#example) at the end of this document for a complete `Layout` definition.
+
 ## `Layout`
 
 | Field         | Type                          | Description                                                                |
-| ------------- | ----------------------------- | -------------------------------------------------------------------------- |
+|---------------|-------------------------------|----------------------------------------------------------------------------|
 | `pages`       | `Page[]`                      | An array of `Page` objects, each representing a page in the application.   |
 | `dataSources` | `[DataSource](#datasource)[]` | An array of `DataSource` objects that can be used by widgets on the pages. |
 
 ## `Page`
 
 | Field     | Type       | Description                                                                      |
-| --------- | ---------- | -------------------------------------------------------------------------------- |
+|-----------|------------|----------------------------------------------------------------------------------|
 | `title`   | `string`   | The title of the page, displayed in the UI.                                      |
 | `path`    | `string`   | The URL path for the page.                                                       |
 | `navIcon` | `string`   | (Optional) The name of the icon to display in the navigation menu for this page. |
@@ -29,7 +31,7 @@ parameters.
 All widgets have the following base fields:
 
 | Field   | Type                        | Description                                                      |
-| ------- | --------------------------- | ---------------------------------------------------------------- |
+|---------|-----------------------------|------------------------------------------------------------------|
 | `id`    | `string`                    | A unique identifier for the widget.                              |
 | `type`  | `WidgetType`                | The type of the widget. See `WidgetType` for possible values.    |
 | `data`  | `[WidgetData](#widgetdata)` | An object that specifies the data to be displayed by the widget. |
@@ -46,7 +48,7 @@ The `WidgetType` can be one of the following:
 ### `WidgetData`
 
 | Field          | Type                        | Description                                                                                 |
-| -------------- | --------------------------- | ------------------------------------------------------------------------------------------- |
+|----------------|-----------------------------|---------------------------------------------------------------------------------------------|
 | `dataSourceId` | `DataSourceId`              | The ID of the `DataSource` to use for this widget.                                          |
 | `filter`       | `[DataFilter](#datafilter)` | (Optional) A `DataFilter` object that can be used to filter the data from the `DataSource`. |
 
@@ -55,7 +57,7 @@ The `WidgetType` can be one of the following:
 A `DataSource` defines how to fetch data from a remote source.
 
 | Field         | Type                     | Description                                                            |
-| ------------- | ------------------------ | ---------------------------------------------------------------------- |
+|---------------|--------------------------|------------------------------------------------------------------------|
 | `id`          | `DataSourceId`           | A unique identifier for the data source.                               |
 | `url`         | `string`                 | The URL to fetch the data from.                                        |
 | `headers`     | `Record<string, string>` | (Optional) An object containing HTTP headers to send with the request. |
@@ -70,3 +72,66 @@ example, you could filter a list of test results to only show the tests that hav
 
 The exact structure of the `DataFilter` is still being determined, but it will likely involve a combination of logical
 operators (`AND`, `OR`, `NOT`) and comparison operators (`=`, `!=`, `>`, `<`, etc.).
+
+## Example
+
+Here is a complete example of a `Layout` configuration:
+
+```json
+{
+  "dataSources": [
+    {
+      "id": "latest-run",
+      "url": "https://api.example.com/tests/latest",
+      "headers": {
+        "Authorization": "Bearer YOUR_API_TOKEN"
+      }
+    },
+    {
+      "id": "previous-run",
+      "url": "https://api.example.com/tests/previous"
+    }
+  ],
+  "pages": [
+    {
+      "title": "Dashboard",
+      "path": "/",
+      "navIcon": "home",
+      "widgets": [
+        {
+          "id": "summary-pie",
+          "type": "distribution-pie",
+          "data": {
+            "dataSourceId": "latest-run"
+          },
+          "style": {
+            "width": "50%",
+            "height": "300px"
+          }
+        },
+        {
+          "id": "test-tree",
+          "type": "tree",
+          "data": {
+            "dataSourceId": "latest-run"
+          }
+        }
+      ]
+    },
+    {
+      "title": "Previous Run",
+      "path": "/previous",
+      "navIcon": "history",
+      "widgets": [
+        {
+          "id": "previous-test-tree",
+          "type": "tree",
+          "data": {
+            "dataSourceId": "previous-run"
+          }
+        }
+      ]
+    }
+  ]
+}
+```
