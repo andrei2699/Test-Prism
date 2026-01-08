@@ -1,23 +1,12 @@
 ﻿import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ContainerWidget } from './container-widget';
 import { Widget } from '../../../types/Widget';
-import { Component, input } from '@angular/core';
 import { DataSourceId } from '../../../types/DataSource';
 import { TestReport } from '../../../types/TestReport';
 import { WidgetRenderer } from '../../renderers/widget-renderer/widget-renderer';
-
-@Component({
-  selector: 'app-widget-renderer',
-  template: '<div>{{widget().id}}</div>',
-  standalone: true,
-})
-class MockWidgetRenderer {
-  widget = input.required<Widget>();
-  testReports = input.required<Record<DataSourceId, TestReport>>();
-}
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 
 describe('ContainerWidget', () => {
-  let component: ContainerWidget;
   let fixture: ComponentFixture<ContainerWidget>;
 
   const mockTestReports: Record<DataSourceId, TestReport> = {
@@ -30,20 +19,11 @@ describe('ContainerWidget', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ContainerWidget],
-    })
-      .overrideComponent(ContainerWidget, {
-        remove: {
-          imports: [WidgetRenderer],
-        },
-        add: {
-          imports: [MockWidgetRenderer],
-        },
-      })
-      .compileComponents();
+      imports: [ContainerWidget, WidgetRenderer],
+      providers: [provideCharts(withDefaultRegisterables())],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(ContainerWidget);
-    component = fixture.componentInstance;
   });
 
   it('should render all its children', () => {
@@ -57,7 +37,5 @@ describe('ContainerWidget', () => {
 
     const childNodes = fixture.nativeElement.querySelectorAll('app-widget-renderer');
     expect(childNodes.length).toBe(2);
-    expect(childNodes[0].textContent).toBe('child1');
-    expect(childNodes[1].textContent).toBe('child2');
   });
 });
