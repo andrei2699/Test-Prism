@@ -44,7 +44,7 @@ The `WidgetType` can be one of the following:
 - `'container'`: A widget that groups other widgets.
 - `'tree'`: A widget that displays data in a tree structure.
 - `'distribution-pie'`: A widget that displays data in a pie chart.
-- `'analysis-summary'`: A widget that displays a summary of the analysis.
+- `'summary'`: A widget that displays a summary of the analysis.
 
 ### `WidgetData`
 
@@ -56,6 +56,16 @@ The `WidgetType` can be one of the following:
 ## Available Widgets
 
 This section describes the available widgets and their parameters.
+
+### Summary Widget (`summary`)
+
+The Summary Widget displays a summary of the test results, including the total number of tests and the number of tests in each status (passed, failed, skipped, error).
+
+#### Parameters (`SummaryWidgetParameters`)
+
+| Field   | Type     | Description                                                         |
+| ------- | -------- | ------------------------------------------------------------------- |
+| `title` | `string` | (Optional) The title of the widget. Defaults to "Analysis Summary". |
 
 ### Container Widget (`container`)
 

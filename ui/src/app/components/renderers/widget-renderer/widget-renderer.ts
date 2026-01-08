@@ -7,10 +7,17 @@ import { Widget } from '../../../types/Widget';
 import { DataFilterService } from '../../../services/data-filter.service';
 import { ContainerWidget } from '../../widgets/container-widget/container-widget';
 import { NgStyle } from '@angular/common';
+import { SummaryWidgetComponent } from '../../widgets/summary-widget/summary-widget';
 
 @Component({
   selector: 'app-widget-renderer',
-  imports: [TestDistributionPie, TreeWidget, forwardRef(() => ContainerWidget), NgStyle],
+  imports: [
+    TestDistributionPie,
+    TreeWidget,
+    forwardRef(() => ContainerWidget),
+    NgStyle,
+    SummaryWidgetComponent,
+  ],
   templateUrl: './widget-renderer.html',
   styleUrl: './widget-renderer.css',
 })
@@ -32,5 +39,15 @@ export class WidgetRenderer {
     }
 
     return tests;
+  });
+
+  date = computed<string | null>(() => {
+    const widget = this.widget();
+    const testReports = this.testReports();
+
+    const dataSourceId = widget.data.dataSourceId;
+    const testReport = testReports[dataSourceId];
+
+    return testReport?.date;
   });
 }
