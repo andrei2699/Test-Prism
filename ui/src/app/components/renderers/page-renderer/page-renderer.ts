@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, computed, input } from '@angular/core';
 import { Page } from '../../../types/Layout';
 import { WidgetRenderer } from '../widget-renderer/widget-renderer';
 import { Test } from '../../../types/TestReport';
@@ -10,6 +10,13 @@ import { Test } from '../../../types/TestReport';
   styleUrl: './page-renderer.css',
 })
 export class PageRenderer {
-  page = input.required<Page>();
+  pages = input.required<Page[]>();
   tests = input.required<Test[]>();
+  path = input.required<string | null>();
+
+  page = computed<Page>(() => {
+    const pages = this.pages();
+    const path = this.path();
+    return pages.find(page => page.path.toLowerCase().trim().replace('/', '') === path) ?? pages[0];
+  });
 }
