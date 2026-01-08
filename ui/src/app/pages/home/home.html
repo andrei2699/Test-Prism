@@ -10,9 +10,9 @@
     <app-loading message="Loading test page..." />
   } @else if (layout.error()) {
     <app-error-message
-      title="Error Loading PAge"
+      title="Error Loading Page"
       [message]="layout.error()!.message"
-      hint="Ensure the LAYOUT_FILE environment variable is set and points to a valid JSON file." />
+      hint="Ensure the LAYOUT_URL environment variable is set and points to a valid JSON file." />
   } @else if (layout.hasValue()) {
     <app-page-renderer
       [pages]="this.layout.value().pages"
