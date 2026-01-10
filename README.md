@@ -4,8 +4,7 @@
 
 **Test Prism** is a unified test result parser and visualization dashboard. It provides a high-performance Rust-based CLI to normalize various test reports into a standard JSON format, and a modern Angular dashboard to visualize the results.
 
-[//]: # (TODO: update image link)
-[//]: # (![Dashboard Screenshot]&#40;./docs/public/dashboard-view.png&#41;)
+![Dashboard Screenshot](docs/public/features/overview.png)
 
 The goal is to provide a clear, interactive, and insightful view into your test execution cycles, helping you identify failures, track performance, and understand trends.
 
@@ -40,9 +39,11 @@ cargo run -- parse --report-type junit --input /path/to/report.xml --output test
 Create a `Dockerfile` to bundle the generated `test-results.json` with the UI.
 
 ```dockerfile
-FROM test-prism-ui:latest
-COPY test-results.json /test-results/results.json
-ENV TEST_RESULTS_FILE=/test-results/results.json
+FROM andreitimar/test-prism:ui-latest
+
+COPY app-config.json /usr/share/nginx/html/app-config.json
+COPY layout.json /usr/share/nginx/html/layout.json
+COPY test-results.json /usr/share/nginx/html/test-results.json
 ```
 
 Build and run the container:
