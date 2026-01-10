@@ -1,7 +1,7 @@
 ﻿use crate::test_models::TestStatus;
 use serde::{Deserialize, Serialize};
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Clone)]
 pub struct TestReport {
     pub version: u8,
     pub date: String,
@@ -20,7 +20,7 @@ pub enum TestReportStatus {
     Error,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Clone)]
 pub struct TestReportTest {
     #[serde(rename = "lastExecutionType")]
     pub last_execution_type: TestReportStatus,
@@ -30,6 +30,8 @@ pub struct TestReportTest {
     pub duration_ms: u64,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub message: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub tags: Option<Vec<String>>,
 }
 
 impl TestReportStatus {
