@@ -36,6 +36,7 @@ fn parse_file(parser: &impl TestParser, path_str: &str, path: &Path) -> Vec<Test
                     path: suite.name.clone(),
                     duration_ms: (test.time * 1000.0) as u64,
                     message: TestReportTest::message_from_test_status(test.status.clone()),
+                    tags: None,
                 })
             })
             .collect(),

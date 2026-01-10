@@ -1,6 +1,7 @@
 use chrono;
 use clap::Parser as ClapParser;
 use parser::commands::parse_command::parse_command;
+use parser::commands::tag_command::tag_command;
 
 #[derive(ClapParser, Debug)]
 #[command(version, about, long_about = None)]
@@ -21,6 +22,16 @@ enum Commands {
         #[arg(short, long, help = "Output file path")]
         output: Option<String>,
     },
+    Tag {
+        #[arg(short, long, help = "Input file path")]
+        input: String,
+
+        #[arg(short, long, help = "Output file path")]
+        output: Option<String>,
+
+        #[arg(long, help = "Tag to add in the format 'expression:tag1,tag2'")]
+        tag: Vec<String>,
+    },
 }
 
 fn main() {
@@ -37,5 +48,12 @@ fn main() {
             output.unwrap_or("output.json".to_string()),
             chrono::Utc::now().to_string(),
         ),
+        Commands::Tag {
+            input,
+            output,
+            tag,
+        } => {
+            tag_command(input, output, tag);
+        }
     }
 }
