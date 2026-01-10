@@ -1,83 +1,170 @@
 ﻿{
   "dataSources": [
     {
-      "id": "main",
-      "url": "http://localhost:3000/large_data_set"
-    },
-    {
-      "id": "small",
+      "id": "all",
       "url": "http://localhost:3000/small_data_set"
     }
   ],
   "pages": [
     {
-      "title": "Main Report",
+      "title": "Dashboard",
+      "path": "",
       "navIcon": "home",
-      "path": "/",
       "widgets": [
         {
-          "id": "summary",
-          "type": "summary",
-          "data": {
-            "dataSourceId": "main"
+          "id": "dashboard-page-container",
+          "type": "container",
+          "style": {
+            "display": "flex",
+            "flexDirection": "column",
+            "padding": "20px",
+            "gap": "20px"
           },
-          "parameters": {
-            "title": "My Tests"
-          }
-        },
+          "children": [
+            {
+              "id": "summary",
+              "type": "summary",
+              "data": {
+                "dataSourceId": "all"
+              },
+              "parameters": {
+                "title": "Overall Summary"
+              }
+            },
+            {
+              "id": "pie-charts-container",
+              "type": "container",
+              "style": {
+                "display": "flex",
+                "flexDirection": "row",
+                "justifyContent": "center",
+                "gap": "20px"
+              },
+              "children": [
+                {
+                  "id": "status-pie",
+                  "type": "distribution-pie",
+                  "data": {
+                    "dataSourceId": "all"
+                  },
+                  "style": {
+                    "flex": "1"
+                  },
+                  "parameters": {
+                    "title": "Execution Status",
+                    "strategy": "status"
+                  }
+                },
+                {
+                  "id": "duration-pie",
+                  "type": "distribution-pie",
+                  "data": {
+                    "dataSourceId": "all"
+                  },
+                  "style": {
+                    "flex": "1"
+                  },
+                  "parameters": {
+                    "title": "Execution Duration",
+                    "strategy": "duration",
+                    "strategyParameters": {
+                      "intervals": [
+                        {
+                          "label": "Fast",
+                          "color": "#4caf50",
+                          "max": 1000
+                        },
+                        {
+                          "label": "Medium",
+                          "color": "#ff9800",
+                          "min": 1000,
+                          "max": 5000
+                        },
+                        {
+                          "label": "Slow",
+                          "color": "#f44336",
+                          "min": 5000
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "id": "e2e-summary",
+              "type": "summary",
+              "data": {
+                "dataSourceId": "all",
+                "filter": {
+                  "operator": "AND",
+                  "conditions": [
+                    {
+                      "field": "tags",
+                      "operator": "contains",
+                      "value": "end-to-end"
+                    }
+                  ]
+                }
+              },
+              "parameters": {
+                "title": "End-to-End Tests Summary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Tests",
+      "path": "tests",
+      "navIcon": "list",
+      "widgets": [
         {
-          "id": "overview-distribution-pie",
-          "type": "distribution-pie",
-          "data": {
-            "dataSourceId": "main"
-          }
-        },
-        {
-          "id": "tests-tree",
+          "id": "test-tree",
           "type": "tree",
           "data": {
-            "dataSourceId": "small",
+            "dataSourceId": "all"
+          },
+          "style": {
+            "padding": "20px"
+          },
+          "parameters": {
+            "title": "All Tests",
+            "strategy": "folder",
+            "sortStrategies": ["name"]
+          }
+        }
+      ]
+    },
+    {
+      "title": "E2E Tests",
+      "path": "e2e",
+      "navIcon": "bug_report",
+      "widgets": [
+        {
+          "id": "e2e-test-tree",
+          "type": "tree",
+          "data": {
+            "dataSourceId": "all",
             "filter": {
               "operator": "AND",
               "conditions": [
                 {
-                  "field": "lastExecutionType",
-                  "operator": "!=",
-                  "value": "SKIPPED"
+                  "field": "tags",
+                  "operator": "contains",
+                  "value": "end-to-end"
                 }
               ]
             }
           },
+          "style": {
+            "padding": "20px"
+          },
           "parameters": {
-            "title": "Tests"
-          }
-        }
-      ]
-    },
-    {
-      "title": "The same Page",
-      "path": "/path",
-      "navIcon": "category",
-      "widgets": [
-        {
-          "id": "overview-distribution-pie",
-          "type": "distribution-pie",
-          "data": {
-            "dataSourceId": "main"
-          }
-        }
-      ]
-    },
-    {
-      "title": "yet another one",
-      "path": "another-one",
-      "navIcon": "place",
-      "widgets": [
-        {
-          "id": "tree",
-          "type": "tree",
-          "data": {
-            "dataSourceId": "main"
+            "title": "End-to-End Tests",
+            "strategy": "folder",
+            "sortStrategies": ["name"]
           }
         }
       ]
