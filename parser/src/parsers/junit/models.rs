@@ -1,5 +1,20 @@
 ﻿use serde::Deserialize;
 
+#[derive(Debug, PartialEq, Deserialize)]
+pub enum JunitRoot {
+    #[serde(rename = "testsuites")]
+    TestSuites(JunitTestSuites),
+    #[serde(rename = "testsuite")]
+    TestSuite(JunitTestSuite),
+}
+
+#[derive(Debug, PartialEq, Default, Deserialize)]
+#[serde(default)]
+pub struct JunitTestSuites {
+    #[serde(rename = "testsuite", default)]
+    pub test_suites: Vec<JunitTestSuite>,
+}
+
 #[derive(Debug, PartialEq, Default, Deserialize)]
 #[serde(default)]
 pub struct JunitTestSuite {
