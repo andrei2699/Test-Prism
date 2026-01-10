@@ -1,21 +1,33 @@
-<div class="widget-container">
-  @if (parameters()?.title) {
-    <h2>{{ parameters()?.title }}</h2>
-  }
-  <app-test-filter-input (filterChanged)="onFilterChange($event)" />
+<mat-drawer-container class="widget-container" hasBackdrop="false">
+  <mat-drawer
+    #drawer
+    mode="over"
+    position="end"
+    [opened]="!!selectedTest()"
+    (closedStart)="closeDrawer()">
+    @if (selectedTest()) {
+      <app-test-details-drawer
+        [test]="selectedTest()!"
+        [colors]="colors()"
+        (close)="drawer.close()" />
+    }
+  </mat-drawer>
 
-  <app-test-tree
-    [colors]="colors()"
-    [tests]="tests()"
-    [strategy]="treeOrganizationStrategy()"
-    [filterStrategy]="filterStrategy()"
-    [sortStrategies]="sortStrategies()"
-    (testSelected)="onTestSelected($event)" />
+  <mat-drawer-content>
+    <div class="content-wrapper">
+      @if (parameters()?.title) {
+        <h2>{{ parameters()?.title }}</h2>
+      }
+      <app-test-filter-input (filterChanged)="onFilterChange($event)" />
 
-  @if (selectedTest()) {
-    <app-test-details-drawer
-      [test]="selectedTest()!"
-      [colors]="colors()"
-      (close)="closeDrawer()" />
-  }
-</div>
+      <app-test-tree
+        [colors]="colors()"
+        [tests]="tests()"
+        [strategy]="treeOrganizationStrategy()"
+        [filterStrategy]="filterStrategy()"
+        [sortStrategies]="sortStrategies()"
+        [selectedTest]="selectedTest()"
+        (testSelected)="onTestSelected($event)" />
+    </div>
+  </mat-drawer-content>
+</mat-drawer-container>

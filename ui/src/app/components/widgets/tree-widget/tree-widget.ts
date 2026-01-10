@@ -1,4 +1,5 @@
 import { Component, computed, input, signal } from '@angular/core';
+import { MatSidenavModule } from '@angular/material/sidenav';
 import {
   FilterState,
   TestFilterInputComponent,
@@ -22,7 +23,7 @@ export interface TreeWidgetParameters {
 
 @Component({
   selector: 'app-tree-widget',
-  imports: [TestFilterInputComponent, TestTree, TestDetailsDrawer],
+  imports: [MatSidenavModule, TestFilterInputComponent, TestTree, TestDetailsDrawer],
   templateUrl: './tree-widget.html',
   styleUrl: './tree-widget.css',
 })

@@ -1,7 +1,17 @@
 .widget-container {
-  position: relative;
+  min-height: 360px;
+  height: 100%;
+  background-color: transparent;
+}
+
+.content-wrapper {
   height: 100%;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+}
+
+mat-drawer {
+  width: 400px;
+  border-left: 1px solid #e0e0e0;
 }

@@ -43,6 +43,7 @@ export class TestTree {
   strategy = input.required<TreeOrganizationStrategy>();
   filterStrategy = input.required<TestFilterStrategy | null>();
   sortStrategies = input.required<TreeSortStrategy[]>();
+  selectedTest = input<Test | null>(null);
   testSelected = output<Test>();
 
   filteredTests = computed<Test[]>(() => {
@@ -70,5 +71,9 @@ export class TestTree {
     if (node.test) {
       this.testSelected.emit(node.test);
     }
+  }
+
+  isNodeSelected(node: TestTreeNode): boolean {
+    return !!node.test && node.test === this.selectedTest();
   }
 }

@@ -31,3 +31,11 @@
 .clickable:hover {
   background-color: rgba(0, 0, 0, 0.04);
 }
+
+.selected {
+  background-color: rgba(0, 0, 0, 0.08);
+}
+
+.selected:hover {
+  background-color: rgba(0, 0, 0, 0.12);
+}

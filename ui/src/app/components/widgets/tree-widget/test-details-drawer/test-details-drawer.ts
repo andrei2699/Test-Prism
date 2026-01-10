@@ -18,8 +18,8 @@ export class TestDetailsDrawer {
   close = output<void>();
 
   testDuration = computed<number>(() => {
-    return this.test().durationMs??0;
-  })
+    return this.test().durationMs ?? 0;
+  });
 
   get statusColor(): string {
     return this.colors()[this.test().lastExecutionType] || 'inherit';

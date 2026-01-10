@@ -6,7 +6,8 @@
       *matTreeNodeDef="let node"
       matTreeNodePadding
       (click)="onNodeClick(node)"
-      [class.clickable]="!!node.test">
+      [class.clickable]="!!node.test"
+      [class.selected]="isNodeSelected(node)">
       <button matIconButton disabled></button>
       <mat-icon [style.color]="getColor(node)">
         {{ getIcon(node) }}
