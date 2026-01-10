@@ -14,15 +14,15 @@ Dashboard.
 
 ## Command Structure
 
-The CLI is invoked using the `parse` subcommand.
+The CLI is invoked using one of the following subcommands: `parse` or `tag`
 
 ```bash
-test-prism-parser parse [OPTIONS]
+test-prism-parser <COMMAND> [OPTIONS]
 ```
 
 _(Note: If you are running from source, replace `test-prism-parser` with `cargo run --`)_
 
-## Parameters
+## `parse` command
 
 The `parse` command accepts the following arguments:
 
@@ -50,9 +50,16 @@ The path where the resulting JSON file will be saved.
 - **Example**: `./assets/test-results.json`
 - **Description**: If not provided, the parser will create a file named `output.json` in the current working directory.
 
-## Examples
+### `--tag` (Optional)
 
-### Basic Usage
+A key-value pair to tag all the tests in the report. Can be specified multiple times.
+
+- **Example**: `--tag "owner:squad-a"`
+- **Description**: This is useful for adding metadata to the tests, such as the team that owns them.
+
+### Examples
+
+#### Basic Usage
 
 Parse a JUnit XML file and save the result to the default `output.json`:
 
@@ -60,10 +67,55 @@ Parse a JUnit XML file and save the result to the default `output.json`:
 test-prism-parser parse --report-type junit --input ./build/test-results.xml
 ```
 
-### Custom Output Path
+#### Custom Output Path
 
 Parse a report and save it directly to the UI's assets folder (useful for local development):
 
 ```bash
 test-prism-parser parse --report-type junit --input ./results.xml --output ./ui/src/assets/test-results.json
+```
+
+#### Tagging all tests
+
+Parse a report and tag all tests with `owner:squad-a`:
+
+```bash
+test-prism-parser parse --report-type junit --input ./results.xml --tag "owner:squad-a"
+```
+
+## `tag` command
+
+The `tag` command allows you to add, remove, or update tags for tests in a JSON file.
+
+### `--input` (Required)
+
+The path to the source JSON file.
+
+- **Example**: `./assets/test-results.json`
+
+### `--output` (Optional)
+
+The path where the resulting JSON file will be saved.
+
+- **Default**: The input file will be overwritten.
+- **Example**: `./assets/test-results-tagged.json`
+
+### `--tag` (Required)
+
+A string that specifies the tag to add, remove, or update. The format is `expression:operation:tag1,tag2`.
+
+- **expression**: A regular expression to match against the test name.
+- **operation**: Can be `add`, `remove`, or `update`.
+- **tags**: A comma-separated list of tags.
+
+- **Example**: `--tag ".*:add:smoke,regression"`
+
+### Example
+
+#### Tagging specific tests
+
+Add the `smoke` and `regression` tags to all tests in a JSON file:
+
+```bash
+test-prism-parser tag --input ./assets/test-results.json --tag ".*:add:smoke,regression"
 ```
