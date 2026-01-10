@@ -3,7 +3,6 @@ import { TestFilterInputComponent } from './test-filter-input.component';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { vi } from 'vitest';
 
 describe('TestFilterInputComponent', () => {
@@ -12,17 +11,12 @@ describe('TestFilterInputComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        TestFilterInputComponent,
-        FormsModule,
-        MatFormFieldModule,
-        MatInputModule,
-        NoopAnimationsModule,
-      ],
+      imports: [TestFilterInputComponent, FormsModule, MatFormFieldModule, MatInputModule],
     }).compileComponents();
 
     fixture = TestBed.createComponent(TestFilterInputComponent);
     component = fixture.componentInstance;
+    fixture.componentRef.setInput('tests', []);
     fixture.detectChanges();
   });
 
@@ -44,13 +38,13 @@ describe('TestFilterInputComponent', () => {
     const spy = vi.spyOn(component.filterChanged, 'emit');
     const testTagFilterText = 'UI, Tree';
 
-    component.tagFilterText.set(testTagFilterText);
+    component.filterText.set(testTagFilterText);
     component.onFilterChange();
 
     expect(spy).toHaveBeenCalledWith({
-      name: '',
+      name: 'UI, Tree',
       statuses: [],
-      tags: ['UI', 'Tree'],
+      tags: [],
     });
   });
 

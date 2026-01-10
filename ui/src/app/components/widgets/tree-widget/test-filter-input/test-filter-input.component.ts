@@ -1,9 +1,10 @@
-﻿import { Component, output, signal } from '@angular/core';
+﻿import { Component, computed, input, output, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { TestExecutionType } from '../../../../types/TestReport';
+import { Test, TestExecutionType } from '../../../../types/TestReport';
+import { TagFilterInputComponent } from '../tag-filter-input/tag-filter-input.component';
 
 export interface FilterState {
   name: string;
@@ -13,20 +14,43 @@ export interface FilterState {
 
 @Component({
   selector: 'app-test-filter-input',
-  imports: [FormsModule, MatFormFieldModule, MatInputModule, MatCheckboxModule],
+  imports: [
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatCheckboxModule,
+    TagFilterInputComponent,
+  ],
   templateUrl: './test-filter-input.component.html',
   styleUrl: './test-filter-input.component.css',
 })
 export class TestFilterInputComponent {
+  tests = input.required<Test[]>();
+
   filterText = signal<string>('');
-  tagFilterText = signal<string>('');
   selectedStatuses = signal<Set<TestExecutionType>>(new Set());
+  selectedTags = signal<string[]>([]);
+
+  allTags = computed(() => {
+    const tags = new Set<string>();
+    for (const test of this.tests()) {
+      for (const tag of test.tags ?? []) {
+        tags.add(tag);
+      }
+    }
+    return Array.from(tags);
+  });
 
   statusOptions: TestExecutionType[] = ['SUCCESS', 'FAILURE', 'SKIPPED', 'ERROR'];
 
   filterChanged = output<FilterState>();
 
   onFilterChange(): void {
+    this.emitFilterState();
+  }
+
+  onTagsChanged(tags: string[]): void {
+    this.selectedTags.set(tags);
     this.emitFilterState();
   }
 
@@ -49,11 +73,7 @@ export class TestFilterInputComponent {
     this.filterChanged.emit({
       name: this.filterText(),
       statuses: Array.from(this.selectedStatuses()),
-      tags: this.tagFilterText()
-        ? this.tagFilterText()
-            .split(',')
-            .map(tag => tag.trim())
-        : [],
+      tags: this.selectedTags(),
     });
   }
 }
