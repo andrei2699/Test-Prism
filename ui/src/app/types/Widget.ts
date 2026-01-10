@@ -1,6 +1,6 @@
 ﻿import { DataSourceId } from './DataSource';
 import { TreeWidgetParameters } from '../components/widgets/tree-widget/tree-widget';
-import { TestDistributionPieParameters } from '../components/widgets/test-distribution-pie/test-distribution-pie';
+import { TestDistributionPieParameters } from '../components/widgets/test-distribution-pie-widget/test-distribution-pie-widget';
 import { SummaryWidgetParameters } from '../components/widgets/summary-widget/summary-widget';
 
 export type WidgetType = 'container' | 'tree' | 'distribution-pie' | 'summary';

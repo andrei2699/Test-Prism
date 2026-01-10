@@ -1,0 +1,7 @@
+﻿@if (parameters()?.title) {
+  <h2>{{ parameters()?.title }}</h2>
+}
+<app-test-distribution-pie
+  [colors]="colors()"
+  [tests]="tests()"
+  [strategy]="strategy()"></app-test-distribution-pie>

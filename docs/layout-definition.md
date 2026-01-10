@@ -130,6 +130,7 @@ The Test Distribution Pie widget displays a pie chart showing the distribution o
 
 | Field                | Type     | Description                                                                                             |
 | -------------------- | -------- | ------------------------------------------------------------------------------------------------------- |
+| `title`              | `string` | (Optional) The title of the widget.                                                                     |
 | `strategy`           | `string` | The distribution strategy for the pie chart. Possible values are `'status'` (default) and `'duration'`. |
 | `strategyParameters` | `object` | (Optional) Parameters for the selected strategy.                                                        |
 
@@ -407,6 +408,9 @@ Here is a complete example of a `Layout` configuration that combines multiple pa
         {
           "id": "summary-pie",
           "type": "distribution-pie",
+          "parameters": {
+            "title": "Execution Status"
+          },
           "data": {
             "dataSourceId": "latest-run"
           },

@@ -1,5 +1,5 @@
 import { Component, computed, forwardRef, inject, input } from '@angular/core';
-import { TestDistributionPie } from '../../widgets/test-distribution-pie/test-distribution-pie';
+import { TestDistributionPieWidget } from '../../widgets/test-distribution-pie-widget/test-distribution-pie-widget';
 import { Test, TestReport } from '../../../types/TestReport';
 import { TreeWidget } from '../../widgets/tree-widget/tree-widget';
 import { DataSourceId } from '../../../types/DataSource';
@@ -13,7 +13,7 @@ import { TestColors } from '../../../types/Layout';
 @Component({
   selector: 'app-widget-renderer',
   imports: [
-    TestDistributionPie,
+    TestDistributionPieWidget,
     TreeWidget,
     forwardRef(() => ContainerWidget),
     NgStyle,
