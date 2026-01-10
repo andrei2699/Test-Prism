@@ -88,7 +88,7 @@ This section describes the available widgets and their parameters.
 The Summary Widget displays a summary of the test results, including the total number of tests and the number of tests
 in each status (passed, failed, skipped, error).
 
-![summary-widget](/features/widgets/summary-widget.png)
+![summary-widget](/images/features/widgets/summary-widget.png)
 
 #### Parameters (`SummaryWidgetParameters`)
 
@@ -110,7 +110,7 @@ rendered inside the container.
 The Tree Widget displays test results in a hierarchical tree structure. It allows for filtering and sorting of the
 tests.
 
-![tree-widget](/features/widgets/tree-widget.png)
+![tree-widget](/images/features/widgets/tree-widget.png)
 
 #### Parameters (`TreeWidgetParameters`)
 
@@ -124,7 +124,7 @@ tests.
 
 The Test Distribution Pie widget displays a pie chart showing the distribution of test results.
 
-![distribution-pie-widget](/features/widgets/distribution-pie-widget.png)
+![distribution-pie-widget](/images/features/widgets/distribution-pie-widget.png)
 
 #### Parameters (`TestDistributionPieParameters`)
 

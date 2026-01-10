@@ -15,7 +15,7 @@ the [Layout Definition documentation](layout-definition.md).
 The main report view is the primary interface for visualizing your test data. It is composed of configurable widgets
 that provide different perspectives on your test results.
 
-![Dashboard Overview](/features/overview.png)
+![Dashboard Overview](/images/features/overview.png)
 
 Common widgets include:
 
