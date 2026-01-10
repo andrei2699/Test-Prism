@@ -48,6 +48,7 @@ describe('TestTree Component', () => {
 
     fixture = TestBed.createComponent(TestTree);
     component = fixture.componentInstance;
+    fixture.componentRef.setInput('tests', []);
     fixture.componentRef.setInput('filterStrategy', null);
     fixture.componentRef.setInput('strategy', createMockTreeOrganizationStrategy());
     fixture.componentRef.setInput('sortStrategies', []);
@@ -57,6 +58,7 @@ describe('TestTree Component', () => {
       SKIPPED: 'yellow',
       ERROR: 'orange',
     } satisfies TestColors);
+    fixture.componentRef.setInput('selectedTest', null);
   });
 
   describe('dataSource Computed Signal', () => {
@@ -547,6 +549,84 @@ describe('TestTree Component', () => {
 
       const noTestsMessage = fixture.nativeElement.querySelector('.no-tests-message');
       expect(noTestsMessage).toBeFalsy();
+    });
+  });
+
+  describe('onNodeClick', () => {
+    it('should emit testSelected when node has a test', () => {
+      const test: Test = {
+        name: 'test1',
+        path: '/test1',
+        lastExecutionType: 'SUCCESS',
+        durationMs: 1500,
+      };
+      const node: TestTreeNode = { name: 'test1', test };
+      const spy = vi.fn();
+      component.testSelected.subscribe(spy);
+
+      component.onNodeClick(node);
+
+      expect(spy).toHaveBeenCalledWith(test);
+    });
+
+    it('should not emit testSelected when node does not have a test', () => {
+      const node: TestTreeNode = { name: 'folder' };
+      const spy = vi.fn();
+      component.testSelected.subscribe(spy);
+
+      component.onNodeClick(node);
+
+      expect(spy).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('isNodeSelected', () => {
+    it('should return true if node test matches selected test', () => {
+      const test: Test = {
+        name: 'test1',
+        path: '/test1',
+        lastExecutionType: 'SUCCESS',
+        durationMs: 1500,
+      };
+      const node: TestTreeNode = { name: 'test1', test };
+      fixture.componentRef.setInput('selectedTest', test);
+      fixture.detectChanges();
+
+      expect(component.isNodeSelected(node)).toBe(true);
+    });
+
+    it('should return false if node test does not match selected test', () => {
+      const test1: Test = {
+        name: 'test1',
+        path: '/test1',
+        lastExecutionType: 'SUCCESS',
+        durationMs: 1500,
+      };
+      const test2: Test = {
+        name: 'test2',
+        path: '/test2',
+        lastExecutionType: 'FAILURE',
+        durationMs: 2000,
+      };
+      const node: TestTreeNode = { name: 'test1', test: test1 };
+      fixture.componentRef.setInput('selectedTest', test2);
+      fixture.detectChanges();
+
+      expect(component.isNodeSelected(node)).toBe(false);
+    });
+
+    it('should return false if node has no test', () => {
+      const test: Test = {
+        name: 'test1',
+        path: '/test1',
+        lastExecutionType: 'SUCCESS',
+        durationMs: 1500,
+      };
+      const node: TestTreeNode = { name: 'folder' };
+      fixture.componentRef.setInput('selectedTest', test);
+      fixture.detectChanges();
+
+      expect(component.isNodeSelected(node)).toBe(false);
     });
   });
 });

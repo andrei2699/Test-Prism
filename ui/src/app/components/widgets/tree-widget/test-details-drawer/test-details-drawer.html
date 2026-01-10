@@ -1,0 +1,41 @@
+﻿<div class="drawer-header">
+  <h3>Test Details</h3>
+  <button mat-icon-button (click)="close.emit()">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<div class="drawer-content">
+  <div class="detail-row">
+    <span class="label">Name:</span>
+    <span class="value">{{ test().name }}</span>
+  </div>
+
+  <div class="detail-row">
+    <span class="label">Status:</span>
+    <span class="value" [style.color]="statusColor">
+      {{ test().lastExecutionType }}
+    </span>
+  </div>
+
+  <div class="detail-row">
+    <span class="label">Duration:</span>
+    <span class="value">{{ testDuration() | humanizeDuration }}</span>
+  </div>
+
+  <div class="detail-row">
+    <span class="label">Path:</span>
+    <span class="value path">{{ test().path }}</span>
+  </div>
+
+  @if (test().tags?.length) {
+    <div class="detail-row">
+      <span class="label">Tags:</span>
+      <div class="tags">
+        @for (tag of test().tags; track tag) {
+          <span class="tag">{{ tag }}</span>
+        }
+      </div>
+    </div>
+  }
+</div>

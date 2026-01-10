@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatIconModule } from '@angular/material/icon';
@@ -43,6 +43,8 @@ export class TestTree {
   strategy = input.required<TreeOrganizationStrategy>();
   filterStrategy = input.required<TestFilterStrategy | null>();
   sortStrategies = input.required<TreeSortStrategy[]>();
+  selectedTest = input<Test | null>(null);
+  testSelected = output<Test>();
 
   filteredTests = computed<Test[]>(() => {
     const filter = this.filterStrategy();
@@ -64,4 +66,14 @@ export class TestTree {
   getIcon = (node: TestTreeNode): string => this.strategy().getIcon(node);
 
   getColor = (node: TestTreeNode): string => this.strategy().getColor(node, this.colors());
+
+  onNodeClick(node: TestTreeNode) {
+    if (node.test) {
+      this.testSelected.emit(node.test);
+    }
+  }
+
+  isNodeSelected(node: TestTreeNode): boolean {
+    return !!node.test && node.test === this.selectedTest();
+  }
 }
