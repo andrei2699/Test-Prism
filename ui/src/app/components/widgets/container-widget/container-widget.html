@@ -1,6 +1,8 @@
-﻿@for (child of children(); track child.id) {
-  <app-widget-renderer
-    [colors]="colors()"
-    [widget]="child"
-    [testReports]="testReports()"></app-widget-renderer>
-}
+﻿<div [ngStyle]="style()">
+  @for (child of children(); track child.id) {
+    <app-widget-renderer
+      [colors]="colors()"
+      [widget]="child"
+      [testReports]="testReports()"></app-widget-renderer>
+  }
+</div>

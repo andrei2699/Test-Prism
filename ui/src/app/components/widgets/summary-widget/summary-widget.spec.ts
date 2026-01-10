@@ -31,8 +31,8 @@ describe('SummaryWidgetComponent', () => {
 
     fixture.detectChanges();
 
-    const contentElement = fixture.nativeElement.querySelector('mat-card-content');
-    const expectedDate = new DatePipe('en-US').transform(testDate, 'fullDate');
+    const contentElement = fixture.nativeElement.querySelector('mat-card-subtitle');
+    const expectedDate = new DatePipe('en-US').transform(testDate, 'medium');
     expect(contentElement.textContent).toContain(expectedDate);
   });
 

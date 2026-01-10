@@ -1,9 +1,11 @@
 ﻿<mat-card>
   <mat-card-header>
     <mat-card-title>{{ title() }}</mat-card-title>
+    @if (date()) {
+      <mat-card-subtitle>{{ date() | date: 'medium' }}</mat-card-subtitle>
+    }
   </mat-card-header>
   <mat-card-content>
-    <p>Date: {{ date() | date: 'fullDate' }}</p>
     <mat-chip-listbox>
       <mat-chip-option [selectable]="false" [style.background-color]="'#e0e0e0'"
         >Total: {{ summary().total }}
