@@ -12,6 +12,7 @@ import { CompositeFilterStrategy } from './strategies/filter/composite-filter.st
 import { TreeOrganizationStrategyFactory } from './strategies/organization/tree-organization-strategy.factory';
 import { TreeSortStrategy } from './strategies/sort/tree-sort-strategy.interface';
 import { TestColors } from '../../../types/Layout';
+import { TestDetailsDrawer } from './test-details-drawer/test-details-drawer';
 
 export interface TreeWidgetParameters {
   title?: string;
@@ -21,7 +22,7 @@ export interface TreeWidgetParameters {
 
 @Component({
   selector: 'app-tree-widget',
-  imports: [TestFilterInputComponent, TestTree],
+  imports: [TestFilterInputComponent, TestTree, TestDetailsDrawer],
   templateUrl: './tree-widget.html',
   styleUrl: './tree-widget.css',
 })
@@ -33,6 +34,8 @@ export class TreeWidget {
   filterText = signal('');
   selectedStatuses = signal<TestExecutionType[]>([]);
   filterStrategy = signal(this.createFilterStrategy('', []));
+  selectedTest = signal<Test | null>(null);
+
   treeOrganizationStrategy = computed(() => {
     const strategy = this.parameters()?.strategy ?? 'folder';
 
@@ -48,6 +51,14 @@ export class TreeWidget {
     this.filterText.set(filterState.name);
     this.selectedStatuses.set(filterState.statuses);
     this.filterStrategy.set(this.createFilterStrategy(filterState.name, filterState.statuses));
+  }
+
+  onTestSelected(test: Test): void {
+    this.selectedTest.set(test);
+  }
+
+  closeDrawer(): void {
+    this.selectedTest.set(null);
   }
 
   private createFilterStrategy(name: string, statuses: TestExecutionType[]) {

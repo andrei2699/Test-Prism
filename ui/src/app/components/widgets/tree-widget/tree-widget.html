@@ -1,4 +1,4 @@
-<div>
+<div class="widget-container">
   @if (parameters()?.title) {
     <h2>{{ parameters()?.title }}</h2>
   }
@@ -9,5 +9,13 @@
     [tests]="tests()"
     [strategy]="treeOrganizationStrategy()"
     [filterStrategy]="filterStrategy()"
-    [sortStrategies]="sortStrategies()" />
+    [sortStrategies]="sortStrategies()"
+    (testSelected)="onTestSelected($event)" />
+
+  @if (selectedTest()) {
+    <app-test-details-drawer
+      [test]="selectedTest()!"
+      [colors]="colors()"
+      (close)="closeDrawer()" />
+  }
 </div>

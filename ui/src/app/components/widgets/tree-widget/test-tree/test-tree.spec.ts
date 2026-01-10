@@ -549,4 +549,32 @@ describe('TestTree Component', () => {
       expect(noTestsMessage).toBeFalsy();
     });
   });
+
+  describe('onNodeClick', () => {
+    it('should emit testSelected when node has a test', () => {
+      const test: Test = {
+        name: 'test1',
+        path: '/test1',
+        lastExecutionType: 'SUCCESS',
+        durationMs: 1500,
+      };
+      const node: TestTreeNode = { name: 'test1', test };
+      const spy = vi.fn();
+      component.testSelected.subscribe(spy);
+
+      component.onNodeClick(node);
+
+      expect(spy).toHaveBeenCalledWith(test);
+    });
+
+    it('should not emit testSelected when node does not have a test', () => {
+      const node: TestTreeNode = { name: 'folder' };
+      const spy = vi.fn();
+      component.testSelected.subscribe(spy);
+
+      component.onNodeClick(node);
+
+      expect(spy).not.toHaveBeenCalled();
+    });
+  });
 });

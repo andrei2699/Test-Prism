@@ -2,7 +2,11 @@
   <div class="no-tests-message">No tests to display.</div>
 } @else {
   <mat-tree #tree [dataSource]="dataSource()" [childrenAccessor]="childrenAccessor">
-    <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+    <mat-tree-node
+      *matTreeNodeDef="let node"
+      matTreeNodePadding
+      (click)="onNodeClick(node)"
+      [class.clickable]="!!node.test">
       <button matIconButton disabled></button>
       <mat-icon [style.color]="getColor(node)">
         {{ getIcon(node) }}

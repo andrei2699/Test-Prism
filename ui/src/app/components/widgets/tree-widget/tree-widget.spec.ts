@@ -132,4 +132,30 @@ describe('TreeWidget', () => {
       expect(nodes.length).toBe(4);
     });
   });
+
+  describe('Test Details Drawer', () => {
+    it('should not show drawer initially', () => {
+      const drawer = fixture.nativeElement.querySelector('app-test-details-drawer');
+      expect(drawer).toBeNull();
+    });
+
+    it('should show drawer when test is selected', () => {
+      component.onTestSelected(tests[0]);
+      fixture.detectChanges();
+
+      const drawer = fixture.nativeElement.querySelector('app-test-details-drawer');
+      expect(drawer).toBeTruthy();
+    });
+
+    it('should close drawer when closeDrawer is called', () => {
+      component.onTestSelected(tests[0]);
+      fixture.detectChanges();
+
+      component.closeDrawer();
+      fixture.detectChanges();
+
+      const drawer = fixture.nativeElement.querySelector('app-test-details-drawer');
+      expect(drawer).toBeNull();
+    });
+  });
 });
