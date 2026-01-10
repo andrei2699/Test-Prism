@@ -9,8 +9,12 @@ export class TagFilterStrategy implements TestFilterStrategy {
       return tests;
     }
 
+    const lowerCaseTags = this.tags.map(tag => tag.toLowerCase());
+
     return tests.filter(test => {
-      return this.tags.every(tag => test.tags?.includes(tag));
+      const testLowerCaseTags = test.tags?.map(tag => tag.toLowerCase()) ?? [];
+
+      return lowerCaseTags.every(tag => testLowerCaseTags.includes(tag));
     });
   }
 }

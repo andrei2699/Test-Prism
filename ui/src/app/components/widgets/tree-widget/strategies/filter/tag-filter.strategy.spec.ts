@@ -18,6 +18,22 @@ describe('TagFilterStrategy', () => {
     ]);
   });
 
+  it('should filter tests by tag case insensitive', () => {
+    const tests: Test[] = [
+      { name: 'test1', path: 'path1', lastExecutionType: 'SUCCESS', tags: ['tag1', 'tag2'] },
+      { name: 'test2', path: 'path2', lastExecutionType: 'SUCCESS', tags: ['tag2'] },
+      { name: 'test3', path: 'path3', lastExecutionType: 'SUCCESS', tags: ['tag1'] },
+    ];
+
+    const strategy = new TagFilterStrategy(['TAG1']);
+    const filteredTests = strategy.filter(tests);
+
+    expect(filteredTests).toEqual([
+      { name: 'test1', path: 'path1', lastExecutionType: 'SUCCESS', tags: ['tag1', 'tag2'] },
+      { name: 'test3', path: 'path3', lastExecutionType: 'SUCCESS', tags: ['tag1'] },
+    ]);
+  });
+
   it('should filter tests by multiple tags', () => {
     const tests: Test[] = [
       { name: 'test1', path: 'path1', lastExecutionType: 'SUCCESS', tags: ['tag1', 'tag2'] },
