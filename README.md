@@ -1,5 +1,7 @@
 # Test Prism
 
+![Test Prism Logo](docs/public/images/logo/logo_with_text.svg)
+
 **Test Prism** is a unified test result parser and visualization dashboard. It provides a high-performance Rust-based CLI to normalize various test reports into a standard JSON format, and a modern Angular dashboard to visualize the results.
 
 [//]: # (TODO: update image link)

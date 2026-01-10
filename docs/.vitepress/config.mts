@@ -4,7 +4,9 @@ export default defineConfig({
   title: 'Test Prism',
   description: 'A unified test result parser and visualization dashboard.',
   base: '/Test-Prism/',
+  head: [['link', { rel: 'icon', href: '/Test-Prism/images/logo/favicon.ico' }]],
   themeConfig: {
+    logo: '/images/logo/logo_without_text.svg',
     nav: [
       { text: 'Home', link: '/' },
       { text: 'Dashboard Features', link: '/features' },

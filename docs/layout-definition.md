@@ -24,7 +24,8 @@ See the [Examples](#examples) at the end of this document for a complete `Layout
 
 ## `TestColors`
 
-The `TestColors` object is a mapping from a `TestExecutionType` to a color string. The color can be any valid CSS color string, such as a hex code, RGB value, or color name.
+The `TestColors` object is a mapping from a `TestExecutionType` to a color string. The color can be any valid CSS color
+string, such as a hex code, RGB value, or color name.
 
 The possible values for `TestExecutionType` are:
 
@@ -84,7 +85,10 @@ This section describes the available widgets and their parameters.
 
 ### Summary Widget (`summary`)
 
-The Summary Widget displays a summary of the test results, including the total number of tests and the number of tests in each status (passed, failed, skipped, error).
+The Summary Widget displays a summary of the test results, including the total number of tests and the number of tests
+in each status (passed, failed, skipped, error).
+
+![summary-widget](/features/widgets/summary-widget.png)
 
 #### Parameters (`SummaryWidgetParameters`)
 
@@ -98,14 +102,15 @@ The Container Widget is used to group other widgets together. This is useful for
 
 #### Children
 
-The `container` widget has a `children` field, which is an array of `Widget` objects. These are the widgets that will be rendered inside the container.
+The `container` widget has a `children` field, which is an array of `Widget` objects. These are the widgets that will be
+rendered inside the container.
 
 ### Tree Widget (`tree`)
 
 The Tree Widget displays test results in a hierarchical tree structure. It allows for filtering and sorting of the
 tests.
 
-[//]: # "'TODO: add image of tree widget'"
+![tree-widget](/features/widgets/tree-widget.png)
 
 #### Parameters (`TreeWidgetParameters`)
 
@@ -119,7 +124,7 @@ tests.
 
 The Test Distribution Pie widget displays a pie chart showing the distribution of test results.
 
-[//]: # " 'TODO: add image of distribution pie widget'"
+![distribution-pie-widget](/features/widgets/distribution-pie-widget.png)
 
 #### Parameters (`TestDistributionPieParameters`)
 
@@ -134,16 +139,18 @@ The `strategyParameters` object depends on the selected `strategy`.
 
 When `strategy` is set to `'duration'`, the `strategyParameters` object can contain the following fields:
 
-| Field | Type | Description - |
+| Field       | Type                                      | Description                                                                               |
+| ----------- | ----------------------------------------- | ----------------------------------------------------------------------------------------- |
 | `intervals` | `[DurationInterval](#durationinterval)[]` | An array of `DurationInterval` objects that define the duration ranges for the pie chart. |
 
 ###### `DurationInterval`
 
-| Field | Type | Description - |
+| Field   | Type     | Description                                                                                                                           |
+| ------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------- |
 | `label` | `string` | (Optional) The label for the duration interval. If not provided, a label will be generated automatically based on the duration range. |
-| `color` | `string` | The color for the duration interval. This can be any valid CSS color string. - |
-| `min` | `number` | (Optional) The minimum duration (in milliseconds) for this interval. - |
-| `max` | `number` | (Optional) The maximum duration (in milliseconds) for this interval. - |
+| `color` | `string` | The color for the duration interval. This can be any valid CSS color string.                                                          |
+| `min`   | `number` | (Optional) The minimum duration (in milliseconds) for this interval.                                                                  |
+| `max`   | `number` | (Optional) The maximum duration (in milliseconds) for this interval.                                                                  |
 
 ## `DataSource`
 
@@ -172,12 +179,11 @@ A `DataFilter` object has a recursive structure:
 
 A `Condition` object represents a single rule in the filter.
 
-| Field | Type | Description -
-| `field` | `string` | The property of the data object to evaluate. Use dot notation for nested
-properties (e.g., `details.author`). -
-| `operator` | `ConditionOperator` | The comparison operator to use. -
-| `value` | `FieldValue` | The value to compare against. This can be a string, number, boolean, null, or an
-array of these types. |
+| Field      | Type                | Description                                                                                                   |
+| ---------- | ------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `field`    | `string`            | The property of the data object to evaluate. Use dot notation for nested properties (e.g., `details.author`). |
+| `operator` | `ConditionOperator` | The comparison operator to use.                                                                               |
+| `value`    | `FieldValue`        | The value to compare against. This can be a string, number, boolean, null, or an array of these types.        |
 
 ### `ConditionOperator`
 

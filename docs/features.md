@@ -10,24 +10,27 @@ This guide explains how to interpret and use the features of the dashboard.
 The layout of the dashboard is configured using a `Layout` object. For more information on the `Layout Definition`, see
 the [Layout Definition documentation](layout-definition.md).
 
-## Dashboard Overview
+## Main Report View
 
-The main dashboard is the first screen you see. It provides a high-level summary of the most recent test run.
+The main report view is the primary interface for visualizing your test data. It is composed of configurable widgets
+that provide different perspectives on your test results.
 
-[//]: # 'TODO: update with image'
-[//]: # '![Dashboard View](./public/dashboard-view.png)'
+![Dashboard Overview](/features/overview.png)
 
-Key elements include:
+Common widgets include:
 
-- **Summary Statistics**: Total number of tests, execution duration, and pass/fail/skipped counts.
-- **Execution Results Pie Chart**: A visual breakdown of the test results, showing the proportion of passed, failed, and
-  skipped tests.
-- **Duration Bar Chart**: Displays the execution time for the slowest tests, helping you identify performance
-  bottlenecks.
+- **Summary Widget**: Provides high-level statistics such as the total number of tests, execution duration, and a
+  breakdown of pass/fail/skipped counts.
+- **Distribution Pie Chart**: Offers a visual representation of test results, showing the proportion of passed, failed,
+  and skipped tests.
+- **Test Tree**: A hierarchical navigation tool that mirrors your project's test structure, allowing you to drill down
+  into specific suites and tests.
+
+You can see all the available widgets and how to configure them in the [All Available Widgets Documentation](/layout-definition.md#available-widgets).
 
 ## Navigating Test Results
 
-The **Test Tree** on the left-hand side organizes your test results in a hierarchical structure that mirrors your
+The **Test Tree** widget organizes your test results in a hierarchical structure that mirrors your
 project's test suites and files.
 
 - **Expand & Collapse**: Click on any suite or folder to expand it and see the tests inside.
