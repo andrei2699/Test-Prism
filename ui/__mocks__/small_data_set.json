@@ -36,6 +36,20 @@
       "lastExecutionType": "SUCCESS",
       "durationMs": 2764,
       "tags": ["UI", "Modal", "Integration"]
+    },
+    {
+      "name": "should complete the full user journey",
+      "path": "/src/app/e2e/user-journey",
+      "lastExecutionType": "SUCCESS",
+      "durationMs": 15000,
+      "tags": ["end-to-end", "critical"]
+    },
+    {
+      "name": "should handle payment processing",
+      "path": "/src/app/e2e/payment",
+      "lastExecutionType": "FAILURE",
+      "durationMs": 8500,
+      "tags": ["end-to-end", "payment"]
     }
   ]
 }

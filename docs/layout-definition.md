@@ -5,6 +5,12 @@ configuration.
 
 See the [Examples](#examples) at the end of this document for a complete `Layout` definition.
 
+## Template Layouts
+
+The following layout templates are available as a starting point for your own configurations.
+
+- [Dashboard Layout Template](https://github.com/andrei2699/Test-Prism/tree/main/docs/examples/templates/layout-template.json)
+
 ## `Layout`
 
 | Field         | Type                          | Description                                                                          |

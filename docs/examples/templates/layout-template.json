@@ -2,7 +2,7 @@
   "dataSources": [
     {
       "id": "all",
-      "url": "http://localhost:3000/small_data_set"
+      "url": "/test-results.json"
     }
   ],
   "pages": [
