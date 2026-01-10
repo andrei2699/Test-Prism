@@ -1,4 +1,5 @@
 ﻿use crate::test_report::TestReport;
+use regex::Regex;
 use std::fs;
 
 enum TagOperation {
@@ -8,7 +9,7 @@ enum TagOperation {
 }
 
 struct ParsedExpression {
-    expression: String,
+    expression: Regex,
     operation: TagOperation,
     tags: Vec<String>,
 }
@@ -60,8 +61,8 @@ fn parse_tag_expressions(tags: Vec<String>) -> Vec<ParsedExpression> {
                 .filter(|s| !s.is_empty())
                 .collect();
 
-            Some(ParsedExpression {
-                expression,
+            Regex::new(&expression).ok().map(|re| ParsedExpression {
+                expression: re,
                 operation,
                 tags,
             })
@@ -78,7 +79,7 @@ fn apply_tags(report: &mut TestReport, tag_expressions: &[ParsedExpression]) {
                 tags,
             } = parsed_expression;
 
-            if test.path.contains(expression) {
+            if expression.is_match(&test.path) {
                 test.tags = match operation {
                     TagOperation::Add => add_tags_to_test(test.tags.as_ref(), tags),
                     TagOperation::Remove => remove_tags_from_test(test.tags.as_ref(), tags),
@@ -274,6 +275,36 @@ mod tests {
         assert_eq!(
             result_report.tests[1].tags,
             Some(vec!["existing_tag".to_string(), "another_tag".to_string()])
+        );
+    }
+
+    #[test]
+    fn regex_expression_is_applied_correctly() {
+        let report = create_test_report(vec![
+            create_test_without_tags("test1", "path/to/test1"),
+            create_test_with_tags("test2", "path/to/another/test2", vec!["existing_tag"]),
+        ]);
+        let (_, _, result_report) = setup_test(&report, vec!["path/to/.*:add:smoke".to_string()]);
+
+        assert_eq!(result_report.tests[0].tags, Some(vec!["smoke".to_string()]));
+        assert_eq!(
+            result_report.tests[1].tags,
+            Some(vec!["existing_tag".to_string(), "smoke".to_string()])
+        );
+    }
+
+    #[test]
+    fn regex_match_all_expression_is_applied_correctly() {
+        let report = create_test_report(vec![
+            create_test_without_tags("test1", "path/to/test1"),
+            create_test_with_tags("test2", "path/to/another/test2", vec!["existing_tag"]),
+        ]);
+        let (_, _, result_report) = setup_test(&report, vec![".*:add:smoke".to_string()]);
+
+        assert_eq!(result_report.tests[0].tags, Some(vec!["smoke".to_string()]));
+        assert_eq!(
+            result_report.tests[1].tags,
+            Some(vec!["existing_tag".to_string(), "smoke".to_string()])
         );
     }
 
