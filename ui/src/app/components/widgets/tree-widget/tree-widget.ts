@@ -14,6 +14,7 @@ import { TreeOrganizationStrategyFactory } from './strategies/organization/tree-
 import { TreeSortStrategy } from './strategies/sort/tree-sort-strategy.interface';
 import { TestColors } from '../../../types/Layout';
 import { TestDetailsDrawer } from './test-details-drawer/test-details-drawer';
+import { TagFilterStrategy } from './strategies/filter/tag-filter.strategy';
 
 export interface TreeWidgetParameters {
   title?: string;
@@ -34,7 +35,8 @@ export class TreeWidget {
 
   filterText = signal('');
   selectedStatuses = signal<TestExecutionType[]>([]);
-  filterStrategy = signal(this.createFilterStrategy('', []));
+  selectedTags = signal<string[]>([]);
+  filterStrategy = signal(this.createFilterStrategy('', [], []));
   selectedTest = signal<Test | null>(null);
 
   treeOrganizationStrategy = computed(() => {
@@ -51,7 +53,10 @@ export class TreeWidget {
   onFilterChange(filterState: FilterState): void {
     this.filterText.set(filterState.name);
     this.selectedStatuses.set(filterState.statuses);
-    this.filterStrategy.set(this.createFilterStrategy(filterState.name, filterState.statuses));
+    this.selectedTags.set(filterState.tags);
+    this.filterStrategy.set(
+      this.createFilterStrategy(filterState.name, filterState.statuses, filterState.tags),
+    );
   }
 
   onTestSelected(test: Test): void {
@@ -62,7 +67,7 @@ export class TreeWidget {
     this.selectedTest.set(null);
   }
 
-  private createFilterStrategy(name: string, statuses: TestExecutionType[]) {
+  private createFilterStrategy(name: string, statuses: TestExecutionType[], tags: string[]) {
     const filters = [];
 
     if (name.trim()) {
@@ -71,6 +76,10 @@ export class TreeWidget {
 
     if (statuses.length > 0) {
       filters.push(new StatusFilterStrategy(statuses));
+    }
+
+    if (tags.length > 0) {
+      filters.push(new TagFilterStrategy(tags));
     }
 
     return filters.length > 0 ? new CompositeFilterStrategy(filters) : null;

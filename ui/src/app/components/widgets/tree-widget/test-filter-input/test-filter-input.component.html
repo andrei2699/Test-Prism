@@ -1,13 +1,25 @@
 ﻿<div>
-  <mat-form-field appearance="outline" class="filter-full-width">
-    <mat-label>Filter tests by name</mat-label>
-    <input
-      matInput
-      type="text"
-      [(ngModel)]="filterText"
-      (ngModelChange)="onFilterChange()"
-      placeholder="e.g. should display" />
-  </mat-form-field>
+  <div class="filter-group">
+    <mat-form-field appearance="outline" class="filter-full-width">
+      <mat-label>Filter tests by name</mat-label>
+      <input
+        matInput
+        type="text"
+        [(ngModel)]="filterText"
+        (ngModelChange)="onFilterChange()"
+        placeholder="e.g. should display" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="filter-full-width">
+      <mat-label>Filter by tags (comma-separated)</mat-label>
+      <input
+        matInput
+        type="text"
+        [(ngModel)]="tagFilterText"
+        (ngModelChange)="onFilterChange()"
+        placeholder="e.g. UI, Tree" />
+    </mat-form-field>
+  </div>
 
   <label class="status-filter-label">Filter by status:</label>
   <div class="status-checkboxes">

@@ -12,3 +12,9 @@
   flex-wrap: wrap;
   gap: 16px;
 }
+
+.filter-group {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}

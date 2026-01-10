@@ -13,24 +13,28 @@ const tests: Test[] = [
     lastExecutionType: 'SUCCESS',
     durationMs: 100,
     path: 'Login.UI',
+    tags: ['UI', 'Login'],
   },
   {
     name: 'should display an error message on failed login',
     lastExecutionType: 'FAILURE',
     durationMs: 200,
     path: 'Login.UI',
+    tags: ['UI', 'Login'],
   },
   {
     name: 'should fetch user data',
     lastExecutionType: 'SUCCESS',
     durationMs: 300,
     path: 'User.API',
+    tags: ['API', 'User'],
   },
   {
     name: 'should timeout when fetching user data',
     lastExecutionType: 'SKIPPED',
     durationMs: 0,
     path: 'User.API',
+    tags: ['API', 'User'],
   },
 ];
 const parameters: TreeWidgetParameters = {
@@ -85,6 +89,7 @@ describe('TreeWidget', () => {
       const filterState: FilterState = {
         name: 'success',
         statuses: [],
+        tags: [],
       };
       component.onFilterChange(filterState);
       fixture.detectChanges();
@@ -98,6 +103,7 @@ describe('TreeWidget', () => {
       const filterState: FilterState = {
         name: '',
         statuses: ['FAILURE'],
+        tags: [],
       };
       component.onFilterChange(filterState);
       fixture.detectChanges();
@@ -111,6 +117,7 @@ describe('TreeWidget', () => {
       const filterState: FilterState = {
         name: 'user',
         statuses: ['SUCCESS'],
+        tags: [],
       };
       component.onFilterChange(filterState);
       fixture.detectChanges();
@@ -120,10 +127,26 @@ describe('TreeWidget', () => {
       expect(await nodes[0].getText()).toContain('should fetch user data');
     });
 
+    it('should filter by tag', async () => {
+      const filterState: FilterState = {
+        name: '',
+        statuses: [],
+        tags: ['UI'],
+      };
+      component.onFilterChange(filterState);
+      fixture.detectChanges();
+
+      const nodes = await loader.getAllHarnesses(MatTreeNodeHarness);
+      expect(nodes.length).toBe(2);
+      expect(await nodes[0].getText()).toContain('should display a success message');
+      expect(await nodes[1].getText()).toContain('should display an error message on failed login');
+    });
+
     it('should return all tests when filter is empty', async () => {
       const filterState: FilterState = {
         name: '',
         statuses: [],
+        tags: [],
       };
       component.onFilterChange(filterState);
       fixture.detectChanges();

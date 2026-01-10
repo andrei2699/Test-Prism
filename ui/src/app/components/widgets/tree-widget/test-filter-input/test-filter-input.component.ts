@@ -8,6 +8,7 @@ import { TestExecutionType } from '../../../../types/TestReport';
 export interface FilterState {
   name: string;
   statuses: TestExecutionType[];
+  tags: string[];
 }
 
 @Component({
@@ -18,6 +19,7 @@ export interface FilterState {
 })
 export class TestFilterInputComponent {
   filterText = signal<string>('');
+  tagFilterText = signal<string>('');
   selectedStatuses = signal<Set<TestExecutionType>>(new Set());
 
   statusOptions: TestExecutionType[] = ['SUCCESS', 'FAILURE', 'SKIPPED', 'ERROR'];
@@ -47,6 +49,11 @@ export class TestFilterInputComponent {
     this.filterChanged.emit({
       name: this.filterText(),
       statuses: Array.from(this.selectedStatuses()),
+      tags: this.tagFilterText()
+        ? this.tagFilterText()
+            .split(',')
+            .map(tag => tag.trim())
+        : [],
     });
   }
 }

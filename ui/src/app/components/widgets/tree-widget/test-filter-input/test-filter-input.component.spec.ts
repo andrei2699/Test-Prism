@@ -36,6 +36,21 @@ describe('TestFilterInputComponent', () => {
     expect(spy).toHaveBeenCalledWith({
       name: 'test filter',
       statuses: [],
+      tags: [],
+    });
+  });
+
+  it('should emit filterChanged event when tag filter text changes', () => {
+    const spy = vi.spyOn(component.filterChanged, 'emit');
+    const testTagFilterText = 'UI, Tree';
+
+    component.tagFilterText.set(testTagFilterText);
+    component.onFilterChange();
+
+    expect(spy).toHaveBeenCalledWith({
+      name: '',
+      statuses: [],
+      tags: ['UI', 'Tree'],
     });
   });
 
