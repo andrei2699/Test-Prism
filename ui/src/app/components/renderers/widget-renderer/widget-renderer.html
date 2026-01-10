@@ -2,7 +2,7 @@
   <div [ngStyle]="w.style">
     @switch (w.type) {
       @case ('distribution-pie') {
-        <app-test-distribution-pie
+        <app-test-distribution-pie-widget
           [colors]="colors()"
           [tests]="tests()"
           [parameters]="w.parameters" />

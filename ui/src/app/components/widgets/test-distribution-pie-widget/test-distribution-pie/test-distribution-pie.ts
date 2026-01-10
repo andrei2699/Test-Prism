@@ -4,7 +4,6 @@ import { ChartConfiguration } from 'chart.js';
 import { Test } from '../../../../types/TestReport';
 import { DistributionDataItem } from '../strategies/distribution-data.interface';
 import { DistributionStrategy } from '../strategies/distribution-strategy.interface';
-import { DistributionStrategyFactory } from '../strategies/distribution-strategy.factory';
 import { TestColors } from '../../../../types/Layout';
 import { DurationDistributionStrategyParameters } from '../strategies/duration-distribution.strategy';
 
@@ -27,14 +26,7 @@ interface PieChartData extends DistributionDataItem {
 export class TestDistributionPie {
   colors = input.required<TestColors>();
   tests = input.required<Test[]>();
-  parameters = input.required<TestDistributionPieParameters | undefined>();
-
-  strategy = computed<DistributionStrategy>(() => {
-    const params = this.parameters();
-    const strategy = params?.strategy ?? 'status';
-
-    return DistributionStrategyFactory.create(strategy, params?.strategyParameters);
-  });
+  strategy = input.required<DistributionStrategy>();
 
   chartData = computed<PieChartData[]>(() => {
     const distribution: DistributionDataItem[] = this.strategy().calculateDistribution(

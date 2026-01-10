@@ -1,49 +1,29 @@
-﻿import { Component, input } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+﻿import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { TestDistributionPie } from './test-distribution-pie';
 import { Test } from '../../../../types/TestReport';
-import { TestDistributionPie, TestDistributionPieParameters } from './test-distribution-pie';
 import { BaseChartDirective, provideCharts, withDefaultRegisterables } from 'ng2-charts';
 import { TestColors } from '../../../../types/Layout';
-
-@Component({
-  template:
-    '<app-test-distribution-pie [colors]="colors()" [tests]="tests()" [parameters]="parameters()" />',
-  imports: [TestDistributionPie],
-})
-class TestHostComponent {
-  colors = input.required<TestColors>();
-  tests = input.required<Test[]>();
-  parameters = input.required<TestDistributionPieParameters>();
-}
+import { DistributionStrategyFactory } from '../strategies/distribution-strategy.factory';
 
 describe('TestDistributionPie', () => {
-  let fixture: ComponentFixture<TestHostComponent>;
-  let parameters: TestDistributionPieParameters;
+  let component: TestDistributionPie;
+  let fixture: ComponentFixture<TestDistributionPie>;
 
   beforeEach(async () => {
-    parameters = {
-      strategy: 'status',
-    };
-
     await TestBed.configureTestingModule({
-      imports: [TestHostComponent],
+      imports: [TestDistributionPie],
       providers: [provideCharts(withDefaultRegisterables())],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(TestHostComponent);
-    fixture.componentRef.setInput('parameters', parameters);
+    fixture = TestBed.createComponent(TestDistributionPie);
+    component = fixture.componentInstance;
     fixture.componentRef.setInput('colors', {
       SUCCESS: 'green',
       FAILURE: 'red',
       SKIPPED: 'yellow',
       ERROR: 'orange',
     } satisfies TestColors);
-  });
-
-  afterEach(() => {
-    fixture.destroy();
   });
 
   const getChartInstance = (): BaseChartDirective => {
@@ -58,8 +38,10 @@ describe('TestDistributionPie', () => {
       { lastExecutionType: 'FAILURE', name: 'test3', path: '/test3' },
       { lastExecutionType: 'SKIPPED', name: 'test4', path: '/test4' },
     ];
+    const strategy = DistributionStrategyFactory.create('status');
 
     fixture.componentRef.setInput('tests', tests);
+    fixture.componentRef.setInput('strategy', strategy);
     fixture.detectChanges();
 
     const chartInstance = getChartInstance();
@@ -71,7 +53,9 @@ describe('TestDistributionPie', () => {
   });
 
   it('should pass empty data to the chart when no tests are provided', () => {
+    const strategy = DistributionStrategyFactory.create('status');
     fixture.componentRef.setInput('tests', []);
+    fixture.componentRef.setInput('strategy', strategy);
     fixture.detectChanges();
 
     const chartInstance = getChartInstance();
@@ -87,8 +71,10 @@ describe('TestDistributionPie', () => {
       { lastExecutionType: 'SUCCESS', name: 'test1', path: '/test1' },
       { lastExecutionType: 'SUCCESS', name: 'test2', path: '/test2' },
     ];
+    const strategy = DistributionStrategyFactory.create('status');
 
     fixture.componentRef.setInput('tests', tests);
+    fixture.componentRef.setInput('strategy', strategy);
     fixture.detectChanges();
 
     const chartInstance = getChartInstance();
@@ -106,8 +92,10 @@ describe('TestDistributionPie', () => {
       { lastExecutionType: 'SUCCESS', name: 'test3', path: '/test3' },
       { lastExecutionType: 'FAILURE', name: 'test4', path: '/test4' },
     ];
+    const strategy = DistributionStrategyFactory.create('status');
 
     fixture.componentRef.setInput('tests', tests);
+    fixture.componentRef.setInput('strategy', strategy);
     fixture.detectChanges();
 
     const chartInstance = getChartInstance();
