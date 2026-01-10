@@ -32,7 +32,7 @@ enum Commands {
         #[arg(short, long, help = "Output file path")]
         output: Option<String>,
 
-        #[arg(long, help = "Tag to add in the format 'expression:tag1,tag2'")]
+        #[arg(long, help = "Tag to add in the format 'expression:operation:tag1,tag2' where operation can be add, remove, or update")]
         tag: Vec<String>,
     },
 }
