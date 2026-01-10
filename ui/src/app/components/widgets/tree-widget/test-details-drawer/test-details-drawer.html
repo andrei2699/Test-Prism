@@ -29,13 +29,13 @@
   </div>
 
   @if (test().tags?.length) {
-    <div class="detail-row">
-      <span class="label">Tags:</span>
-      <div class="tags">
+    <div class="tags">
+      <strong>Tags:</strong>
+      <mat-chip-set>
         @for (tag of test().tags; track tag) {
-          <span class="tag">{{ tag }}</span>
+          <mat-chip>{{ tag }}</mat-chip>
         }
-      </div>
+      </mat-chip-set>
     </div>
   }
 </div>
