@@ -21,6 +21,9 @@ enum Commands {
 
         #[arg(short, long, help = "Output file path")]
         output: Option<String>,
+
+        #[arg(long, help = "Tags to add to all tests")]
+        tag: Vec<String>,
     },
     Tag {
         #[arg(short, long, help = "Input file path")]
@@ -42,17 +45,15 @@ fn main() {
             report_type,
             input,
             output,
+            tag,
         } => parse_command(
             report_type,
             input,
             output.unwrap_or("output.json".to_string()),
             chrono::Utc::now().to_string(),
-        ),
-        Commands::Tag {
-            input,
-            output,
             tag,
-        } => {
+        ),
+        Commands::Tag { input, output, tag } => {
             tag_command(input, output, tag);
         }
     }

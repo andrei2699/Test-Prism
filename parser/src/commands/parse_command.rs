@@ -3,7 +3,13 @@ use crate::test_parser::TestParser;
 use crate::test_report::{TestReport, TestReportStatus, TestReportTest};
 use std::path::Path;
 
-pub fn parse_command(report_type: String, input: String, output: String, current_date: String) {
+pub fn parse_command(
+    report_type: String,
+    input: String,
+    output: String,
+    current_date: String,
+    tags: Vec<String>,
+) {
     let parser = get_parser(&report_type);
     let input_paths = extract_folder_path_first_level(&input);
 
@@ -11,7 +17,7 @@ pub fn parse_command(report_type: String, input: String, output: String, current
 
     for path_string in input_paths {
         let path = Path::new(&path_string);
-        let tests = parse_file(&parser, &path_string, path);
+        let tests = parse_file(&parser, &path_string, path, &tags);
 
         all_test_report_tests.extend(tests);
     }
@@ -25,7 +31,12 @@ pub fn parse_command(report_type: String, input: String, output: String, current
     write_test_report(&test_report, &output);
 }
 
-fn parse_file(parser: &impl TestParser, path_str: &str, path: &Path) -> Vec<TestReportTest> {
+fn parse_file(
+    parser: &impl TestParser,
+    path_str: &str,
+    path: &Path,
+    tags: &[String],
+) -> Vec<TestReportTest> {
     match parser.parse(path) {
         Ok(tests) => tests
             .iter()
@@ -36,7 +47,11 @@ fn parse_file(parser: &impl TestParser, path_str: &str, path: &Path) -> Vec<Test
                     path: suite.name.clone(),
                     duration_ms: (test.time * 1000.0) as u64,
                     message: TestReportTest::message_from_test_status(test.status.clone()),
-                    tags: None,
+                    tags: if tags.is_empty() {
+                        None
+                    } else {
+                        Some(tags.to_vec())
+                    },
                 })
             })
             .collect(),
@@ -89,7 +104,9 @@ fn write_test_report(test_report: &TestReport, output_path: &str) {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::fs;
     use std::fs::File;
+    use std::io::Write;
     use tempfile::{tempdir, NamedTempFile};
 
     #[test]
@@ -126,5 +143,58 @@ mod tests {
         assert_eq!(result.len(), 2);
         assert!(result.contains(&file1_path.to_str().unwrap().to_string()));
         assert!(result.contains(&file2_path.to_str().unwrap().to_string()));
+    }
+
+    #[test]
+    fn when_parsing_a_file_with_tags_it_should_add_the_tags_to_all_tests() {
+        let mut input_file = NamedTempFile::new().unwrap();
+        let output_file = NamedTempFile::new().unwrap();
+        let xml_content = r#"
+            <testsuite name="suite1" tests="1" failures="0" errors="0" skipped="0" timestamp="2024-01-01T00:00:00Z" time="1.0">
+                <testcase name="test1" classname="class1" time="1.0" />
+            </testsuite>
+        "#;
+        input_file.write_all(xml_content.as_bytes()).unwrap();
+
+        parse_command(
+            "junit".to_string(),
+            input_file.path().to_str().unwrap().to_string(),
+            output_file.path().to_str().unwrap().to_string(),
+            "2024-01-01T00:00:00Z".to_string(),
+            vec!["tag1".to_string(), "tag2".to_string()],
+        );
+
+        let result_data = fs::read_to_string(output_file.path()).unwrap();
+        let result_report: TestReport = serde_json::from_str(&result_data).unwrap();
+
+        assert_eq!(
+            result_report.tests[0].tags,
+            Some(vec!["tag1".to_string(), "tag2".to_string()])
+        );
+    }
+
+    #[test]
+    fn when_parsing_a_file_without_tags_it_should_not_add_any_tags() {
+        let mut input_file = NamedTempFile::new().unwrap();
+        let output_file = NamedTempFile::new().unwrap();
+        let xml_content = r#"
+            <testsuite name="suite1" tests="1" failures="0" errors="0" skipped="0" timestamp="2024-01-01T00:00:00Z" time="1.0">
+                <testcase name="test1" classname="class1" time="1.0" />
+            </testsuite>
+        "#;
+        input_file.write_all(xml_content.as_bytes()).unwrap();
+
+        parse_command(
+            "junit".to_string(),
+            input_file.path().to_str().unwrap().to_string(),
+            output_file.path().to_str().unwrap().to_string(),
+            "2024-01-01T00:00:00Z".to_string(),
+            vec![],
+        );
+
+        let result_data = fs::read_to_string(output_file.path()).unwrap();
+        let result_report: TestReport = serde_json::from_str(&result_data).unwrap();
+
+        assert_eq!(result_report.tests[0].tags, None);
     }
 }

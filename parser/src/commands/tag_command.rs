@@ -275,9 +275,6 @@ mod tests {
         let result_data = fs::read_to_string(input_file.path()).unwrap();
         let result_report: TestReport = serde_json::from_str(&result_data).unwrap();
 
-        assert_eq!(
-            result_report.tests[0].tags,
-            Some(vec!["tag1".to_string()])
-        );
+        assert_eq!(result_report.tests[0].tags, Some(vec!["tag1".to_string()]));
     }
 }

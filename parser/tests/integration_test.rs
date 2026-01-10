@@ -38,6 +38,7 @@ fn junit_parse_command(input_file: &str, expected_output_file: &str) {
         input_file.to_string(),
         output_path_str.to_string(),
         "2025-01-06T15:34:21.123Z".to_string(),
+        vec![],
     );
 
     let actual_content = fs::read_to_string(output_path).expect("Failed to read output file");
