@@ -1,59 +1,65 @@
-﻿use crate::parsers::junit::models::JunitTestSuite;
+﻿use crate::parsers::junit::models::{JunitRoot, JunitTestCase, JunitTestSuite};
 use crate::test_models::{Test, TestStatus, TestSuite};
 use crate::test_parser::TestParser;
-use quick_xml::de::from_reader;
-use std::fs::File;
-use std::io::BufReader;
+use quick_xml::de::from_str;
+use std::fs;
 use std::path::Path;
 
 pub struct JunitParser;
 
 impl TestParser for JunitParser {
     fn parse(&self, file_path: &Path) -> Result<Vec<TestSuite>, String> {
-        let file = File::open(file_path).map_err(|e| format!("I/O error: {}", e))?;
-        let reader = BufReader::new(file);
+        let suites = Self::deserialize_suites(file_path)?;
+        Ok(Self::convert_to_test_suites(suites))
+    }
+}
 
-        // TODO: handle the case for test suites tag which is optional
+impl JunitParser {
+    fn deserialize_suites(file_path: &Path) -> Result<Vec<JunitTestSuite>, String> {
+        let content = fs::read_to_string(file_path).map_err(|e| format!("I/O error: {}", e))?;
+        let root: JunitRoot = from_str(&content).map_err(|e| e.to_string())?;
 
-        let junit_suite: JunitTestSuite = from_reader(reader).map_err(|e| e.to_string())?;
-
-        let mut tests = Vec::new();
-        for case in junit_suite.test_cases {
-            if let Some(failure) = case.failure {
-                tests.push(Test {
-                    name: case.name,
-                    time: case.time,
-                    status: TestStatus::Failed(failure.message),
-                });
-            } else if let Some(error) = case.error {
-                tests.push(Test {
-                    name: case.name,
-                    time: case.time,
-                    status: TestStatus::Error(error.message),
-                });
-            } else if let Some(skipped) = case.skipped {
-                tests.push(Test {
-                    name: case.name,
-                    time: case.time,
-                    status: TestStatus::Skipped(skipped.message),
-                });
-            } else {
-                tests.push(Test {
-                    name: case.name,
-                    time: case.time,
-                    status: TestStatus::Passed,
-                });
-            }
+        match root {
+            JunitRoot::TestSuites(suites) => Ok(suites.test_suites),
+            JunitRoot::TestSuite(suite) => Ok(vec![suite]),
         }
+    }
 
-        let suite = TestSuite {
-            name: junit_suite.name,
-            duration: junit_suite.time,
-            timestamp: junit_suite.timestamp,
-            tests,
+    fn convert_to_test_suites(suites: Vec<JunitTestSuite>) -> Vec<TestSuite> {
+        suites
+            .into_iter()
+            .map(|junit_suite| {
+                let tests = junit_suite
+                    .test_cases
+                    .into_iter()
+                    .map(|case| Self::convert_to_test(case))
+                    .collect();
+
+                TestSuite {
+                    name: junit_suite.name,
+                    duration: junit_suite.time,
+                    timestamp: junit_suite.timestamp,
+                    tests,
+                }
+            })
+            .collect()
+    }
+
+    fn convert_to_test(case: JunitTestCase) -> Test {
+        let status = if let Some(failure) = case.failure {
+            TestStatus::Failed(failure.message)
+        } else if let Some(error) = case.error {
+            TestStatus::Error(error.message)
+        } else if let Some(skipped) = case.skipped {
+            TestStatus::Skipped(skipped.message)
+        } else {
+            TestStatus::Passed
         };
-
-        Ok(vec![suite])
+        Test {
+            name: case.name,
+            time: case.time,
+            status,
+        }
     }
 }
 
@@ -108,6 +114,26 @@ mod tests {
         assert_eq!(suite.tests.len(), 0);
     }
 
+    #[parameterized(content = {
+        r#"
+            <testsuites>
+            </testsuites>
+        "#,
+        r#"
+            <testsuites />
+        "#
+    })]
+    fn empty_test_suites_without_attributes(content: &str) {
+        let file = create_temp_xml_file(content);
+
+        let parser = JunitParser;
+        let result = parser.parse(&file.path());
+
+        assert!(result.is_ok());
+        let tests = result.unwrap();
+        assert_eq!(tests.len(), 0);
+    }
+
     #[test]
     fn test_suite_with_all_passed_tests() {
         // Arrange
@@ -140,6 +166,37 @@ mod tests {
         assert_eq!(suite.tests[1].name, "test_success_2");
         assert_eq!(suite.tests[1].time, 0.07);
         assert_eq!(suite.tests[1].status, TestStatus::Passed);
+    }
+
+    #[test]
+    fn test_suites_with_multiple_suites() {
+        // Arrange
+        let xml_content = r#"
+            <testsuites>
+                <testsuite name="MyTestSuite1" tests="1" failures="0" errors="0" skipped="0" time="0.123" timestamp="2023-10-27T10:00:00Z">
+                    <testcase name="test_success_1" classname="com.example.MyClass" time="0.05"></testcase>
+                </testsuite>
+                <testsuite name="MyTestSuite2" tests="1" failures="0" errors="0" skipped="0" time="0.123" timestamp="2023-10-27T10:00:00Z">
+                    <testcase name="test_success_2" classname="com.example.MyClass" time="0.07"/>
+                </testsuite>
+            </testsuites>
+        "#;
+        let file = create_temp_xml_file(xml_content);
+
+        // Act
+        let parser = JunitParser;
+        let result = parser.parse(&file.path());
+
+        // Assert
+        assert!(result.is_ok());
+        let tests = result.unwrap();
+        assert_eq!(tests.len(), 2);
+        let suite1 = &tests[0];
+        assert_eq!(suite1.name, "MyTestSuite1");
+        assert_eq!(suite1.tests.len(), 1);
+        let suite2 = &tests[1];
+        assert_eq!(suite2.name, "MyTestSuite2");
+        assert_eq!(suite2.tests.len(), 1);
     }
 
     #[test]
