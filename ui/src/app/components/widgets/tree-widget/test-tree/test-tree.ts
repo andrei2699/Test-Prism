@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -25,7 +24,6 @@ export interface TestTreeNode {
 @Component({
   selector: 'app-test-tree',
   imports: [
-    CommonModule,
     MatTreeModule,
     MatButtonModule,
     MatIconModule,

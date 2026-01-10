@@ -3,6 +3,10 @@
     {
       "id": "main",
       "url": "http://localhost:3000/large_data_set"
+    },
+    {
+      "id": "small",
+      "url": "http://localhost:3000/small_data_set"
     }
   ],
   "pages": [
@@ -32,7 +36,7 @@
           "id": "tests-tree",
           "type": "tree",
           "data": {
-            "dataSourceId": "main",
+            "dataSourceId": "small",
             "filter": {
               "operator": "AND",
               "conditions": [

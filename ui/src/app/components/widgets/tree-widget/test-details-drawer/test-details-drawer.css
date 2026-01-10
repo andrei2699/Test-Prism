@@ -53,12 +53,6 @@
 .tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-}
-
-.tag {
-  background: #e0e0e0;
-  padding: 2px 8px;
-  border-radius: 12px;
-  font-size: 0.85rem;
+  gap: 0.5rem;
+  align-items: center;
 }

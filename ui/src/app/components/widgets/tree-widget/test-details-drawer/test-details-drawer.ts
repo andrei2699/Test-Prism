@@ -1,14 +1,14 @@
 ﻿import { Component, computed, input, output } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatChipsModule } from '@angular/material/chips';
 import { Test } from '../../../../types/TestReport';
 import { HumanizeDurationPipe } from '../../../../pipes/humanize-duration.pipe';
 import { TestColors } from '../../../../types/Layout';
 
 @Component({
   selector: 'app-test-details-drawer',
-  imports: [CommonModule, MatButtonModule, MatIconModule, HumanizeDurationPipe],
+  imports: [MatButtonModule, MatIconModule, MatChipsModule, HumanizeDurationPipe],
   templateUrl: './test-details-drawer.html',
   styleUrl: './test-details-drawer.css',
 })

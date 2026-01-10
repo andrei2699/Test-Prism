@@ -1,0 +1,27 @@
+﻿<mat-form-field class="filter-full-width">
+  <mat-label>Filter by tags</mat-label>
+  <mat-chip-grid #chipGrid>
+    @for (tag of selectedTags(); track tag) {
+      <mat-chip-row (removed)="remove(tag)">
+        {{ tag }}
+        <button matChipRemove>
+          <mat-icon>cancel</mat-icon>
+        </button>
+      </mat-chip-row>
+    }
+  </mat-chip-grid>
+  <input
+    placeholder="New tag..."
+    [formControl]="tagCtrl"
+    [matAutocomplete]="auto"
+    [matChipInputFor]="chipGrid"
+    (matChipInputTokenEnd)="add($event.value)" />
+  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="add($event.option.viewValue)">
+    @for (tag of filteredTags | async; track tag) {
+      <mat-option [value]="tag">{{ tag }}</mat-option>
+    }
+    @if ((filteredTags | async)?.length === 0) {
+      <mat-option disabled>No tags found</mat-option>
+    }
+  </mat-autocomplete>
+</mat-form-field>
