@@ -5,10 +5,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { NavbarDrawer } from './navbar-drawer/navbar-drawer';
 import { Router } from '@angular/router';
 import { LayoutService } from '../../services/layout.service';
+import { NgOptimizedImage } from '@angular/common';
 
 @Component({
   selector: 'app-navbar',
-  imports: [MatToolbarModule, MatButtonModule, MatIconModule, NavbarDrawer],
+  imports: [MatToolbarModule, MatButtonModule, MatIconModule, NavbarDrawer, NgOptimizedImage],
   templateUrl: './navbar.html',
   styleUrl: './navbar.css',
 })
