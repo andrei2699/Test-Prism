@@ -1,12 +1,12 @@
 ﻿import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { BaseChartDirective } from 'ng2-charts';
 import { ChartConfiguration } from 'chart.js';
-import { Test } from '../../../types/TestReport';
-import { DistributionDataItem } from './strategies/distribution-data.interface';
-import { DistributionStrategy } from './strategies/distribution-strategy.interface';
-import { DistributionStrategyFactory } from './strategies/distribution-strategy.factory';
-import { TestColors } from '../../../types/Layout';
-import { DurationDistributionStrategyParameters } from './strategies/duration-distribution.strategy';
+import { Test } from '../../../../types/TestReport';
+import { DistributionDataItem } from '../strategies/distribution-data.interface';
+import { DistributionStrategy } from '../strategies/distribution-strategy.interface';
+import { DistributionStrategyFactory } from '../strategies/distribution-strategy.factory';
+import { TestColors } from '../../../../types/Layout';
+import { DurationDistributionStrategyParameters } from '../strategies/duration-distribution.strategy';
 
 export interface TestDistributionPieParameters {
   strategy: 'status' | 'duration';

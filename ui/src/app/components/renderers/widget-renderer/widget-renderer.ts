@@ -1,5 +1,5 @@
 import { Component, computed, forwardRef, inject, input } from '@angular/core';
-import { TestDistributionPie } from '../../widgets/test-distribution-pie/test-distribution-pie';
+import { TestDistributionPie } from '../../widgets/test-distribution-pie-widget/test-distribution-pie/test-distribution-pie';
 import { Test, TestReport } from '../../../types/TestReport';
 import { TreeWidget } from '../../widgets/tree-widget/tree-widget';
 import { DataSourceId } from '../../../types/DataSource';
