@@ -27,7 +27,7 @@ describe('SummaryWidgetComponent', () => {
   it('should display the date in a human-readable format', () => {
     const testDate = '2023-10-27T10:00:00Z';
     fixture.componentRef.setInput('tests', []);
-    fixture.componentRef.setInput('date', testDate);
+    fixture.componentRef.setInput('timestamp', testDate);
 
     fixture.detectChanges();
 
@@ -38,7 +38,7 @@ describe('SummaryWidgetComponent', () => {
 
   it('should display the default title when no parameters are provided', () => {
     fixture.componentRef.setInput('tests', []);
-    fixture.componentRef.setInput('date', new Date().toISOString());
+    fixture.componentRef.setInput('timestamp', new Date().toISOString());
 
     fixture.detectChanges();
 
@@ -49,7 +49,7 @@ describe('SummaryWidgetComponent', () => {
   it('should display the custom title from parameters', () => {
     const parameters: SummaryWidgetParameters = { title: 'Custom Title' };
     fixture.componentRef.setInput('tests', []);
-    fixture.componentRef.setInput('date', new Date().toISOString());
+    fixture.componentRef.setInput('timestamp', new Date().toISOString());
     fixture.componentRef.setInput('parameters', parameters);
 
     fixture.detectChanges();
@@ -87,7 +87,7 @@ describe('SummaryWidgetComponent', () => {
       },
     ];
     fixture.componentRef.setInput('tests', tests);
-    fixture.componentRef.setInput('date', new Date().toISOString());
+    fixture.componentRef.setInput('timestamp', new Date().toISOString());
 
     fixture.detectChanges();
 

@@ -45,7 +45,7 @@ describe('WidgetRenderer', () => {
   ];
 
   const testReports: Record<string, TestReport> = {
-    id: { tests: tests, version: 0, date: '2025-01-01T00:00:00Z' },
+    id: { tests: tests, version: 0, timestamp: '2025-01-01T00:00:00Z' },
   };
 
   beforeEach(async () => {

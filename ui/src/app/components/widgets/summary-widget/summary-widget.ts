@@ -19,7 +19,7 @@ export interface SummaryWidgetParameters {
 export class SummaryWidgetComponent {
   colors = input.required<TestColors>();
   tests = input.required<Test[]>();
-  date = input.required<string | null>();
+  timestamp = input.required<string | null>();
   parameters = input<SummaryWidgetParameters>();
 
   title = computed(() => this.parameters()?.title || 'Analysis Summary');

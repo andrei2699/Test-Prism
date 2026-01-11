@@ -12,7 +12,7 @@ describe('ContainerWidget', () => {
 
   const mockTestReports: Record<DataSourceId, TestReport> = {
     '1': {
-      date: '2025-01-01T00:00:00.000Z',
+      timestamp: '2025-01-01T00:00:00.000Z',
       version: 0,
       tests: [],
     },

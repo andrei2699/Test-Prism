@@ -40,7 +40,7 @@ describe('PageRenderer', () => {
   ];
 
   const mockTestReports: TestReport[] = [
-    { tests: mockTests, version: 0, date: '2023-01-01T00:00:00Z' },
+    { tests: mockTests, version: 0, timestamp: '2023-01-01T00:00:00Z' },
   ];
 
   const page1: Page = {
