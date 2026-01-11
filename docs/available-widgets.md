@@ -49,7 +49,8 @@ The Test Distribution Pie widget displays a pie chart showing the distribution o
 
 | Field                | Type     | Description                                                                                             |
 | -------------------- | -------- | ------------------------------------------------------------------------------------------------------- |
-| `title`              | `string` | (Optional) The title of the widget.                                                                     |
+| `title`              | `object` | (Optional) The title of the widget.                                                                     |
+| `subtitle`           | `object` | (Optional) The subtitle of the widget.                                                                  |
 | `strategy`           | `string` | The distribution strategy for the pie chart. Possible values are `'status'` (default) and `'duration'`. |
 | `strategyParameters` | `object` | (Optional) Parameters for the selected strategy.                                                        |
 | `legend`             | `object` | (Optional) Parameters for the chart's legend.                                                           |
@@ -73,6 +74,23 @@ When `strategy` is set to `'duration'`, the `strategyParameters` object can cont
 | `color` | `string` | The color for the duration interval. This can be any valid CSS color string.                                                          |
 | `min`   | `number` | (Optional) The minimum duration (in milliseconds) for this interval.                                                                  |
 | `max`   | `number` | (Optional) The maximum duration (in milliseconds) for this interval.                                                                  |
+
+#### `title` and `subtitle` Parameters
+
+The `title` and `subtitle` objects can contain the following fields:
+
+See the [Chart.js title documentation](https://www.chartjs.org/docs/latest/configuration/title.html) for more details.
+
+| Field      | Type                          | Description                                                             |
+| ---------- | ----------------------------- | ----------------------------------------------------------------------- |
+| `display`  | `boolean`                     | (Optional) If `true`, the title is shown. Defaults to `false`.          |
+| `position` | `top` `left` `bottom` `right` | (Optional) The position of the title. Defaults to `top`.                |
+| `align`    | `start` `center` `end`        | (Optional) The alignment of the title. Defaults to `center`.            |
+| `text`     | `string` `string[]`           | The text to display.                                                    |
+| `color`    | `string`                      | (Optional) The color of the text.                                       |
+| `font`     | `object`                      | (Optional) An object that configures the font of the text.              |
+| `padding`  | `number` `object`             | (Optional) The padding to apply around the title.                       |
+| `fullSize` | `boolean`                     | (Optional) If `true`, the title will take the full width of the canvas. |
 
 #### `legend` Parameters
 
@@ -113,7 +131,8 @@ The `labels` object can contain the following fields:
 
 The `dataset` object allows for the customization of the pie chart's dataset.
 
-See the [Chart.js dataset documentation](https://www.chartjs.org/docs/latest/charts/doughnut.html#dataset-properties) for more details.
+See the [Chart.js dataset documentation](https://www.chartjs.org/docs/latest/charts/doughnut.html#dataset-properties)
+for more details.
 
 | Field              | Type                | Description                                                    |
 | ------------------ | ------------------- | -------------------------------------------------------------- |

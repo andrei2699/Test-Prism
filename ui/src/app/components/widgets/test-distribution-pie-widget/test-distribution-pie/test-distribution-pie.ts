@@ -1,12 +1,13 @@
 ﻿import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { BaseChartDirective } from 'ng2-charts';
-import { ChartConfiguration } from 'chart.js';
+import { ChartConfiguration, TitleOptions } from 'chart.js';
 import { Test } from '../../../../types/TestReport';
 import { DistributionDataItem } from '../strategies/distribution-data.interface';
 import { DistributionStrategy } from '../strategies/distribution-strategy.interface';
 import { TestColors } from '../../../../types/Layout';
 import { PieLegendParameters } from '../parameters/LegendParameters';
 import { PieDatasetParameters } from '../parameters/DataSetParameters';
+import { PieTitleOptions } from '../parameters/TitleParameters';
 
 interface PieChartData extends DistributionDataItem {
   percentage: number;
@@ -25,6 +26,8 @@ export class TestDistributionPie {
   strategy = input.required<DistributionStrategy>();
   legend = input.required<PieLegendParameters>();
   dataset = input.required<PieDatasetParameters>();
+  title = input<PieTitleOptions>();
+  subTitle = input<PieTitleOptions>();
 
   chartData = computed<PieChartData[]>(() => {
     const distribution: DistributionDataItem[] = this.strategy().calculateDistribution(
@@ -60,6 +63,8 @@ export class TestDistributionPie {
         responsive: true,
         maintainAspectRatio: true,
         plugins: {
+          title: this.title(),
+          subtitle: this.subTitle(),
           legend: {
             ...this.legend(),
           },

@@ -196,4 +196,33 @@ describe('TestDistributionPie', () => {
     expect(dataset).toBeDefined();
     expect(dataset!.borderWidth).toBe(5);
   });
+
+  it('should apply title and subtitle', () => {
+    const tests: Test[] = [
+      {
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
+        name: 'test1',
+        path: '/test1',
+      },
+    ];
+    const strategy = DistributionStrategyFactory.create('status');
+
+    fixture.componentRef.setInput('tests', tests);
+    fixture.componentRef.setInput('strategy', strategy);
+    fixture.componentRef.setInput('title', { text: 'My Title', display: true });
+    fixture.componentRef.setInput('subTitle', { text: 'My Subtitle', display: true });
+    fixture.detectChanges();
+
+    const chartInstance = getChartInstance();
+    const titleOptions = chartInstance.options?.plugins?.title;
+    const subtitleOptions = chartInstance.options?.plugins?.subtitle;
+
+    expect(titleOptions).toBeDefined();
+    expect(titleOptions!.text).toBe('My Title');
+    expect(titleOptions!.display).toBe(true);
+
+    expect(subtitleOptions).toBeDefined();
+    expect(subtitleOptions!.text).toBe('My Subtitle');
+    expect(subtitleOptions!.display).toBe(true);
+  });
 });
