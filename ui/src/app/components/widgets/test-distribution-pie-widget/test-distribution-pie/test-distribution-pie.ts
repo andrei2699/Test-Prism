@@ -6,6 +6,7 @@ import { DistributionDataItem } from '../strategies/distribution-data.interface'
 import { DistributionStrategy } from '../strategies/distribution-strategy.interface';
 import { TestColors } from '../../../../types/Layout';
 import { PieLegendParameters } from '../parameters/LegendParameters';
+import { PieDatasetParameters } from '../parameters/DataSetParameters';
 
 interface PieChartData extends DistributionDataItem {
   percentage: number;
@@ -22,7 +23,8 @@ export class TestDistributionPie {
   colors = input.required<TestColors>();
   tests = input.required<Test[]>();
   strategy = input.required<DistributionStrategy>();
-  legendParameters = input.required<PieLegendParameters>();
+  legend = input.required<PieLegendParameters>();
+  dataset = input.required<PieDatasetParameters>();
 
   chartData = computed<PieChartData[]>(() => {
     const distribution: DistributionDataItem[] = this.strategy().calculateDistribution(
@@ -41,7 +43,6 @@ export class TestDistributionPie {
 
   pieChartConfiguration = computed<ChartConfiguration<'pie'>>(() => {
     const data = this.chartData();
-    const legendParameters = this.legendParameters();
 
     return {
       type: 'pie',
@@ -49,10 +50,9 @@ export class TestDistributionPie {
         labels: data.map(d => `${d.label} (${d.percentage.toFixed(2)}%)`),
         datasets: [
           {
+            ...this.dataset(),
             data: data.map(d => d.count),
             backgroundColor: data.map(d => d.color),
-            borderColor: '#fff',
-            borderWidth: 2,
           },
         ],
       },
@@ -61,7 +61,7 @@ export class TestDistributionPie {
         maintainAspectRatio: true,
         plugins: {
           legend: {
-            ...legendParameters,
+            ...this.legend(),
           },
         },
       },

@@ -16,7 +16,10 @@ describe('TestDistributionPie', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(TestDistributionPie);
-    fixture.componentRef.setInput('legendParameters', { display: true });
+    fixture.componentRef.setInput('legend', { display: true });
+    fixture.componentRef.setInput('dataset', {
+      borderColor: '#fff',
+    });
     fixture.componentRef.setInput('colors', {
       PASSED: 'green',
       FAILED: 'red',
@@ -162,7 +165,7 @@ describe('TestDistributionPie', () => {
 
     fixture.componentRef.setInput('tests', tests);
     fixture.componentRef.setInput('strategy', strategy);
-    fixture.componentRef.setInput('legendParameters', { display: false });
+    fixture.componentRef.setInput('legend', { display: false });
     fixture.detectChanges();
 
     const chartInstance = getChartInstance();
@@ -170,5 +173,27 @@ describe('TestDistributionPie', () => {
 
     expect(legendOptions).toBeDefined();
     expect(legendOptions!.display).toBe(false);
+  });
+
+  it('should apply dataset parameters', () => {
+    const tests: Test[] = [
+      {
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
+        name: 'test1',
+        path: '/test1',
+      },
+    ];
+    const strategy = DistributionStrategyFactory.create('status');
+
+    fixture.componentRef.setInput('tests', tests);
+    fixture.componentRef.setInput('strategy', strategy);
+    fixture.componentRef.setInput('dataset', { borderWidth: 5 });
+    fixture.detectChanges();
+
+    const chartInstance = getChartInstance();
+    const dataset = chartInstance.data?.datasets[0];
+
+    expect(dataset).toBeDefined();
+    expect(dataset!.borderWidth).toBe(5);
   });
 });
