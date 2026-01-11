@@ -6,12 +6,14 @@ import { DistributionStrategyFactory } from './strategies/distribution-strategy.
 import { TestColors } from '../../../types/Layout';
 import { Test } from '../../../types/TestReport';
 import { PieLegendParameters } from './parameters/LegendParameters';
+import { PieDatasetParameters } from './parameters/DataSetParameters';
 
 export interface TestDistributionPieParameters {
   title?: string;
   strategy: 'status' | 'duration';
   strategyParameters?: DurationDistributionStrategyParameters;
   legend?: PieLegendParameters;
+  dataset?: PieDatasetParameters;
 }
 
 @Component({
@@ -36,6 +38,14 @@ export class TestDistributionPieWidget {
     return {
       position: 'right',
       ...this.parameters()?.legend,
+    };
+  });
+
+  dataset = computed<PieDatasetParameters>(() => {
+    return {
+      borderColor: '#fff',
+      borderWidth: 2,
+      ...this.parameters()?.dataset,
     };
   });
 }
