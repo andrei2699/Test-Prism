@@ -20,8 +20,8 @@ WORKDIR /usr/local/bin
 COPY --from=build /etc/passwd /etc/passwd
 COPY --from=build /etc/group /etc/group
 
-COPY --from=build --chown=test-prism:test-prism /usr/src/app/target/x86_64-unknown-linux-musl/release/parser .
+COPY --from=build --chown=test-prism:test-prism /usr/src/app/target/x86_64-unknown-linux-musl/release/cli .
 
 USER test-prism
 
-ENTRYPOINT ["./parser"]
+ENTRYPOINT ["./cli"]
