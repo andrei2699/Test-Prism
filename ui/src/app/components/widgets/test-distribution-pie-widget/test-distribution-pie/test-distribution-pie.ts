@@ -1,6 +1,6 @@
 ﻿import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { BaseChartDirective } from 'ng2-charts';
-import { ChartConfiguration } from 'chart.js';
+import { ChartConfiguration, Plugin } from 'chart.js';
 import { Test } from '../../../../types/TestReport';
 import { DistributionDataItem } from '../strategies/distribution-data.interface';
 import { DistributionStrategy } from '../strategies/distribution-strategy.interface';
@@ -32,6 +32,7 @@ export class TestDistributionPie {
   subTitle = input<PieTitleOptions>();
   width = input<string>();
   height = input<string>();
+  shouldDisplayInnerPercentage = input<boolean>();
 
   chartData = computed<PieChartData[]>(() => {
     const distribution: DistributionDataItem[] = this.strategy().calculateDistribution(
@@ -46,6 +47,16 @@ export class TestDistributionPie {
         percentage: total > 0 ? (item.count / total) * 100 : 0,
       }),
     );
+  });
+
+  plugins = computed<Plugin<'pie'>[]>(() => {
+    const plugins: Plugin<'pie'>[] = [];
+
+    if (this.shouldDisplayInnerPercentage()) {
+      plugins.push(getTextCenterPlugin());
+    }
+
+    return plugins;
   });
 
   pieChartConfiguration = computed<ChartConfiguration<'pie'>>(() => {
@@ -65,6 +76,7 @@ export class TestDistributionPie {
       },
       options: {
         ...this.options(),
+        cutout: '50%',
         responsive: true,
         maintainAspectRatio: true,
         plugins: {
@@ -77,4 +89,29 @@ export class TestDistributionPie {
       },
     };
   });
+}
+
+function getTextCenterPlugin(): Plugin<'pie'> {
+  return {
+    id: 'textCenter',
+    beforeDatasetDraw: chart => {
+      const { ctx, data } = chart;
+      ctx.save();
+      ctx.font = 'bolder 1rem sans-serif';
+
+      const backgroundColorArray: string[] = data.datasets[0].backgroundColor as string[];
+      ctx.fillStyle = backgroundColorArray[0];
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+
+      const sum = data.datasets[0].data.reduce((a, b) => a + b, 0);
+      const successPercentage = (data.datasets[0].data[0] / sum) * 100;
+
+      ctx.fillText(
+        `${successPercentage.toFixed(2)}%`,
+        chart.getDatasetMeta(0).data[0].x,
+        chart.getDatasetMeta(0).data[0].y,
+      );
+    },
+  };
 }
