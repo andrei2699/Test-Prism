@@ -143,6 +143,7 @@ The Test Distribution Pie widget displays a pie chart showing the distribution o
 | `strategy`           | `string` | The distribution strategy for the pie chart. Possible values are `'status'` (default) and `'duration'`. |
 | `strategyParameters` | `object` | (Optional) Parameters for the selected strategy.                                                        |
 | `legend`             | `object` | (Optional) Parameters for the chart's legend.                                                           |
+| `dataset`            | `object` | (Optional) Parameters for the chart's dataset.                                                          |
 
 The `strategyParameters` object depends on the selected `strategy`.
 
@@ -190,7 +191,6 @@ The `labels` object can contain the following fields:
 |-------------------|-----------|------------------------------------------------------------------------------------|
 | `boxWidth`        | `number`  | (Optional) The width of the colored box in the legend.                             |
 | `boxHeight`       | `number`  | (Optional) The height of the colored box in the legend.                            |
-|                   |
 | `color`           | `string`  | (Optional) The color of the label text.                                            |
 | `font`            | `object`  | (Optional) An object that configures the font of the label text.                   |
 | `padding`         | `number`  | (Optional) The padding between the legend items.                                   |
@@ -198,6 +198,23 @@ The `labels` object can contain the following fields:
 | `textAlign`       | `string`  | (Optional) The alignment of the text in the legend.                                |
 | `useBorderRadius` | `boolean` | (Optional) If `true`, the `borderRadius` property is used to style the legend box. |
 | `borderRadius`    | `number`  | (Optional) The border radius of the legend box.                                    |
+
+##### `dataset` Parameters
+
+The `dataset` object allows for the customization of the pie chart's dataset.
+
+See the [Chart.js dataset documentation](https://www.chartjs.org/docs/latest/charts/doughnut.html#dataset-properties) for more details.
+
+| Field              | Type                | Description                                                      |
+|--------------------|---------------------|------------------------------------------------------------------|
+| `borderAlign`      | `center` `inner`    | (Optional) The alignment of the border.                          |
+| `borderColor`      | `string` `string[]` | (Optional) The color of the border.                              |
+| `borderWidth`      | `number` `object`   | (Optional) The width of the border in pixels.                    |
+| `hoverBorderColor` | `string` `string[]` | (Optional) The color of the border when hovered.                 |
+| `hoverBorderWidth` | `number` `object`   | (Optional) The width of the border when hovered.                 |
+| `hoverOffset`      | `number`            | (Optional) The pixel value to offset the segment when hovered.   |
+| `offset`           | `number`            | (Optional) The pixel value to offset the segment.                |
+| `weight`           | `number`            | (Optional) The relative thickness of the dataset.                |
 
 ## `DataSource`
 
