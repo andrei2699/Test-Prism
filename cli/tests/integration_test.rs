@@ -1,6 +1,6 @@
 ﻿use assert_json_diff::assert_json_eq;
 use parameterized::parameterized;
-use parser::commands::parse_command::parse_command;
+use cli::commands::parse_command::parse_command;
 use serde_json::Value;
 use std::fs;
 use tempfile::tempdir;

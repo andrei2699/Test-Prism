@@ -1,7 +1,7 @@
 use chrono;
 use clap::Parser as ClapParser;
-use parser::commands::parse_command::parse_command;
-use parser::commands::tag_command::tag_command;
+use cli::commands::parse_command::parse_command;
+use cli::commands::tag_command::tag_command;
 
 #[derive(ClapParser, Debug)]
 #[command(version, about, long_about = None)]

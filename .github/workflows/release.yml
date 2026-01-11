@@ -88,10 +88,10 @@ jobs:
           cache-to: type=gha,mode=max
 
   # ------------------------------------------------------------------
-  # PARSER JOBS
+  # CLI JOBS
   # ------------------------------------------------------------------
-  parser-test:
-    name: Parser Test
+  cli-test:
+    name: CLI Test
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -104,24 +104,24 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
 
       - name: Run Tests
-        working-directory: ./parser
+        working-directory: ./cli
         run: cargo test --verbose
 
-  parser-build-binaries:
-    name: Parser Build Binaries
-    needs: parser-test
+  cli-build-binaries:
+    name: CLI Build Binaries
+    needs: cli-test
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         include:
           - os: ubuntu-latest
             target: x86_64-unknown-linux-gnu
-            artifact_name: parser-linux
-            asset_name: parser-linux-amd64
+            artifact_name: cli-linux
+            asset_name: cli-linux-amd64
           - os: windows-latest
             target: x86_64-pc-windows-msvc
-            artifact_name: parser-windows
-            asset_name: parser-windows-amd64.exe
+            artifact_name: cli-windows
+            asset_name: cli-windows-amd64.exe
 
     steps:
       - name: Checkout code
@@ -133,27 +133,27 @@ jobs:
           targets: ${{ matrix.target }}
 
       - name: Build
-        working-directory: ./parser
+        working-directory: ./cli
         run: cargo build --release --target ${{ matrix.target }}
 
       - name: Rename binary (Linux)
         if: matrix.os == 'ubuntu-latest'
-        run: mv parser/target/${{ matrix.target }}/release/parser parser/target/${{ matrix.target }}/release/${{ matrix.asset_name }}
+        run: mv cli/target/${{ matrix.target }}/release/cli cli/target/${{ matrix.target }}/release/${{ matrix.asset_name }}
 
       - name: Rename binary (Windows)
         if: matrix.os == 'windows-latest'
         shell: bash
-        run: mv parser/target/${{ matrix.target }}/release/parser.exe parser/target/${{ matrix.target }}/release/${{ matrix.asset_name }}
+        run: mv cli/target/${{ matrix.target }}/release/cli.exe cli/target/${{ matrix.target }}/release/${{ matrix.asset_name }}
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.artifact_name }}
-          path: parser/target/${{ matrix.target }}/release/${{ matrix.asset_name }}
+          path: cli/target/${{ matrix.target }}/release/${{ matrix.asset_name }}
 
-  parser-build-push:
-    name: Parser Build & Push Docker
-    needs: parser-test
+  cli-build-push:
+    name: CLI Build & Push Docker
+    needs: cli-test
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -179,12 +179,12 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
-          context: parser
-          file: parser/Dockerfile
+          context: cli
+          file: cli/Dockerfile
           push: true
           tags: |
-            ${{ secrets.DOCKER_USERNAME }}/test-prism:parser-latest
-            ${{ secrets.DOCKER_USERNAME }}/test-prism:parser-${{ steps.meta.outputs.version }}
+            ${{ secrets.DOCKER_USERNAME }}/test-prism:cli-latest
+            ${{ secrets.DOCKER_USERNAME }}/test-prism:cli-${{ steps.meta.outputs.version }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -193,7 +193,7 @@ jobs:
   # ------------------------------------------------------------------
   create-release:
     name: Create Release
-    needs: [ui-build-push, parser-build-binaries, parser-build-push]
+    needs: [ui-build-push, cli-build-binaries, cli-build-push]
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -204,13 +204,13 @@ jobs:
       - name: Download Linux Artifact
         uses: actions/download-artifact@v4
         with:
-          name: parser-linux
+          name: cli-linux
           path: dist
 
       - name: Download Windows Artifact
         uses: actions/download-artifact@v4
         with:
-          name: parser-windows
+          name: cli-windows
           path: dist
 
       - name: Create Release

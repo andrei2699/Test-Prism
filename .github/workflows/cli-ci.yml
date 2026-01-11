@@ -1,16 +1,16 @@
-﻿name: Parser CI
+﻿name: CLI CI
 
 on:
   push:
     branches: [ "main" ]
     paths:
-      - 'parser/**'
-      - '.github/workflows/parser-ci.yml'
+      - 'cli/**'
+      - '.github/workflows/cli-ci.yml'
   pull_request:
     branches: [ "main" ]
     paths:
-      - 'parser/**'
-      - '.github/workflows/parser-ci.yml'
+      - 'cli/**'
+      - '.github/workflows/cli-ci.yml'
 
 jobs:
   build-and-test:
@@ -28,9 +28,9 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
 
       - name: Run Tests
-        working-directory: ./parser
+        working-directory: ./cli
         run: cargo test --verbose
 
       - name: Build
-        working-directory: ./parser
+        working-directory: ./cli
         run: cargo build --release --verbose
