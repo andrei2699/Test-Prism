@@ -13,8 +13,8 @@ export interface Test {
 
 export interface TestExecution {
   timestamp: string;
-  status: TestExecutionType;
+  status: TestExecutionStatus;
   durationMs: number;
 }
 
-export type TestExecutionType = 'SUCCESS' | 'FAILURE' | 'SKIPPED' | 'ERROR';
+export type TestExecutionStatus = 'PASSED' | 'FAILED' | 'SKIPPED' | 'ERROR';

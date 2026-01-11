@@ -14,7 +14,7 @@ describe('WidgetRenderer', () => {
       executions: [
         {
           timestamp: '2023-01-01T00:00:00Z',
-          status: 'SUCCESS',
+          status: 'PASSED',
           durationMs: 100,
         },
       ],
@@ -25,7 +25,7 @@ describe('WidgetRenderer', () => {
       executions: [
         {
           timestamp: '2023-01-01T00:00:00Z',
-          status: 'FAILURE',
+          status: 'FAILED',
           durationMs: 200,
         },
       ],
@@ -36,7 +36,7 @@ describe('WidgetRenderer', () => {
       executions: [
         {
           timestamp: '2023-01-01T00:00:00Z',
-          status: 'SUCCESS',
+          status: 'PASSED',
           durationMs: 150,
         },
       ],
@@ -56,8 +56,8 @@ describe('WidgetRenderer', () => {
 
     fixture = TestBed.createComponent(WidgetRenderer);
     fixture.componentRef.setInput('colors', {
-      SUCCESS: 'green',
-      FAILURE: 'red',
+      PASSED: 'green',
+      FAILED: 'red',
       SKIPPED: 'yellow',
       ERROR: 'orange',
     } satisfies TestColors);
@@ -120,7 +120,7 @@ describe('WidgetRenderer', () => {
   it('should filter tests based on widget data filter', () => {
     const filter: DataFilter = {
       operator: 'AND',
-      conditions: [{ field: 'executions.status', operator: '==', value: 'FAILURE' }],
+      conditions: [{ field: 'executions.status', operator: '==', value: 'FAILED' }],
     };
 
     const widget: Widget = {

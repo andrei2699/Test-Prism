@@ -3,15 +3,15 @@ import { By } from '@angular/platform-browser';
 import { MatTree } from '@angular/material/tree';
 import { TestTree, TestTreeNode } from './test-tree';
 import { TreeOrganizationStrategy } from '../strategies/organization/tree-organization-strategy.interface';
-import { Test, TestExecutionType } from '../../../../types/TestReport';
+import { Test, TestExecutionStatus } from '../../../../types/TestReport';
 import { TestFilterStrategy } from '../strategies/filter/test-filter-strategy.interface';
 import { TreeSortStrategy } from '../strategies/sort/tree-sort-strategy.interface';
 import { vi } from 'vitest';
 import { TestColors } from '../../../../types/Layout';
 
-const defaultTestCounts: Record<TestExecutionType, number> = {
-  SUCCESS: 0,
-  FAILURE: 0,
+const defaultTestCounts: Record<TestExecutionStatus, number> = {
+  PASSED: 0,
+  FAILED: 0,
   SKIPPED: 0,
   ERROR: 0,
 };
@@ -55,8 +55,8 @@ describe('TestTree Component', () => {
     fixture.componentRef.setInput('strategy', createMockTreeOrganizationStrategy());
     fixture.componentRef.setInput('sortStrategies', []);
     fixture.componentRef.setInput('colors', {
-      SUCCESS: 'green',
-      FAILURE: 'red',
+      PASSED: 'green',
+      FAILED: 'red',
       SKIPPED: 'yellow',
       ERROR: 'orange',
     } satisfies TestColors);
@@ -76,7 +76,7 @@ describe('TestTree Component', () => {
         {
           name: 'test1',
           path: '/folder/test1',
-          executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 1000 }],
+          executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 1000 }],
         },
       ];
 
@@ -96,7 +96,7 @@ describe('TestTree Component', () => {
         {
           name: 'test1',
           path: '/folder/test1',
-          executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 1000 }],
+          executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 1000 }],
         },
       ];
 
@@ -105,7 +105,7 @@ describe('TestTree Component', () => {
           id: 'folder',
           name: 'folder',
           children: [{ id: 'test1', name: 'test1' }],
-          testCount: { SUCCESS: 1, FAILURE: 0, SKIPPED: 0, ERROR: 0 },
+          testCount: { PASSED: 1, FAILED: 0, SKIPPED: 0, ERROR: 0 },
         },
       ];
 
@@ -125,7 +125,7 @@ describe('TestTree Component', () => {
         {
           name: 'test1',
           path: '/folder/test1',
-          executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 1000 }],
+          executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 1000 }],
         },
       ];
 
@@ -142,12 +142,12 @@ describe('TestTree Component', () => {
         {
           name: 'test1',
           path: '/folder/test1',
-          executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 1000 }],
+          executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 1000 }],
         },
         {
           name: 'test2',
           path: '/folder/test2',
-          executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'FAILURE', durationMs: 2000 }],
+          executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'FAILED', durationMs: 2000 }],
         },
       ];
 
@@ -163,7 +163,7 @@ describe('TestTree Component', () => {
         {
           name: 'test1',
           path: '/folder/test1',
-          executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 1000 }],
+          executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 1000 }],
         },
       ];
 
@@ -174,11 +174,9 @@ describe('TestTree Component', () => {
           test: {
             name: 'test1',
             path: '/folder/test1',
-            executions: [
-              { timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 1000 },
-            ],
+            executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 1000 }],
           },
-          testCount: { SUCCESS: 1, FAILURE: 0, SKIPPED: 0, ERROR: 0 },
+          testCount: { PASSED: 1, FAILED: 0, SKIPPED: 0, ERROR: 0 },
         },
       ]);
 
@@ -196,11 +194,9 @@ describe('TestTree Component', () => {
           test: {
             name: 'test1',
             path: '/folder/test1',
-            executions: [
-              { timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 1000 },
-            ],
+            executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 1000 }],
           },
-          testCount: { SUCCESS: 1, FAILURE: 0, SKIPPED: 0, ERROR: 0 },
+          testCount: { PASSED: 1, FAILED: 0, SKIPPED: 0, ERROR: 0 },
         },
       ]);
 
@@ -301,7 +297,7 @@ describe('TestTree Component', () => {
       const test: Test = {
         name: 'test1',
         path: '/test1',
-        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 1500 }],
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 1500 }],
       };
 
       const node: TestTreeNode = { id: 'test1', name: 'test1', test };
@@ -319,7 +315,7 @@ describe('TestTree Component', () => {
       const test: Test = {
         name: 'test1',
         path: '/test1',
-        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 2000 }],
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 2000 }],
       };
 
       const node: TestTreeNode = { id: 'test1', name: 'test1', test };
@@ -345,7 +341,7 @@ describe('TestTree Component', () => {
       const test: Test = {
         name: 'test1',
         path: '/test1',
-        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 1500 }],
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 1500 }],
       };
 
       const node: TestTreeNode = { id: 'test1', name: 'test1', test };
@@ -375,12 +371,12 @@ describe('TestTree Component', () => {
         {
           name: 'test1',
           path: '/test1',
-          executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+          executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
         },
         {
           name: 'test2',
           path: '/test2',
-          executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'FAILURE', durationMs: 100 }],
+          executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'FAILED', durationMs: 100 }],
         },
       ];
 
@@ -396,12 +392,12 @@ describe('TestTree Component', () => {
         {
           name: 'test1',
           path: '/test1',
-          executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+          executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
         },
         {
           name: 'test2',
           path: '/test2',
-          executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'FAILURE', durationMs: 100 }],
+          executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'FAILED', durationMs: 100 }],
         },
       ];
 
@@ -420,12 +416,12 @@ describe('TestTree Component', () => {
         {
           name: 'test1',
           path: '/test1',
-          executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+          executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
         },
         {
           name: 'test2',
           path: '/test2',
-          executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'FAILURE', durationMs: 100 }],
+          executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'FAILED', durationMs: 100 }],
         },
       ];
 
@@ -454,7 +450,7 @@ describe('TestTree Component', () => {
         {
           name: 'test1',
           path: '/folder/test1',
-          executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+          executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
         },
       ];
 
@@ -485,7 +481,7 @@ describe('TestTree Component', () => {
         {
           name: 'test1',
           path: '/folder/test1',
-          executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+          executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
         },
       ];
 
@@ -525,7 +521,7 @@ describe('TestTree Component', () => {
         {
           name: 'test1',
           path: '/folder/test1',
-          executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+          executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
         },
       ];
 
@@ -551,12 +547,12 @@ describe('TestTree Component', () => {
         {
           name: 'test1',
           path: '/folder/test1',
-          executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+          executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
         },
         {
           name: 'test2',
           path: '/folder/test2',
-          executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'FAILURE', durationMs: 100 }],
+          executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'FAILED', durationMs: 100 }],
         },
       ];
 
@@ -583,12 +579,12 @@ describe('TestTree Component', () => {
         {
           name: 'test1',
           path: '/folder/test1',
-          executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+          executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
         },
         {
           name: 'test2',
           path: '/folder/test2',
-          executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'FAILURE', durationMs: 100 }],
+          executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'FAILED', durationMs: 100 }],
         },
       ];
 
@@ -637,7 +633,7 @@ describe('TestTree Component', () => {
         {
           name: 'test1',
           path: '/folder/test1',
-          executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+          executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
         },
       ];
       const mockStrategy = createMockTreeOrganizationStrategy([
@@ -658,7 +654,7 @@ describe('TestTree Component', () => {
       const test: Test = {
         name: 'test1',
         path: '/test1',
-        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 1500 }],
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 1500 }],
       };
       const node: TestTreeNode = { id: 'test1', name: 'test1', test };
       const spy = vi.fn();
@@ -685,7 +681,7 @@ describe('TestTree Component', () => {
       const test: Test = {
         name: 'test1',
         path: '/test1',
-        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 1500 }],
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 1500 }],
       };
       const node: TestTreeNode = { id: 'test1', name: 'test1', test };
       fixture.componentRef.setInput('selectedTest', test);
@@ -698,12 +694,12 @@ describe('TestTree Component', () => {
       const test1: Test = {
         name: 'test1',
         path: '/test1',
-        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 1500 }],
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 1500 }],
       };
       const test2: Test = {
         name: 'test2',
         path: '/test2',
-        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'FAILURE', durationMs: 2000 }],
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'FAILED', durationMs: 2000 }],
       };
       const node: TestTreeNode = { id: 'test1', name: 'test1', test: test1 };
       fixture.componentRef.setInput('selectedTest', test2);
@@ -716,7 +712,7 @@ describe('TestTree Component', () => {
       const test: Test = {
         name: 'test1',
         path: '/test1',
-        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 1500 }],
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 1500 }],
       };
       const node: TestTreeNode = { id: 'folder', name: 'folder' };
       fixture.componentRef.setInput('selectedTest', test);
@@ -740,7 +736,7 @@ describe('TestTree Component', () => {
                 name: 'test1',
                 path: '/folder/test1',
                 executions: [
-                  { timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 },
+                  { timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 },
                 ],
               },
             },
@@ -771,7 +767,7 @@ describe('TestTree Component', () => {
                 name: 'test1',
                 path: '/folder/test1',
                 executions: [
-                  { timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 },
+                  { timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 },
                 ],
               },
             },
@@ -788,7 +784,7 @@ describe('TestTree Component', () => {
                 name: 'test2',
                 path: '/folder2/test2',
                 executions: [
-                  { timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 },
+                  { timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 },
                 ],
               },
             },

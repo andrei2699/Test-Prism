@@ -4,8 +4,8 @@ import { Test } from '../../../../types/TestReport';
 import { TestColors } from '../../../../types/Layout';
 
 const colors: TestColors = {
-  SUCCESS: 'green',
-  FAILURE: 'red',
+  PASSED: 'green',
+  FAILED: 'red',
   SKIPPED: 'yellow',
   ERROR: 'orange',
 };
@@ -15,17 +15,17 @@ describe('ExecutionTypeDistributionStrategy', () => {
     const strategy = new ExecutionTypeDistributionStrategy();
     const tests: Test[] = [
       {
-        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
         name: 'test1',
         path: '/test1',
       },
       {
-        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
         name: 'test2',
         path: '/test2',
       },
       {
-        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'FAILURE', durationMs: 100 }],
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'FAILED', durationMs: 100 }],
         name: 'test3',
         path: '/test3',
       },
@@ -44,8 +44,8 @@ describe('ExecutionTypeDistributionStrategy', () => {
     const distribution = strategy.calculateDistribution(tests, colors);
 
     expect(distribution).toEqual([
-      { label: 'SUCCESS', count: 2, color: 'green' },
-      { label: 'FAILURE', count: 1, color: 'red' },
+      { label: 'PASSED', count: 2, color: 'green' },
+      { label: 'FAILED', count: 1, color: 'red' },
       { label: 'SKIPPED', count: 1, color: 'yellow' },
       { label: 'ERROR', count: 1, color: 'orange' },
     ]);

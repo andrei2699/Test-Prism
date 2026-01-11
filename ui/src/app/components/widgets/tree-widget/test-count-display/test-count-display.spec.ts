@@ -1,6 +1,6 @@
 ﻿import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TestCountDisplayComponent } from './test-count-display';
-import { TestExecutionType } from '../../../../types/TestReport';
+import { TestExecutionStatus } from '../../../../types/TestReport';
 import { By } from '@angular/platform-browser';
 import { TestColors } from '../../../../types/Layout';
 
@@ -14,17 +14,17 @@ describe('TestCountDisplayComponent', () => {
 
     fixture = TestBed.createComponent(TestCountDisplayComponent);
     fixture.componentRef.setInput('colors', {
-      SUCCESS: 'green',
-      FAILURE: 'red',
+      PASSED: 'green',
+      FAILED: 'red',
       SKIPPED: 'yellow',
       ERROR: 'orange',
     } satisfies TestColors);
   });
 
   it('should display the total count and individual execution type counts with correct colors', () => {
-    const testCounts: Record<TestExecutionType, number> = {
-      SUCCESS: 5,
-      FAILURE: 2,
+    const testCounts: Record<TestExecutionStatus, number> = {
+      PASSED: 5,
+      FAILED: 2,
       SKIPPED: 1,
       ERROR: 0,
     };
@@ -62,9 +62,9 @@ describe('TestCountDisplayComponent', () => {
   });
 
   it('should not display any counts if totalCount is 0 (e.g., empty object or all zeros)', () => {
-    const testCounts: Record<TestExecutionType, number> = {
-      SUCCESS: 0,
-      FAILURE: 0,
+    const testCounts: Record<TestExecutionStatus, number> = {
+      PASSED: 0,
+      FAILED: 0,
       SKIPPED: 0,
       ERROR: 0,
     };
@@ -75,9 +75,9 @@ describe('TestCountDisplayComponent', () => {
   });
 
   it('should display error count if present', () => {
-    const testCounts: Record<TestExecutionType, number> = {
-      SUCCESS: 0,
-      FAILURE: 0,
+    const testCounts: Record<TestExecutionStatus, number> = {
+      PASSED: 0,
+      FAILED: 0,
       SKIPPED: 0,
       ERROR: 3,
     };
@@ -97,9 +97,9 @@ describe('TestCountDisplayComponent', () => {
   });
 
   it('should display tooltips with correct information for each execution type', () => {
-    const testCounts: Record<TestExecutionType, number> = {
-      SUCCESS: 5,
-      FAILURE: 2,
+    const testCounts: Record<TestExecutionStatus, number> = {
+      PASSED: 5,
+      FAILED: 2,
       SKIPPED: 1,
       ERROR: 0,
     };
@@ -113,13 +113,13 @@ describe('TestCountDisplayComponent', () => {
       el => el.nativeElement.textContent.trim() === '5',
     );
     expect(successElement).toBeTruthy();
-    expect(successElement?.nativeElement.title).toBe('SUCCESS: 5');
+    expect(successElement?.nativeElement.title).toBe('PASSED: 5');
 
     const failureElement = executionCountElements.find(
       el => el.nativeElement.textContent.trim() === '2',
     );
     expect(failureElement).toBeTruthy();
-    expect(failureElement?.nativeElement.title).toBe('FAILURE: 2');
+    expect(failureElement?.nativeElement.title).toBe('FAILED: 2');
 
     const skippedElement = executionCountElements.find(
       el => el.nativeElement.textContent.trim() === '1',

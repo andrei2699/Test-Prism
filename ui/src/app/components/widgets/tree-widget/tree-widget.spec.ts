@@ -10,21 +10,21 @@ import { TestColors } from '../../../types/Layout';
 const tests: Test[] = [
   {
     name: 'should display a success message',
-    executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
-    path: 'Login.UI',
-    tags: ['UI', 'Login'],
-  },
-  {
-    name: 'should display an error message on failed login',
-    executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'FAILURE', durationMs: 200 }],
+    executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
     path: 'Login.UI',
     tags: ['UI', 'Login'],
   },
   {
     name: 'should fetch user data',
-    executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 300 }],
+    executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 300 }],
     path: 'User.API',
     tags: ['API', 'User'],
+  },
+  {
+    name: 'should display an error message on failed login',
+    executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'FAILED', durationMs: 200 }],
+    path: 'Login.UI',
+    tags: ['UI', 'Login'],
   },
   {
     name: 'should timeout when fetching user data',
@@ -53,8 +53,8 @@ describe('TreeWidget', () => {
     fixture.componentRef.setInput('tests', tests);
     fixture.componentRef.setInput('parameters', parameters);
     fixture.componentRef.setInput('colors', {
-      SUCCESS: 'green',
-      FAILURE: 'red',
+      PASSED: 'green',
+      FAILED: 'red',
       SKIPPED: 'yellow',
       ERROR: 'orange',
     } satisfies TestColors);
@@ -98,7 +98,7 @@ describe('TreeWidget', () => {
     it('should filter by status', async () => {
       const filterState: FilterState = {
         name: '',
-        statuses: ['FAILURE'],
+        statuses: ['FAILED'],
         tags: [],
       };
       component.onFilterChange(filterState);
@@ -112,7 +112,7 @@ describe('TreeWidget', () => {
     it('should filter by name and status', async () => {
       const filterState: FilterState = {
         name: 'user',
-        statuses: ['SUCCESS'],
+        statuses: ['PASSED'],
         tags: [],
       };
       component.onFilterChange(filterState);

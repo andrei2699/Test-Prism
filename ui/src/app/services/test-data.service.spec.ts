@@ -17,7 +17,7 @@ describe('TestDataService', () => {
         executions: [
           {
             timestamp: '2023-01-01T00:00:00Z',
-            status: 'SUCCESS',
+            status: 'PASSED',
             durationMs: 100,
           },
         ],

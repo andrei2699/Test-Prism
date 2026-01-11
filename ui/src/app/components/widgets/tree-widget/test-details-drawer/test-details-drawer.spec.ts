@@ -10,13 +10,13 @@ describe('TestDetailsDrawer', () => {
   const mockTest: Test = {
     name: 'test1',
     path: '/path/to/test1',
-    executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 1000 }],
+    executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 1000 }],
     tags: ['tag1', 'tag2'],
   };
 
   const mockColors: TestColors = {
-    SUCCESS: 'green',
-    FAILURE: 'red',
+    PASSED: 'green',
+    FAILED: 'red',
     SKIPPED: 'yellow',
     ERROR: 'orange',
   };
@@ -51,7 +51,7 @@ describe('TestDetailsDrawer', () => {
     const element = fixture.nativeElement;
     const statusElement = element.querySelector('.value[style*="color: green"]');
     expect(statusElement).toBeTruthy();
-    expect(statusElement.textContent).toContain('SUCCESS');
+    expect(statusElement.textContent).toContain('PASSED');
   });
 
   it('should display tags', () => {

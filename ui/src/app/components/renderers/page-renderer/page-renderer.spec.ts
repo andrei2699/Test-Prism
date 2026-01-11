@@ -30,7 +30,7 @@ describe('PageRenderer', () => {
       executions: [
         {
           timestamp: '2023-01-01T00:00:00Z',
-          status: 'SUCCESS',
+          status: 'PASSED',
           durationMs: 2,
         },
       ],
@@ -85,8 +85,8 @@ describe('PageRenderer', () => {
     fixture.componentRef.setInput('pages', pages);
     fixture.componentRef.setInput('testReports', mockTestReports);
     fixture.componentRef.setInput('colors', {
-      SUCCESS: 'green',
-      FAILURE: 'red',
+      PASSED: 'green',
+      FAILED: 'red',
       SKIPPED: 'yellow',
       ERROR: 'orange',
     } satisfies TestColors);

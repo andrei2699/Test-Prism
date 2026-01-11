@@ -19,8 +19,8 @@ describe('TestDistributionPie', () => {
     fixture = TestBed.createComponent(TestDistributionPie);
     component = fixture.componentInstance;
     fixture.componentRef.setInput('colors', {
-      SUCCESS: 'green',
-      FAILURE: 'red',
+      PASSED: 'green',
+      FAILED: 'red',
       SKIPPED: 'yellow',
       ERROR: 'orange',
     } satisfies TestColors);
@@ -34,17 +34,17 @@ describe('TestDistributionPie', () => {
   it('should pass the correct data to the chart when tests are provided', () => {
     const tests: Test[] = [
       {
-        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
         name: 'test1',
         path: '/test1',
       },
       {
-        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
         name: 'test2',
         path: '/test2',
       },
       {
-        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'FAILURE', durationMs: 100 }],
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'FAILED', durationMs: 100 }],
         name: 'test3',
         path: '/test3',
       },
@@ -64,7 +64,7 @@ describe('TestDistributionPie', () => {
     const chartData = chartInstance.data;
 
     expect(chartData).toBeDefined();
-    expect(chartData!.labels).toEqual(['SUCCESS (50.00%)', 'FAILURE (25.00%)', 'SKIPPED (25.00%)']);
+    expect(chartData!.labels).toEqual(['PASSED (50.00%)', 'FAILED (25.00%)', 'SKIPPED (25.00%)']);
     expect(chartData!.datasets[0].data).toEqual([2, 1, 1]);
   });
 
@@ -85,12 +85,12 @@ describe('TestDistributionPie', () => {
   it('should only include statuses that have tests', () => {
     const tests: Test[] = [
       {
-        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
         name: 'test1',
         path: '/test1',
       },
       {
-        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
         name: 'test2',
         path: '/test2',
       },
@@ -105,7 +105,7 @@ describe('TestDistributionPie', () => {
     const chartData = chartInstance.data;
 
     expect(chartData).toBeDefined();
-    expect(chartData!.labels).toEqual(['SUCCESS (100.00%)']);
+    expect(chartData!.labels).toEqual(['PASSED (100.00%)']);
     expect(chartData!.datasets[0].data).toEqual([2]);
   });
 
@@ -122,12 +122,12 @@ describe('TestDistributionPie', () => {
         path: '/test2',
       },
       {
-        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
         name: 'test3',
         path: '/test3',
       },
       {
-        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'FAILURE', durationMs: 100 }],
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'FAILED', durationMs: 100 }],
         name: 'test4',
         path: '/test4',
       },
@@ -143,8 +143,8 @@ describe('TestDistributionPie', () => {
 
     expect(chartData).toBeDefined();
     expect(chartData!.labels).toEqual([
-      'SUCCESS (25.00%)',
-      'FAILURE (25.00%)',
+      'PASSED (25.00%)',
+      'FAILED (25.00%)',
       'SKIPPED (25.00%)',
       'ERROR (25.00%)',
     ]);

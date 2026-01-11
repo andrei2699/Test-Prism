@@ -1,6 +1,6 @@
 ﻿import { DataSource } from './DataSource';
 import { Widget } from './Widget';
-import { TestExecutionType } from './TestReport';
+import { TestExecutionStatus } from './TestReport';
 
 export interface Layout {
   pages: Page[];
@@ -15,4 +15,4 @@ export interface Page {
   widgets: Widget[];
 }
 
-export type TestColors = Record<TestExecutionType, string>;
+export type TestColors = Record<TestExecutionStatus, string>;

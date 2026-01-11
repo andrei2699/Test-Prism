@@ -26,8 +26,8 @@ describe('ContainerWidget', () => {
 
     fixture = TestBed.createComponent(ContainerWidget);
     fixture.componentRef.setInput('colors', {
-      SUCCESS: 'green',
-      FAILURE: 'red',
+      PASSED: 'green',
+      FAILED: 'red',
       SKIPPED: 'yellow',
       ERROR: 'orange',
     } satisfies TestColors);

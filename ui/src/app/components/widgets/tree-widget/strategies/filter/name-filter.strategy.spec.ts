@@ -7,17 +7,17 @@ describe('NameFilterStrategy', () => {
     {
       name: 'LoginComponent.spec.ts',
       path: 'src/auth',
-      executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+      executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
     },
     {
       name: 'UserService.spec.ts',
       path: 'src/services',
-      executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+      executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
     },
     {
       name: 'LoginPage.spec.ts',
       path: 'src/pages',
-      executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'FAILURE', durationMs: 100 }],
+      executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'FAILED', durationMs: 100 }],
     },
   ];
 

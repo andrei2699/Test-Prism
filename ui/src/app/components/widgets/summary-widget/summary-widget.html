@@ -10,10 +10,10 @@
       <mat-chip-option [selectable]="false" [style.background-color]="'#e0e0e0'"
         >Total: {{ summary().total }}
       </mat-chip-option>
-      <mat-chip-option [selectable]="false" [style.background-color]="colors().SUCCESS"
+      <mat-chip-option [selectable]="false" [style.background-color]="colors().PASSED"
         >Passed: {{ summary().passed }}
       </mat-chip-option>
-      <mat-chip-option [selectable]="false" [style.background-color]="colors().FAILURE"
+      <mat-chip-option [selectable]="false" [style.background-color]="colors().FAILED"
         >Failed: {{ summary().failed }}
       </mat-chip-option>
       <mat-chip-option [selectable]="false" [style.background-color]="colors().SKIPPED"

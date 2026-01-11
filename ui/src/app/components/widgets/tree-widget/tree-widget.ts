@@ -5,7 +5,7 @@ import {
   TestFilterInputComponent,
 } from './test-filter-input/test-filter-input.component';
 import { TestTree } from './test-tree/test-tree';
-import { Test, TestExecutionType } from '../../../types/TestReport';
+import { Test, TestExecutionStatus } from '../../../types/TestReport';
 import { TreeSortStrategyFactory } from './strategies/sort/tree-sort-strategy.factory';
 import { NameFilterStrategy } from './strategies/filter/name-filter.strategy';
 import { StatusFilterStrategy } from './strategies/filter/status-filter.strategy';
@@ -34,7 +34,7 @@ export class TreeWidget {
   parameters = input.required<TreeWidgetParameters | undefined>();
 
   filterText = signal('');
-  selectedStatuses = signal<TestExecutionType[]>([]);
+  selectedStatuses = signal<TestExecutionStatus[]>([]);
   selectedTags = signal<string[]>([]);
   filterStrategy = signal(this.createFilterStrategy('', [], []));
   selectedTest = signal<Test | null>(null);
@@ -67,7 +67,7 @@ export class TreeWidget {
     this.selectedTest.set(null);
   }
 
-  private createFilterStrategy(name: string, statuses: TestExecutionType[], tags: string[]) {
+  private createFilterStrategy(name: string, statuses: TestExecutionStatus[], tags: string[]) {
     const filters = [];
 
     if (name.trim()) {

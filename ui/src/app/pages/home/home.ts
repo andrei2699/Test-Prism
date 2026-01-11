@@ -52,8 +52,8 @@ export class Home {
 }
 
 const DEFAULT_TEST_COLORS: TestColors = {
-  SUCCESS: '#4caf50',
-  FAILURE: '#f44336',
+  PASSED: '#4caf50',
+  FAILED: '#f44336',
   ERROR: '#ff9800',
   SKIPPED: '#9e9e9e',
 };

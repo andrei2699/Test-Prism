@@ -17,7 +17,7 @@ describe('DataFilterService', () => {
         executions: [
           {
             timestamp: '2023-01-01T00:00:00Z',
-            status: 'SUCCESS',
+            status: 'PASSED',
             durationMs: 100,
           },
         ],
@@ -29,7 +29,7 @@ describe('DataFilterService', () => {
         executions: [
           {
             timestamp: '2023-01-01T00:00:00Z',
-            status: 'FAILURE',
+            status: 'FAILED',
             durationMs: 200,
           },
         ],
@@ -41,7 +41,7 @@ describe('DataFilterService', () => {
         executions: [
           {
             timestamp: '2023-01-01T00:00:00Z',
-            status: 'SUCCESS',
+            status: 'PASSED',
             durationMs: 150,
           },
         ],
@@ -65,7 +65,7 @@ describe('DataFilterService', () => {
         executions: [
           {
             timestamp: '2023-01-01T00:00:00Z',
-            status: 'SUCCESS',
+            status: 'PASSED',
             durationMs: 120,
           },
         ],
@@ -77,7 +77,7 @@ describe('DataFilterService', () => {
         executions: [
           {
             timestamp: '2023-01-01T00:00:00Z',
-            status: 'SUCCESS',
+            status: 'PASSED',
             durationMs: 110,
           },
         ],
@@ -111,7 +111,7 @@ describe('DataFilterService', () => {
     it('should filter with "equals"', () => {
       const filter: DataFilter = {
         operator: 'AND',
-        conditions: [{ field: 'executions.status', operator: 'equals', value: 'FAILURE' }],
+        conditions: [{ field: 'executions.status', operator: 'equals', value: 'FAILED' }],
       };
 
       const result = service.applyFilter(tests, filter);
@@ -122,7 +122,7 @@ describe('DataFilterService', () => {
     it('should filter with "==" as an alias for "equals"', () => {
       const filter: DataFilter = {
         operator: 'AND',
-        conditions: [{ field: 'executions.status', operator: '==', value: 'FAILURE' }],
+        conditions: [{ field: 'executions.status', operator: '==', value: 'FAILED' }],
       };
 
       const result = service.applyFilter(tests, filter);
@@ -133,7 +133,7 @@ describe('DataFilterService', () => {
     it('should filter with "not equals"', () => {
       const filter: DataFilter = {
         operator: 'AND',
-        conditions: [{ field: 'executions.status', operator: 'not equals', value: 'SUCCESS' }],
+        conditions: [{ field: 'executions.status', operator: 'not equals', value: 'PASSED' }],
       };
 
       const result = service.applyFilter(tests, filter);
@@ -144,7 +144,7 @@ describe('DataFilterService', () => {
     it('should filter with "!=" as an alias for "not equals"', () => {
       const filter: DataFilter = {
         operator: 'AND',
-        conditions: [{ field: 'executions.status', operator: '!=', value: 'SUCCESS' }],
+        conditions: [{ field: 'executions.status', operator: '!=', value: 'PASSED' }],
       };
 
       const result = service.applyFilter(tests, filter);
@@ -155,7 +155,7 @@ describe('DataFilterService', () => {
     it('should filter with "in"', () => {
       const filter: DataFilter = {
         operator: 'AND',
-        conditions: [{ field: 'executions.status', operator: 'in', value: ['FAILURE', 'SKIPPED'] }],
+        conditions: [{ field: 'executions.status', operator: 'in', value: ['FAILED', 'SKIPPED'] }],
       };
 
       const result = service.applyFilter(tests, filter);
@@ -167,7 +167,7 @@ describe('DataFilterService', () => {
       const filter: DataFilter = {
         operator: 'AND',
         conditions: [
-          { field: 'executions.status', operator: 'not in', value: ['SUCCESS', 'SKIPPED'] },
+          { field: 'executions.status', operator: 'not in', value: ['PASSED', 'SKIPPED'] },
         ],
       };
 
@@ -248,7 +248,7 @@ describe('DataFilterService', () => {
       const filter: DataFilter = {
         operator: 'AND',
         conditions: [
-          { field: 'executions.status', operator: 'equals', value: 'SUCCESS' },
+          { field: 'executions.status', operator: 'equals', value: 'PASSED' },
           { field: 'executions.durationMs', operator: 'equals', value: 150 },
         ],
       };
@@ -262,7 +262,7 @@ describe('DataFilterService', () => {
       const filter: DataFilter = {
         operator: 'OR',
         conditions: [
-          { field: 'executions.status', operator: 'equals', value: 'FAILURE' },
+          { field: 'executions.status', operator: 'equals', value: 'FAILED' },
           { field: 'executions.status', operator: 'equals', value: 'SKIPPED' },
         ],
       };
@@ -281,7 +281,7 @@ describe('DataFilterService', () => {
           {
             operator: 'AND',
             conditions: [
-              { field: 'executions.status', operator: 'equals', value: 'SUCCESS' },
+              { field: 'executions.status', operator: 'equals', value: 'PASSED' },
               { field: 'name', operator: 'contains', value: '1' },
             ],
           },
@@ -298,7 +298,7 @@ describe('DataFilterService', () => {
       const filter: DataFilter = {
         operator: 'AND',
         conditions: [
-          { field: 'executions.status', operator: 'equals', value: 'SUCCESS' },
+          { field: 'executions.status', operator: 'equals', value: 'PASSED' },
           {
             operator: 'OR',
             conditions: [

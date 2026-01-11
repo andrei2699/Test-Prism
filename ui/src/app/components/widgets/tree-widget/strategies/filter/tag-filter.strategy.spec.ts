@@ -7,19 +7,19 @@ describe('TagFilterStrategy', () => {
       {
         name: 'test1',
         path: 'path1',
-        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
         tags: ['tag1', 'tag2'],
       },
       {
         name: 'test2',
         path: 'path2',
-        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
         tags: ['tag2'],
       },
       {
         name: 'test3',
         path: 'path3',
-        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
         tags: ['tag1'],
       },
     ];
@@ -31,13 +31,13 @@ describe('TagFilterStrategy', () => {
       {
         name: 'test1',
         path: 'path1',
-        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
         tags: ['tag1', 'tag2'],
       },
       {
         name: 'test3',
         path: 'path3',
-        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
         tags: ['tag1'],
       },
     ]);
@@ -48,19 +48,19 @@ describe('TagFilterStrategy', () => {
       {
         name: 'test1',
         path: 'path1',
-        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
         tags: ['tag1', 'tag2'],
       },
       {
         name: 'test2',
         path: 'path2',
-        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
         tags: ['tag2'],
       },
       {
         name: 'test3',
         path: 'path3',
-        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
         tags: ['tag1'],
       },
     ];
@@ -72,13 +72,13 @@ describe('TagFilterStrategy', () => {
       {
         name: 'test1',
         path: 'path1',
-        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
         tags: ['tag1', 'tag2'],
       },
       {
         name: 'test3',
         path: 'path3',
-        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
         tags: ['tag1'],
       },
     ]);
@@ -89,19 +89,19 @@ describe('TagFilterStrategy', () => {
       {
         name: 'test1',
         path: 'path1',
-        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
         tags: ['tag1', 'tag2'],
       },
       {
         name: 'test2',
         path: 'path2',
-        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
         tags: ['tag2'],
       },
       {
         name: 'test3',
         path: 'path3',
-        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
         tags: ['tag1'],
       },
     ];
@@ -113,7 +113,7 @@ describe('TagFilterStrategy', () => {
       {
         name: 'test1',
         path: 'path1',
-        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
         tags: ['tag1', 'tag2'],
       },
     ]);
@@ -124,19 +124,19 @@ describe('TagFilterStrategy', () => {
       {
         name: 'test1',
         path: 'path1',
-        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
         tags: ['tag1', 'tag2'],
       },
       {
         name: 'test2',
         path: 'path2',
-        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
         tags: ['tag2'],
       },
       {
         name: 'test3',
         path: 'path3',
-        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
         tags: ['tag1'],
       },
     ];
@@ -152,19 +152,19 @@ describe('TagFilterStrategy', () => {
       {
         name: 'test1',
         path: 'path1',
-        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
         tags: ['tag1', 'tag2'],
       },
       {
         name: 'test2',
         path: 'path2',
-        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
         tags: ['tag2'],
       },
       {
         name: 'test3',
         path: 'path3',
-        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
         tags: ['tag1'],
       },
     ];
@@ -180,18 +180,18 @@ describe('TagFilterStrategy', () => {
       {
         name: 'test1',
         path: 'path1',
-        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
         tags: ['tag1', 'tag2'],
       },
       {
         name: 'test2',
         path: 'path2',
-        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
       },
       {
         name: 'test3',
         path: 'path3',
-        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
         tags: ['tag1'],
       },
     ];
@@ -203,13 +203,13 @@ describe('TagFilterStrategy', () => {
       {
         name: 'test1',
         path: 'path1',
-        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
         tags: ['tag1', 'tag2'],
       },
       {
         name: 'test3',
         path: 'path3',
-        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
         tags: ['tag1'],
       },
     ]);

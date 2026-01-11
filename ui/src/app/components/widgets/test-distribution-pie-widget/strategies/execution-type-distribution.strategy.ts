@@ -1,14 +1,14 @@
 ﻿import { DistributionStrategy } from './distribution-strategy.interface';
 import { DistributionDataItem } from './distribution-data.interface';
-import { Test, TestExecutionType } from '../../../../types/TestReport';
+import { Test, TestExecutionStatus } from '../../../../types/TestReport';
 import { TestColors } from '../../../../types/Layout';
 import { getLastExecution } from '../../../../utils/testExecutionUtils';
 
 export class ExecutionTypeDistributionStrategy implements DistributionStrategy {
   calculateDistribution(tests: Test[], colors: TestColors): DistributionDataItem[] {
-    const counts: Record<TestExecutionType, number> = {
-      SUCCESS: 0,
-      FAILURE: 0,
+    const counts: Record<TestExecutionStatus, number> = {
+      PASSED: 0,
+      FAILED: 0,
       ERROR: 0,
       SKIPPED: 0,
     };
@@ -20,7 +20,7 @@ export class ExecutionTypeDistributionStrategy implements DistributionStrategy {
       }
     });
 
-    const statusOrder: TestExecutionType[] = ['SUCCESS', 'FAILURE', 'SKIPPED', 'ERROR'];
+    const statusOrder: TestExecutionStatus[] = ['PASSED', 'FAILED', 'SKIPPED', 'ERROR'];
     return statusOrder
       .map(
         (executionType): DistributionDataItem => ({

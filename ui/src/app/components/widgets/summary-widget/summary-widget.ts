@@ -41,10 +41,10 @@ export class SummaryWidgetComponent {
       }
 
       switch (lastExecution.status) {
-        case 'SUCCESS':
+        case 'PASSED':
           summary.passed++;
           break;
-        case 'FAILURE':
+        case 'FAILED':
           summary.failed++;
           break;
         case 'SKIPPED':

@@ -23,15 +23,15 @@ describe('getLastExecution', () => {
       name: 'Test 2',
       path: '/tests/test2',
       executions: [
-        { status: 'SUCCESS', durationMs: 100, timestamp: '2023-01-01T10:00:00Z' },
-        { status: 'FAILURE', durationMs: 150, timestamp: '2023-01-02T12:00:00Z' },
+        { status: 'PASSED', durationMs: 100, timestamp: '2023-01-01T10:00:00Z' },
+        { status: 'FAILED', durationMs: 150, timestamp: '2023-01-02T12:00:00Z' },
         { status: 'SKIPPED', durationMs: 50, timestamp: '2023-01-01T15:00:00Z' },
       ],
     };
 
     const lastExecution = getLastExecution(test);
     expect(lastExecution).toEqual({
-      status: 'FAILURE',
+      status: 'FAILED',
       durationMs: 150,
       timestamp: '2023-01-02T12:00:00Z',
     });

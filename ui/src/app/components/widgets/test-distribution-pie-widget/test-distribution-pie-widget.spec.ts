@@ -10,19 +10,19 @@ import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 const tests: Test[] = [
   {
     name: 'should display a success message',
-    executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+    executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
     path: 'Login.UI',
     tags: ['UI', 'Login'],
   },
   {
     name: 'should display an error message on failed login',
-    executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'FAILURE', durationMs: 200 }],
+    executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'FAILED', durationMs: 200 }],
     path: 'Login.UI',
     tags: ['UI', 'Login'],
   },
   {
     name: 'should fetch user data',
-    executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 300 }],
+    executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 300 }],
     path: 'User.API',
     tags: ['API', 'User'],
   },
@@ -35,8 +35,8 @@ const tests: Test[] = [
 ];
 
 const colors: TestColors = {
-  SUCCESS: 'green',
-  FAILURE: 'red',
+  PASSED: 'green',
+  FAILED: 'red',
   SKIPPED: 'yellow',
   ERROR: 'orange',
 };
@@ -91,8 +91,8 @@ describe('TestDistributionPieWidget', () => {
     const strategy = component.strategy();
     const distribution = strategy.calculateDistribution(tests, colors);
     expect(distribution).toEqual([
-      { label: 'SUCCESS', count: 2, color: 'green' },
-      { label: 'FAILURE', count: 1, color: 'red' },
+      { label: 'PASSED', count: 2, color: 'green' },
+      { label: 'FAILED', count: 1, color: 'red' },
       { label: 'SKIPPED', count: 1, color: 'yellow' },
     ]);
   });

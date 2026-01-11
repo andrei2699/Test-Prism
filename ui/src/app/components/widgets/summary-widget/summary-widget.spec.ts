@@ -17,8 +17,8 @@ describe('SummaryWidgetComponent', () => {
 
     fixture = TestBed.createComponent(SummaryWidgetComponent);
     fixture.componentRef.setInput('colors', {
-      SUCCESS: 'green',
-      FAILURE: 'red',
+      PASSED: 'green',
+      FAILED: 'red',
       SKIPPED: 'yellow',
       ERROR: 'orange',
     } satisfies TestColors);
@@ -63,12 +63,12 @@ describe('SummaryWidgetComponent', () => {
       {
         name: 'Test 1',
         path: '/test1',
-        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
       },
       {
         name: 'Test 2',
         path: '/test2',
-        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'FAILURE', durationMs: 100 }],
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'FAILED', durationMs: 100 }],
       },
       {
         name: 'Test 3',
@@ -78,7 +78,7 @@ describe('SummaryWidgetComponent', () => {
       {
         name: 'Test 4',
         path: '/test4',
-        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
       },
       {
         name: 'Test 5',

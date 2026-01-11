@@ -9,17 +9,17 @@ describe('CompositeFilterStrategy', () => {
     {
       name: 'LoginComponent.spec.ts',
       path: 'src/auth',
-      executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+      executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
     },
     {
       name: 'UserService.spec.ts',
       path: 'src/services',
-      executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+      executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
     },
     {
       name: 'LoginPage.spec.ts',
       path: 'src/pages',
-      executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'FAILURE', durationMs: 100 }],
+      executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'FAILED', durationMs: 100 }],
     },
     {
       name: 'SkippedTest.spec.ts',
@@ -45,7 +45,7 @@ describe('CompositeFilterStrategy', () => {
 
   it('should apply multiple filters in sequence', () => {
     const nameFilter = new NameFilterStrategy('Login');
-    const statusFilter = new StatusFilterStrategy(['SUCCESS']);
+    const statusFilter = new StatusFilterStrategy(['PASSED']);
     const strategy = new CompositeFilterStrategy([nameFilter, statusFilter]);
     const result = strategy.filter(testData);
 
@@ -55,7 +55,7 @@ describe('CompositeFilterStrategy', () => {
 
   it('should return empty when filters eliminate all tests', () => {
     const nameFilter = new NameFilterStrategy('Skipped');
-    const statusFilter = new StatusFilterStrategy(['SUCCESS']);
+    const statusFilter = new StatusFilterStrategy(['PASSED']);
     const strategy = new CompositeFilterStrategy([nameFilter, statusFilter]);
     const result = strategy.filter(testData);
 
@@ -63,7 +63,7 @@ describe('CompositeFilterStrategy', () => {
   });
 
   it('should maintain test order through filter chain', () => {
-    const statusFilter = new StatusFilterStrategy(['SUCCESS', 'FAILURE']);
+    const statusFilter = new StatusFilterStrategy(['PASSED', 'FAILED']);
     const strategy = new CompositeFilterStrategy([statusFilter]);
     const result = strategy.filter(testData);
 

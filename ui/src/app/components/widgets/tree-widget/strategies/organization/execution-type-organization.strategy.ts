@@ -4,7 +4,7 @@ import { BaseTreeOrganizationStrategy } from './base-tree-organization.strategy'
 import { getLastExecution } from '../../../../../utils/testExecutionUtils';
 
 export class ExecutionTypeOrganizationStrategy extends BaseTreeOrganizationStrategy {
-  private readonly statusOrder = ['SUCCESS', 'FAILURE', 'SKIPPED', 'ERROR'];
+  private readonly statusOrder = ['PASSED', 'FAILED', 'SKIPPED', 'ERROR'];
 
   getName(): string {
     return 'status';

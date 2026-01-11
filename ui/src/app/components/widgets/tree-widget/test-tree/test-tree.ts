@@ -3,7 +3,7 @@ import { MatTreeModule } from '@angular/material/tree';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { Test, TestExecutionType } from '../../../../types/TestReport';
+import { Test, TestExecutionStatus } from '../../../../types/TestReport';
 import { TreeOrganizationStrategy } from '../strategies/organization/tree-organization-strategy.interface';
 import { TreeSortStrategy } from '../strategies/sort/tree-sort-strategy.interface';
 import { TestFilterStrategy } from '../strategies/filter/test-filter-strategy.interface';
@@ -20,7 +20,7 @@ export interface TestTreeNode {
   icon?: string;
   color?: string;
   totalDurationMs?: number;
-  testCount?: Record<TestExecutionType, number>;
+  testCount?: Record<TestExecutionStatus, number>;
 }
 
 @Component({
