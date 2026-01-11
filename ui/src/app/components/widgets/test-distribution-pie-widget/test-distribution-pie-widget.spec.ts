@@ -1,11 +1,13 @@
 ﻿import { ComponentFixture, TestBed } from '@angular/core/testing';
 import {
-  TestDistributionPieWidget,
   TestDistributionPieParameters,
+  TestDistributionPieWidget,
 } from './test-distribution-pie-widget';
 import { Test } from '../../../types/TestReport';
 import { TestColors } from '../../../types/Layout';
 import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
+import { By } from '@angular/platform-browser';
+import { TestDistributionPie } from './test-distribution-pie/test-distribution-pie';
 
 const tests: Test[] = [
   {
@@ -64,21 +66,30 @@ describe('TestDistributionPieWidget', () => {
     fixture.componentRef.setInput('parameters', parameters);
     fixture.detectChanges();
 
-    const titleElement = fixture.nativeElement.querySelector('h2');
-    expect(titleElement).toBeNull();
+    const pieComponent = fixture.debugElement.query(By.directive(TestDistributionPie));
+    const title = pieComponent.injector.get(TestDistributionPie).title;
+
+    expect(title()).toBeUndefined();
   });
 
   it('should display a title when provided', () => {
     const parameters: TestDistributionPieParameters = {
       strategy: 'status',
-      title: 'Test Title',
+      title: {
+        text: 'Test Title',
+        display: true,
+      },
     };
     fixture.componentRef.setInput('parameters', parameters);
     fixture.detectChanges();
 
-    const titleElement = fixture.nativeElement.querySelector('h2');
-    expect(titleElement).not.toBeNull();
-    expect(titleElement.textContent).toBe('Test Title');
+    const pieComponent = fixture.debugElement.query(By.directive(TestDistributionPie));
+    const title = pieComponent.injector.get(TestDistributionPie).title;
+
+    expect(title()).toEqual({
+      text: 'Test Title',
+      display: true,
+    });
   });
 
   it('should create a status distribution strategy', () => {

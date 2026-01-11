@@ -7,9 +7,11 @@ import { TestColors } from '../../../types/Layout';
 import { Test } from '../../../types/TestReport';
 import { PieLegendParameters } from './parameters/LegendParameters';
 import { PieDatasetParameters } from './parameters/DataSetParameters';
+import { PieTitleFont, PieTitleOptions } from './parameters/TitleParameters';
 
 export interface TestDistributionPieParameters {
-  title?: string;
+  title?: string | PieTitleOptions;
+  subTitle?: string | PieTitleOptions;
   strategy: 'status' | 'duration';
   strategyParameters?: DurationDistributionStrategyParameters;
   legend?: PieLegendParameters;
@@ -48,4 +50,35 @@ export class TestDistributionPieWidget {
       ...this.parameters()?.dataset,
     };
   });
+
+  title = computed<PieTitleOptions | undefined>(() =>
+    this.computeTitleOptions(this.parameters()?.title, {
+      size: 20,
+      weight: 'bold',
+    }),
+  );
+
+  subTitle = computed<PieTitleOptions | undefined>(() =>
+    this.computeTitleOptions(this.parameters()?.subTitle),
+  );
+
+  private computeTitleOptions(
+    title?: string | PieTitleOptions,
+    font?: PieTitleFont,
+  ): PieTitleOptions | undefined {
+    if (!title) {
+      return undefined;
+    }
+
+    if (typeof title === 'string') {
+      return {
+        display: true,
+        text: title,
+        align: 'start',
+        font: font,
+      };
+    }
+
+    return title;
+  }
 }

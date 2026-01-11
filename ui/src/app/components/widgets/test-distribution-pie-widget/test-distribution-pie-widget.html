@@ -1,9 +1,8 @@
-﻿@if (parameters()?.title) {
-  <h2>{{ parameters()?.title }}</h2>
-}
-<app-test-distribution-pie
+﻿<app-test-distribution-pie
   [colors]="colors()"
   [tests]="tests()"
   [strategy]="strategy()"
   [legend]="legend()"
-  [dataset]="dataset()" />
+  [dataset]="dataset()"
+  [title]="title()"
+  [subTitle]="subTitle()" />
