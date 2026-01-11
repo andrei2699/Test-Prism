@@ -8,7 +8,7 @@
       "executions": [
         {
           "timestamp": "2026-01-06T13:06:33.888Z",
-          "status": "SUCCESS",
+          "status": "PASSED",
           "durationMs": 44
         }
       ]
@@ -19,7 +19,7 @@
       "executions": [
         {
           "timestamp": "2026-01-06T13:06:33.888Z",
-          "status": "FAILURE",
+          "status": "FAILED",
           "durationMs": 15,
           "message": "org.opentest4j.AssertionFailedError: Intentional failure for input: two"
         }
@@ -31,7 +31,7 @@
       "executions": [
         {
           "timestamp": "2026-01-06T13:06:33.888Z",
-          "status": "SUCCESS",
+          "status": "PASSED",
           "durationMs": 1
         }
       ]

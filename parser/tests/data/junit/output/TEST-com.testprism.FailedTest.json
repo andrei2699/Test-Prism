@@ -8,7 +8,7 @@
       "executions": [
         {
           "timestamp": "2026-01-06T13:06:33.796Z",
-          "status": "FAILURE",
+          "status": "FAILED",
           "durationMs": 17,
           "message": "org.opentest4j.AssertionFailedError"
         }

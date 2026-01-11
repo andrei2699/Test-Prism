@@ -8,7 +8,7 @@
       "executions": [
         {
           "timestamp": "2026-01-06T13:06:33.814Z",
-          "status": "SUCCESS",
+          "status": "PASSED",
           "durationMs": 1
         }
       ]

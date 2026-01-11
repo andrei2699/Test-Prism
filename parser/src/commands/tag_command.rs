@@ -362,7 +362,7 @@ mod tests {
             path: path.to_string(),
             executions: vec![TestExecution {
                 timestamp: "2024-01-01T00:00:00Z".to_string(),
-                status: TestExecutionStatus::Success,
+                status: TestExecutionStatus::Passed,
                 duration_ms: 100,
                 message: None,
             }],
@@ -376,7 +376,7 @@ mod tests {
             path: path.to_string(),
             executions: vec![TestExecution {
                 timestamp: "2024-01-01T00:00:00Z".to_string(),
-                status: TestExecutionStatus::Failure,
+                status: TestExecutionStatus::Failed,
                 duration_ms: 200,
                 message: Some("failed".to_string()),
             }],

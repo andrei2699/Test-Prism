@@ -10,12 +10,12 @@ pub struct TestReport {
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub enum TestExecutionStatus {
-    #[serde(rename = "SUCCESS")]
-    Success,
+    #[serde(rename = "PASSED")]
+    Passed,
     #[serde(rename = "SKIPPED")]
     Skipped,
-    #[serde(rename = "FAILURE")]
-    Failure,
+    #[serde(rename = "FAILED")]
+    Failed,
     #[serde(rename = "ERROR")]
     Error,
 }
@@ -42,9 +42,9 @@ pub struct TestReportTest {
 impl TestExecutionStatus {
     pub fn from_test_status(status: &TestStatus) -> TestExecutionStatus {
         match status {
-            TestStatus::Passed => TestExecutionStatus::Success,
+            TestStatus::Passed => TestExecutionStatus::Passed,
             TestStatus::Skipped(_) => TestExecutionStatus::Skipped,
-            TestStatus::Failed(_) => TestExecutionStatus::Failure,
+            TestStatus::Failed(_) => TestExecutionStatus::Failed,
             TestStatus::Error(_) => TestExecutionStatus::Error,
         }
     }
