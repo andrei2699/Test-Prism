@@ -1,12 +1,6 @@
 ﻿name: Docs CI
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - 'docs/**'
-      - '.github/workflows/docs-ci.yml'
   pull_request:
     paths:
       - 'docs/**'
