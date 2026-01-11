@@ -1,6 +1,6 @@
 ﻿import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { BaseChartDirective } from 'ng2-charts';
-import { ChartConfiguration, TitleOptions } from 'chart.js';
+import { ChartConfiguration } from 'chart.js';
 import { Test } from '../../../../types/TestReport';
 import { DistributionDataItem } from '../strategies/distribution-data.interface';
 import { DistributionStrategy } from '../strategies/distribution-strategy.interface';
@@ -8,6 +8,7 @@ import { TestColors } from '../../../../types/Layout';
 import { PieLegendParameters } from '../parameters/LegendParameters';
 import { PieDatasetParameters } from '../parameters/DataSetParameters';
 import { PieTitleOptions } from '../parameters/TitleParameters';
+import { PieOptionsParameters } from '../parameters/OptionsParameters';
 
 interface PieChartData extends DistributionDataItem {
   percentage: number;
@@ -26,8 +27,11 @@ export class TestDistributionPie {
   strategy = input.required<DistributionStrategy>();
   legend = input.required<PieLegendParameters>();
   dataset = input.required<PieDatasetParameters>();
+  options = input<PieOptionsParameters>();
   title = input<PieTitleOptions>();
   subTitle = input<PieTitleOptions>();
+  width = input<string>();
+  height = input<string>();
 
   chartData = computed<PieChartData[]>(() => {
     const distribution: DistributionDataItem[] = this.strategy().calculateDistribution(
@@ -60,6 +64,7 @@ export class TestDistributionPie {
         ],
       },
       options: {
+        ...this.options(),
         responsive: true,
         maintainAspectRatio: true,
         plugins: {

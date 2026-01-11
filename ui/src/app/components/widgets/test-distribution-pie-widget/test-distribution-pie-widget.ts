@@ -8,14 +8,18 @@ import { Test } from '../../../types/TestReport';
 import { PieLegendParameters } from './parameters/LegendParameters';
 import { PieDatasetParameters } from './parameters/DataSetParameters';
 import { PieTitleFont, PieTitleOptions } from './parameters/TitleParameters';
+import { PieOptionsParameters } from './parameters/OptionsParameters';
 
 export interface TestDistributionPieParameters {
-  title?: string | PieTitleOptions;
-  subTitle?: string | PieTitleOptions;
   strategy: 'status' | 'duration';
   strategyParameters?: DurationDistributionStrategyParameters;
+  title?: string | PieTitleOptions;
+  subTitle?: string | PieTitleOptions;
+  options?: PieOptionsParameters;
   legend?: PieLegendParameters;
   dataset?: PieDatasetParameters;
+  width?: string;
+  height?: string;
 }
 
 @Component({

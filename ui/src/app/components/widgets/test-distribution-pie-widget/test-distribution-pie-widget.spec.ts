@@ -130,4 +130,26 @@ describe('TestDistributionPieWidget', () => {
       { label: 'Over 0.25 seconds', count: 1, color: 'pink' },
     ]);
   });
+
+  it('should apply options and dimensions', () => {
+    const parameters: TestDistributionPieParameters = {
+      strategy: 'status',
+      options: {
+        cutout: '50%',
+      },
+      width: '200px',
+      height: '200px',
+    };
+    fixture.componentRef.setInput('parameters', parameters);
+    fixture.detectChanges();
+
+    const pieComponent = fixture.debugElement.query(By.directive(TestDistributionPie));
+    const options = pieComponent.injector.get(TestDistributionPie).options;
+    const width = pieComponent.injector.get(TestDistributionPie).width;
+    const height = pieComponent.injector.get(TestDistributionPie).height;
+
+    expect(options()).toEqual({ cutout: '50%' });
+    expect(width()).toBe('200px');
+    expect(height()).toBe('200px');
+  });
 });

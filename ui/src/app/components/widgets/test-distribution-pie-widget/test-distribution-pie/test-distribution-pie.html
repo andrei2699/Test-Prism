@@ -1,5 +1,7 @@
 ﻿<canvas
   baseChart
-  [type]="pieChartConfiguration().type"
   [data]="pieChartConfiguration().data"
-  [options]="pieChartConfiguration().options"></canvas>
+  [type]="pieChartConfiguration().type"
+  [options]="pieChartConfiguration().options"
+  [style.width]="width()"
+  [style.height]="height()"></canvas>
