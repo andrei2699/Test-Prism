@@ -152,7 +152,7 @@ for more details.
 
 The `options` object allows for the customization of the pie chart's general options.
 
-See the [Chart.js options documentation](https://www.chartjs.org/docs/latest/charts/doughnut.htmll) for more details.
+See the [Chart.js options documentation](https://www.chartjs.org/docs/latest/charts/doughnut.html) for more details.
 
 | Field           | Type     | Description                                                           |
 |-----------------|----------|-----------------------------------------------------------------------|
