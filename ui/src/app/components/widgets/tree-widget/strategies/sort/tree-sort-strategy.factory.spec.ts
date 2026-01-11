@@ -17,9 +17,9 @@ describe('NameSortStrategy', () => {
   it('should sort nodes alphabetically by name', () => {
     const strategy = TreeSortStrategyFactory.create('name');
     const unsortedNodes: TestTreeNode[] = [
-      { name: 'Zebra', children: [] },
-      { name: 'Apple', children: [] },
-      { name: 'Mango', children: [] },
+      { id: 'Zebra', name: 'Zebra', children: [] },
+      { id: 'Apple', name: 'Apple', children: [] },
+      { id: 'Mango', name: 'Mango', children: [] },
     ];
 
     const sorted = strategy.sort(unsortedNodes);
@@ -33,8 +33,22 @@ describe('NameSortStrategy', () => {
     const strategy = TreeSortStrategyFactory.create('name');
     const nodes: TestTreeNode[] = [
       {
+        id: 'Parent',
         name: 'Parent',
-        children: [{ name: 'Zebra' }, { name: 'Apple' }, { name: 'Mango' }],
+        children: [
+          {
+            id: 'Zebra',
+            name: 'Zebra',
+          },
+          {
+            id: 'Apply',
+            name: 'Apple',
+          },
+          {
+            id: 'Mango',
+            name: 'Mango',
+          },
+        ],
       },
     ];
 
@@ -47,7 +61,16 @@ describe('NameSortStrategy', () => {
 
   it('should handle nodes without children', () => {
     const strategy = TreeSortStrategyFactory.create('name');
-    const nodes: TestTreeNode[] = [{ name: 'Zebra' }, { name: 'Apple' }];
+    const nodes: TestTreeNode[] = [
+      {
+        id: 'Zebra',
+        name: 'Zebra',
+      },
+      {
+        id: 'Apple',
+        name: 'Apple',
+      },
+    ];
 
     const sorted = strategy.sort(nodes);
 

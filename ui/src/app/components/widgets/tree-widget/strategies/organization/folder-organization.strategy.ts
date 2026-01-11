@@ -42,7 +42,7 @@ export class FolderOrganizationStrategy extends BaseTreeOrganizationStrategy {
         return;
       }
 
-      const folderNode = this.createGroupNode(part);
+      const folderNode = this.createGroupNode(currentPath, part);
       nodeMap.set(currentPath, folderNode);
       this.addNodeToParent(currentPath, folderNode, nodeMap, rootNodes, this.separator);
     });

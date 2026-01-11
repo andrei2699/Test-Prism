@@ -24,14 +24,17 @@ describe('ExecutionTypeOrganizationStrategy', () => {
 
     const expectedResult: TestTreeNode[] = [
       {
+        id: 'SUCCESS',
         name: 'SUCCESS',
         children: [
           {
+            id: '/folder/test1/test1',
             name: 'test1',
             test: tests[0],
             testCount: { SUCCESS: 1, FAILURE: 0, SKIPPED: 0, ERROR: 0 },
           },
           {
+            id: '/folder/test3/test3',
             name: 'test3',
             test: tests[2],
             testCount: { SUCCESS: 1, FAILURE: 0, SKIPPED: 0, ERROR: 0 },
@@ -46,9 +49,11 @@ describe('ExecutionTypeOrganizationStrategy', () => {
         },
       },
       {
+        id: 'FAILURE',
         name: 'FAILURE',
         children: [
           {
+            id: '/folder/test2/test2',
             name: 'test2',
             test: tests[1],
             testCount: { SUCCESS: 0, FAILURE: 1, SKIPPED: 0, ERROR: 0 },
@@ -86,6 +91,7 @@ describe('ExecutionTypeOrganizationStrategy', () => {
 
     const result = strategy.buildTree(tests);
     const expectedTestNode: TestTreeNode = {
+      id: '/folder/test1/test1',
       name: 'test1',
       test: tests[0],
       testCount: { SUCCESS: 0, FAILURE: 1, SKIPPED: 0, ERROR: 0 },
@@ -106,9 +112,11 @@ describe('ExecutionTypeOrganizationStrategy', () => {
 
     const expectedResult: TestTreeNode[] = [
       {
+        id: 'SUCCESS',
         name: 'SUCCESS',
         children: [
           {
+            id: '/test1/test1',
             name: 'test1',
             test: tests[0],
             testCount: { SUCCESS: 1, FAILURE: 0, SKIPPED: 0, ERROR: 0 },
@@ -123,9 +131,11 @@ describe('ExecutionTypeOrganizationStrategy', () => {
         },
       },
       {
+        id: 'FAILURE',
         name: 'FAILURE',
         children: [
           {
+            id: '/test2/test2',
             name: 'test2',
             test: tests[1],
             testCount: { SUCCESS: 0, FAILURE: 1, SKIPPED: 0, ERROR: 0 },
@@ -140,9 +150,11 @@ describe('ExecutionTypeOrganizationStrategy', () => {
         },
       },
       {
+        id: 'SKIPPED',
         name: 'SKIPPED',
         children: [
           {
+            id: '/test3/test3',
             name: 'test3',
             test: tests[2],
             testCount: { SUCCESS: 0, FAILURE: 0, SKIPPED: 1, ERROR: 0 },
@@ -157,9 +169,11 @@ describe('ExecutionTypeOrganizationStrategy', () => {
         },
       },
       {
+        id: 'ERROR',
         name: 'ERROR',
         children: [
           {
+            id: '/test4/test4',
             name: 'test4',
             test: tests[3],
             testCount: { SUCCESS: 0, FAILURE: 0, SKIPPED: 0, ERROR: 1 },
@@ -188,14 +202,17 @@ describe('ExecutionTypeOrganizationStrategy', () => {
     const result = strategy.buildTree(tests);
 
     const expectedSuccessGroup: TestTreeNode = {
+      id: 'SUCCESS',
       name: 'SUCCESS',
       children: [
         {
+          id: '/test1/test1',
           name: 'test1',
           test: tests[0],
           testCount: { SUCCESS: 1, FAILURE: 0, SKIPPED: 0, ERROR: 0 },
         },
         {
+          id: '/test2/test2',
           name: 'test2',
           test: tests[1],
           testCount: { SUCCESS: 1, FAILURE: 0, SKIPPED: 0, ERROR: 0 },
@@ -211,9 +228,11 @@ describe('ExecutionTypeOrganizationStrategy', () => {
     };
 
     const expectedFailureGroup: TestTreeNode = {
+      id: 'FAILURE',
       name: 'FAILURE',
       children: [
         {
+          id: '/test3/test3',
           name: 'test3',
           test: tests[2],
           testCount: { SUCCESS: 0, FAILURE: 1, SKIPPED: 0, ERROR: 0 },
@@ -242,19 +261,23 @@ describe('ExecutionTypeOrganizationStrategy', () => {
     const result = strategy.buildTree(tests);
 
     const expectedGroup: TestTreeNode = {
+      id: 'SUCCESS',
       name: 'SUCCESS',
       children: [
         {
+          id: '/test1/test1',
           name: 'test1',
           test: tests[0],
           testCount: { SUCCESS: 1, FAILURE: 0, SKIPPED: 0, ERROR: 0 },
         },
         {
+          id: '/test2/test2',
           name: 'test2',
           test: tests[1],
           testCount: { SUCCESS: 1, FAILURE: 0, SKIPPED: 0, ERROR: 0 },
         },
         {
+          id: '/test3/test3',
           name: 'test3',
           test: tests[2],
           testCount: { SUCCESS: 1, FAILURE: 0, SKIPPED: 0, ERROR: 0 },
@@ -282,14 +305,17 @@ describe('ExecutionTypeOrganizationStrategy', () => {
     const result = strategy.buildTree(tests);
 
     const expectedSuccessGroup: TestTreeNode = {
+      id: 'SUCCESS',
       name: 'SUCCESS',
       children: [
         {
+          id: '/test1/test1',
           name: 'test1',
           test: tests[0],
           testCount: { SUCCESS: 1, FAILURE: 0, SKIPPED: 0, ERROR: 0 },
         },
         {
+          id: '/test2/test2',
           name: 'test2',
           test: tests[1],
           testCount: { SUCCESS: 1, FAILURE: 0, SKIPPED: 0, ERROR: 0 },
@@ -305,9 +331,11 @@ describe('ExecutionTypeOrganizationStrategy', () => {
     };
 
     const expectedFailureGroup: TestTreeNode = {
+      id: 'FAILURE',
       name: 'FAILURE',
       children: [
         {
+          id: '/test3/test3',
           name: 'test3',
           test: tests[2],
           testCount: { SUCCESS: 0, FAILURE: 1, SKIPPED: 0, ERROR: 0 },
@@ -336,19 +364,23 @@ describe('ExecutionTypeOrganizationStrategy', () => {
     const result = strategy.buildTree(tests);
 
     expect(result[0]).toEqual({
+      id: 'SUCCESS',
       name: 'SUCCESS',
       children: [
         {
+          id: '/test1/test1',
           name: 'test1',
           test: tests[0],
           testCount: { SUCCESS: 1, FAILURE: 0, SKIPPED: 0, ERROR: 0 },
         },
         {
+          id: '/test2/test2',
           name: 'test2',
           test: tests[1],
           testCount: { SUCCESS: 1, FAILURE: 0, SKIPPED: 0, ERROR: 0 },
         },
         {
+          id: '/test3/test3',
           name: 'test3',
           test: tests[2],
           testCount: { SUCCESS: 1, FAILURE: 0, SKIPPED: 0, ERROR: 0 },

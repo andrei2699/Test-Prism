@@ -1,7 +1,12 @@
 @if (dataSource().length === 0) {
   <div class="no-tests-message">No tests to display.</div>
 } @else {
-  <mat-tree #tree [dataSource]="dataSource()" [childrenAccessor]="childrenAccessor">
+  <mat-tree
+    #tree
+    [dataSource]="dataSource()"
+    [childrenAccessor]="childrenAccessor"
+    [trackBy]="trackByFn"
+    [expansionKey]="expansionKey">
     <mat-tree-node
       *matTreeNodeDef="let node"
       matTreeNodePadding
