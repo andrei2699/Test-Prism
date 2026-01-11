@@ -11,7 +11,7 @@ export interface TestDistributionPieParameters {
   title?: string;
   strategy: 'status' | 'duration';
   strategyParameters?: DurationDistributionStrategyParameters;
-  legendParameters?: PieLegendParameters;
+  legend?: PieLegendParameters;
 }
 
 @Component({
@@ -32,10 +32,10 @@ export class TestDistributionPieWidget {
     return DistributionStrategyFactory.create(strategy, params?.strategyParameters);
   });
 
-  legendParameters = computed<PieLegendParameters>(() => {
+  legend = computed<PieLegendParameters>(() => {
     return {
       position: 'right',
-      ...this.parameters()?.legendParameters,
+      ...this.parameters()?.legend,
     };
   });
 }

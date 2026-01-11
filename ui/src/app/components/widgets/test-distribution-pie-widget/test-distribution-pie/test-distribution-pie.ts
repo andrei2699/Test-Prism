@@ -22,7 +22,7 @@ export class TestDistributionPie {
   colors = input.required<TestColors>();
   tests = input.required<Test[]>();
   strategy = input.required<DistributionStrategy>();
-  legendParameters = input.required<PieLegendParameters>();
+  legend = input.required<PieLegendParameters>();
 
   chartData = computed<PieChartData[]>(() => {
     const distribution: DistributionDataItem[] = this.strategy().calculateDistribution(
@@ -41,7 +41,7 @@ export class TestDistributionPie {
 
   pieChartConfiguration = computed<ChartConfiguration<'pie'>>(() => {
     const data = this.chartData();
-    const legendParameters = this.legendParameters();
+    const legendParameters = this.legend();
 
     return {
       type: 'pie',

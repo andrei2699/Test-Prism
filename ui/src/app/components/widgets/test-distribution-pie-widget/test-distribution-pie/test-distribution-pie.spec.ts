@@ -16,7 +16,7 @@ describe('TestDistributionPie', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(TestDistributionPie);
-    fixture.componentRef.setInput('legendParameters', { display: true });
+    fixture.componentRef.setInput('legend', { display: true });
     fixture.componentRef.setInput('colors', {
       PASSED: 'green',
       FAILED: 'red',
@@ -162,7 +162,7 @@ describe('TestDistributionPie', () => {
 
     fixture.componentRef.setInput('tests', tests);
     fixture.componentRef.setInput('strategy', strategy);
-    fixture.componentRef.setInput('legendParameters', { display: false });
+    fixture.componentRef.setInput('legend', { display: false });
     fixture.detectChanges();
 
     const chartInstance = getChartInstance();
