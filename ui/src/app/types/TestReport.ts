@@ -5,11 +5,16 @@
 }
 
 export interface Test {
-  lastExecutionType: TestExecutionType;
   name: string;
   path: string;
-  durationMs?: number;
+  executions: TestExecution[];
   tags?: string[];
+}
+
+export interface TestExecution {
+  timestamp: string;
+  status: TestExecutionType;
+  durationMs: number;
 }
 
 export type TestExecutionType = 'SUCCESS' | 'FAILURE' | 'SKIPPED' | 'ERROR';

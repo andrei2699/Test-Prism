@@ -15,9 +15,21 @@ describe('ExecutionTypeOrganizationStrategy', () => {
 
   it('should group tests by execution status', () => {
     const tests: Test[] = [
-      { name: 'test1', path: '/folder/test1', lastExecutionType: 'SUCCESS' },
-      { name: 'test2', path: '/folder/test2', lastExecutionType: 'FAILURE' },
-      { name: 'test3', path: '/folder/test3', lastExecutionType: 'SUCCESS' },
+      {
+        name: 'test1',
+        path: '/folder/test1',
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+      },
+      {
+        name: 'test2',
+        path: '/folder/test2',
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'FAILURE', durationMs: 100 }],
+      },
+      {
+        name: 'test3',
+        path: '/folder/test3',
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+      },
     ];
 
     const result = strategy.buildTree(tests);
@@ -40,7 +52,7 @@ describe('ExecutionTypeOrganizationStrategy', () => {
             testCount: { SUCCESS: 1, FAILURE: 0, SKIPPED: 0, ERROR: 0 },
           },
         ],
-        totalDurationMs: 0,
+        totalDurationMs: 200,
         testCount: {
           SUCCESS: 2,
           FAILURE: 0,
@@ -59,7 +71,7 @@ describe('ExecutionTypeOrganizationStrategy', () => {
             testCount: { SUCCESS: 0, FAILURE: 1, SKIPPED: 0, ERROR: 0 },
           },
         ],
-        totalDurationMs: 0,
+        totalDurationMs: 100,
         testCount: {
           SUCCESS: 0,
           FAILURE: 1,
@@ -74,10 +86,26 @@ describe('ExecutionTypeOrganizationStrategy', () => {
 
   it('should sort by status order (SUCCESS, FAILURE, SKIPPED, ERROR)', () => {
     const tests: Test[] = [
-      { name: 'test1', path: '/test1', lastExecutionType: 'ERROR' },
-      { name: 'test2', path: '/test2', lastExecutionType: 'SUCCESS' },
-      { name: 'test3', path: '/test3', lastExecutionType: 'FAILURE' },
-      { name: 'test4', path: '/test4', lastExecutionType: 'SKIPPED' },
+      {
+        name: 'test1',
+        path: '/test1',
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'ERROR', durationMs: 100 }],
+      },
+      {
+        name: 'test2',
+        path: '/test2',
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+      },
+      {
+        name: 'test3',
+        path: '/test3',
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'FAILURE', durationMs: 100 }],
+      },
+      {
+        name: 'test4',
+        path: '/test4',
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SKIPPED', durationMs: 100 }],
+      },
     ];
 
     const result = strategy.buildTree(tests);
@@ -87,7 +115,13 @@ describe('ExecutionTypeOrganizationStrategy', () => {
   });
 
   it('should preserve test metadata in status groups', () => {
-    const tests: Test[] = [{ name: 'test1', path: '/folder/test1', lastExecutionType: 'FAILURE' }];
+    const tests: Test[] = [
+      {
+        name: 'test1',
+        path: '/folder/test1',
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'FAILURE', durationMs: 100 }],
+      },
+    ];
 
     const result = strategy.buildTree(tests);
     const expectedTestNode: TestTreeNode = {
@@ -102,10 +136,26 @@ describe('ExecutionTypeOrganizationStrategy', () => {
 
   it('should handle tests with different execution types', () => {
     const tests: Test[] = [
-      { name: 'test1', path: '/test1', lastExecutionType: 'SUCCESS' },
-      { name: 'test2', path: '/test2', lastExecutionType: 'FAILURE' },
-      { name: 'test3', path: '/test3', lastExecutionType: 'SKIPPED' },
-      { name: 'test4', path: '/test4', lastExecutionType: 'ERROR' },
+      {
+        name: 'test1',
+        path: '/test1',
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+      },
+      {
+        name: 'test2',
+        path: '/test2',
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'FAILURE', durationMs: 100 }],
+      },
+      {
+        name: 'test3',
+        path: '/test3',
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SKIPPED', durationMs: 100 }],
+      },
+      {
+        name: 'test4',
+        path: '/test4',
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'ERROR', durationMs: 100 }],
+      },
     ];
 
     const result = strategy.buildTree(tests);
@@ -122,7 +172,7 @@ describe('ExecutionTypeOrganizationStrategy', () => {
             testCount: { SUCCESS: 1, FAILURE: 0, SKIPPED: 0, ERROR: 0 },
           },
         ],
-        totalDurationMs: 0,
+        totalDurationMs: 100,
         testCount: {
           SUCCESS: 1,
           FAILURE: 0,
@@ -141,7 +191,7 @@ describe('ExecutionTypeOrganizationStrategy', () => {
             testCount: { SUCCESS: 0, FAILURE: 1, SKIPPED: 0, ERROR: 0 },
           },
         ],
-        totalDurationMs: 0,
+        totalDurationMs: 100,
         testCount: {
           SUCCESS: 0,
           FAILURE: 1,
@@ -160,7 +210,7 @@ describe('ExecutionTypeOrganizationStrategy', () => {
             testCount: { SUCCESS: 0, FAILURE: 0, SKIPPED: 1, ERROR: 0 },
           },
         ],
-        totalDurationMs: 0,
+        totalDurationMs: 100,
         testCount: {
           SUCCESS: 0,
           FAILURE: 0,
@@ -179,7 +229,7 @@ describe('ExecutionTypeOrganizationStrategy', () => {
             testCount: { SUCCESS: 0, FAILURE: 0, SKIPPED: 0, ERROR: 1 },
           },
         ],
-        totalDurationMs: 0,
+        totalDurationMs: 100,
         testCount: {
           SUCCESS: 0,
           FAILURE: 0,
@@ -194,9 +244,21 @@ describe('ExecutionTypeOrganizationStrategy', () => {
 
   it('should calculate total duration for status groups', () => {
     const tests: Test[] = [
-      { name: 'test1', path: '/test1', lastExecutionType: 'SUCCESS', durationMs: 1000 },
-      { name: 'test2', path: '/test2', lastExecutionType: 'SUCCESS', durationMs: 2000 },
-      { name: 'test3', path: '/test3', lastExecutionType: 'FAILURE', durationMs: 3000 },
+      {
+        name: 'test1',
+        path: '/test1',
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 1000 }],
+      },
+      {
+        name: 'test2',
+        path: '/test2',
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 2000 }],
+      },
+      {
+        name: 'test3',
+        path: '/test3',
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'FAILURE', durationMs: 3000 }],
+      },
     ];
 
     const result = strategy.buildTree(tests);
@@ -253,9 +315,21 @@ describe('ExecutionTypeOrganizationStrategy', () => {
 
   it('should sum durations across multiple tests in same group', () => {
     const tests: Test[] = [
-      { name: 'test1', path: '/test1', lastExecutionType: 'SUCCESS', durationMs: 500 },
-      { name: 'test2', path: '/test2', lastExecutionType: 'SUCCESS', durationMs: 750 },
-      { name: 'test3', path: '/test3', lastExecutionType: 'SUCCESS', durationMs: 250 },
+      {
+        name: 'test1',
+        path: '/test1',
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 500 }],
+      },
+      {
+        name: 'test2',
+        path: '/test2',
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 750 }],
+      },
+      {
+        name: 'test3',
+        path: '/test3',
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 250 }],
+      },
     ];
 
     const result = strategy.buildTree(tests);
@@ -297,9 +371,21 @@ describe('ExecutionTypeOrganizationStrategy', () => {
 
   it('should calculate test count for status groups', () => {
     const tests: Test[] = [
-      { name: 'test1', path: '/test1', lastExecutionType: 'SUCCESS' },
-      { name: 'test2', path: '/test2', lastExecutionType: 'SUCCESS' },
-      { name: 'test3', path: '/test3', lastExecutionType: 'FAILURE' },
+      {
+        name: 'test1',
+        path: '/test1',
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+      },
+      {
+        name: 'test2',
+        path: '/test2',
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+      },
+      {
+        name: 'test3',
+        path: '/test3',
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'FAILURE', durationMs: 100 }],
+      },
     ];
 
     const result = strategy.buildTree(tests);
@@ -321,7 +407,7 @@ describe('ExecutionTypeOrganizationStrategy', () => {
           testCount: { SUCCESS: 1, FAILURE: 0, SKIPPED: 0, ERROR: 0 },
         },
       ],
-      totalDurationMs: 0,
+      totalDurationMs: 200,
       testCount: {
         SUCCESS: 2,
         FAILURE: 0,
@@ -341,7 +427,7 @@ describe('ExecutionTypeOrganizationStrategy', () => {
           testCount: { SUCCESS: 0, FAILURE: 1, SKIPPED: 0, ERROR: 0 },
         },
       ],
-      totalDurationMs: 0,
+      totalDurationMs: 100,
       testCount: {
         SUCCESS: 0,
         FAILURE: 1,
@@ -356,9 +442,21 @@ describe('ExecutionTypeOrganizationStrategy', () => {
 
   it('should sum test counts across multiple tests in same group', () => {
     const tests: Test[] = [
-      { name: 'test1', path: '/test1', lastExecutionType: 'SUCCESS' },
-      { name: 'test2', path: '/test2', lastExecutionType: 'SUCCESS' },
-      { name: 'test3', path: '/test3', lastExecutionType: 'SUCCESS' },
+      {
+        name: 'test1',
+        path: '/test1',
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+      },
+      {
+        name: 'test2',
+        path: '/test2',
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+      },
+      {
+        name: 'test3',
+        path: '/test3',
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+      },
     ];
 
     const result = strategy.buildTree(tests);
@@ -386,7 +484,7 @@ describe('ExecutionTypeOrganizationStrategy', () => {
           testCount: { SUCCESS: 1, FAILURE: 0, SKIPPED: 0, ERROR: 0 },
         },
       ],
-      totalDurationMs: 0,
+      totalDurationMs: 300,
       testCount: {
         SUCCESS: 3,
         FAILURE: 0,

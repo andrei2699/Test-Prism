@@ -9,12 +9,37 @@ import { TestColors } from '../../../types/Layout';
 describe('WidgetRenderer', () => {
   let fixture: ComponentFixture<WidgetRenderer>;
   const tests: Test[] = [
-    { name: 'Test 1', lastExecutionType: 'SUCCESS', durationMs: 100, path: 'path/to/test1' },
-    { name: 'Test 2', lastExecutionType: 'FAILURE', durationMs: 200, path: 'path/to/test2' },
+    {
+      name: 'Test 1',
+      executions: [
+        {
+          timestamp: '2023-01-01T00:00:00Z',
+          status: 'SUCCESS',
+          durationMs: 100,
+        },
+      ],
+      path: 'path/to/test1',
+    },
+    {
+      name: 'Test 2',
+      executions: [
+        {
+          timestamp: '2023-01-01T00:00:00Z',
+          status: 'FAILURE',
+          durationMs: 200,
+        },
+      ],
+      path: 'path/to/test2',
+    },
     {
       name: 'Another Test',
-      lastExecutionType: 'SUCCESS',
-      durationMs: 150,
+      executions: [
+        {
+          timestamp: '2023-01-01T00:00:00Z',
+          status: 'SUCCESS',
+          durationMs: 150,
+        },
+      ],
       path: 'path/to/another',
     },
   ];
@@ -95,7 +120,7 @@ describe('WidgetRenderer', () => {
   it('should filter tests based on widget data filter', () => {
     const filter: DataFilter = {
       operator: 'AND',
-      conditions: [{ field: 'lastExecutionType', operator: '==', value: 'FAILURE' }],
+      conditions: [{ field: 'executions.status', operator: '==', value: 'FAILURE' }],
     };
 
     const widget: Widget = {

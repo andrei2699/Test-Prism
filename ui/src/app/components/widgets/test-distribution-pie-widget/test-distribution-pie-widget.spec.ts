@@ -10,29 +10,25 @@ import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 const tests: Test[] = [
   {
     name: 'should display a success message',
-    lastExecutionType: 'SUCCESS',
-    durationMs: 100,
+    executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
     path: 'Login.UI',
     tags: ['UI', 'Login'],
   },
   {
     name: 'should display an error message on failed login',
-    lastExecutionType: 'FAILURE',
-    durationMs: 200,
+    executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'FAILURE', durationMs: 200 }],
     path: 'Login.UI',
     tags: ['UI', 'Login'],
   },
   {
     name: 'should fetch user data',
-    lastExecutionType: 'SUCCESS',
-    durationMs: 300,
+    executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 300 }],
     path: 'User.API',
     tags: ['API', 'User'],
   },
   {
     name: 'should timeout when fetching user data',
-    lastExecutionType: 'SKIPPED',
-    durationMs: 0,
+    executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SKIPPED', durationMs: 0 }],
     path: 'User.API',
     tags: ['API', 'User'],
   },

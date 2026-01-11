@@ -60,11 +60,31 @@ describe('SummaryWidgetComponent', () => {
 
   it('should display summary counts and colors including error status', () => {
     const tests: Test[] = [
-      { name: 'Test 1', path: '/test1', lastExecutionType: 'SUCCESS' },
-      { name: 'Test 2', path: '/test2', lastExecutionType: 'FAILURE' },
-      { name: 'Test 3', path: '/test3', lastExecutionType: 'SKIPPED' },
-      { name: 'Test 4', path: '/test4', lastExecutionType: 'SUCCESS' },
-      { name: 'Test 5', path: '/test5', lastExecutionType: 'ERROR' },
+      {
+        name: 'Test 1',
+        path: '/test1',
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+      },
+      {
+        name: 'Test 2',
+        path: '/test2',
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'FAILURE', durationMs: 100 }],
+      },
+      {
+        name: 'Test 3',
+        path: '/test3',
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SKIPPED', durationMs: 100 }],
+      },
+      {
+        name: 'Test 4',
+        path: '/test4',
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+      },
+      {
+        name: 'Test 5',
+        path: '/test5',
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'ERROR', durationMs: 100 }],
+      },
     ];
     fixture.componentRef.setInput('tests', tests);
     fixture.componentRef.setInput('date', new Date().toISOString());

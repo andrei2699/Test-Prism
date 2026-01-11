@@ -34,7 +34,12 @@ export class SummaryWidgetComponent {
     };
 
     for (const test of tests) {
-      switch (test.lastExecutionType) {
+      const lastExecution = test.executions[test.executions.length - 1];
+      if (!lastExecution) {
+        continue;
+      }
+
+      switch (lastExecution.status) {
         case 'SUCCESS':
           summary.passed++;
           break;

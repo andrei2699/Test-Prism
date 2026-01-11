@@ -13,6 +13,9 @@ export class StatusFilterStrategy implements TestFilterStrategy {
       return tests;
     }
 
-    return tests.filter(test => this.statuses.has(test.lastExecutionType));
+    return tests.filter(test => {
+      const lastExecution = test.executions[test.executions.length - 1];
+      return lastExecution && this.statuses.has(lastExecution.status);
+    });
   }
 }

@@ -14,7 +14,11 @@ export class ExecutionTypeOrganizationStrategy extends BaseTreeOrganizationStrat
     const rootNodes: TestTreeNode[] = [];
 
     tests.forEach(test => {
-      const status = test.lastExecutionType;
+      const lastExecution = test.executions[test.executions.length - 1];
+      if (!lastExecution) {
+        return;
+      }
+      const status = lastExecution.status;
       this.ensureGroupNode(status, status, statusMap, rootNodes);
       this.addTestToGroup(test, status, statusMap);
     });

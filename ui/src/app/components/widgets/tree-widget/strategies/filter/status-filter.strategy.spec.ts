@@ -3,11 +3,31 @@ import { StatusFilterStrategy } from './status-filter.strategy';
 import { Test, TestExecutionType } from '../../../../../types/TestReport';
 
 const testData: Test[] = [
-  { name: 'ErrorTest.spec.ts', path: 'src/tests', lastExecutionType: 'ERROR' },
-  { name: 'SkippedTest.spec.ts', path: 'src/tests', lastExecutionType: 'SKIPPED' },
-  { name: 'LoginPage.spec.ts', path: 'src/pages', lastExecutionType: 'FAILURE' },
-  { name: 'UserService.spec.ts', path: 'src/services', lastExecutionType: 'SUCCESS' },
-  { name: 'LoginComponent.spec.ts', path: 'src/auth', lastExecutionType: 'SUCCESS' },
+  {
+    name: 'ErrorTest.spec.ts',
+    path: 'src/tests',
+    executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'ERROR', durationMs: 100 }],
+  },
+  {
+    name: 'SkippedTest.spec.ts',
+    path: 'src/tests',
+    executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SKIPPED', durationMs: 100 }],
+  },
+  {
+    name: 'LoginPage.spec.ts',
+    path: 'src/pages',
+    executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'FAILURE', durationMs: 100 }],
+  },
+  {
+    name: 'UserService.spec.ts',
+    path: 'src/services',
+    executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+  },
+  {
+    name: 'LoginComponent.spec.ts',
+    path: 'src/auth',
+    executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+  },
 ];
 
 describe('StatusFilterStrategy', () => {
@@ -23,7 +43,7 @@ describe('StatusFilterStrategy', () => {
     const strategy = new StatusFilterStrategy(['ERROR']);
     const result = strategy.filter(testData);
 
-    expect(result[0].lastExecutionType).toBe('ERROR');
+    expect(result[0].executions[0].status).toBe('ERROR');
     expect(result).toHaveLength(1);
   });
 
@@ -34,7 +54,7 @@ describe('StatusFilterStrategy', () => {
     expect(
       result.every(
         (test: Test) =>
-          test.lastExecutionType === 'SUCCESS' || test.lastExecutionType === 'FAILURE',
+          test.executions[0].status === 'SUCCESS' || test.executions[0].status === 'FAILURE',
       ),
     ).toBe(true);
     expect(result).toHaveLength(3);
@@ -44,7 +64,7 @@ describe('StatusFilterStrategy', () => {
     const strategy = new StatusFilterStrategy(['SUCCESS']);
     const result = strategy.filter(testData);
 
-    expect(result.every((test: Test) => test.lastExecutionType === 'SUCCESS')).toBe(true);
+    expect(result.every((test: Test) => test.executions[0].status === 'SUCCESS')).toBe(true);
     expect(result).toHaveLength(2);
   });
 

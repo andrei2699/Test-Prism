@@ -13,7 +13,10 @@ export class ExecutionTypeDistributionStrategy implements DistributionStrategy {
     };
 
     tests.forEach(test => {
-      counts[test.lastExecutionType]++;
+      const lastExecution = test.executions[test.executions.length - 1];
+      if (lastExecution) {
+        counts[lastExecution.status]++;
+      }
     });
 
     const statusOrder: TestExecutionType[] = ['SUCCESS', 'FAILURE', 'SKIPPED', 'ERROR'];

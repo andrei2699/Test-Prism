@@ -13,7 +13,12 @@ export abstract class BaseTreeOrganizationStrategy implements TreeOrganizationSt
       return 'folder';
     }
 
-    switch (node.test.lastExecutionType) {
+    const lastExecution = node.test.executions[node.test.executions.length - 1];
+    if (!lastExecution) {
+      return 'help';
+    }
+
+    switch (lastExecution.status) {
       case 'SUCCESS':
         return 'check_circle';
       case 'FAILURE':
@@ -32,7 +37,12 @@ export abstract class BaseTreeOrganizationStrategy implements TreeOrganizationSt
       return 'inherit';
     }
 
-    return colors[node.test.lastExecutionType] || 'inherit';
+    const lastExecution = node.test.executions[node.test.executions.length - 1];
+    if (!lastExecution) {
+      return 'inherit';
+    }
+
+    return colors[lastExecution.status] || 'inherit';
   }
 
   protected createTestNode(test: Test): TestTreeNode {
@@ -107,8 +117,11 @@ export abstract class BaseTreeOrganizationStrategy implements TreeOrganizationSt
   }
 
   private calculateNodeTotalDuration(node: TestTreeNode): number {
-    if (node.test?.durationMs) {
-      return node.test.durationMs;
+    if (node.test) {
+      const lastExecution = node.test.executions[node.test.executions.length - 1];
+      if (lastExecution) {
+        return lastExecution.durationMs;
+      }
     }
 
     if (node.children && node.children.length > 0) {
@@ -138,7 +151,10 @@ export abstract class BaseTreeOrganizationStrategy implements TreeOrganizationSt
     };
 
     if (node.test) {
-      counts[node.test.lastExecutionType] = 1;
+      const lastExecution = node.test.executions[node.test.executions.length - 1];
+      if (lastExecution) {
+        counts[lastExecution.status] = 1;
+      }
     } else if (node.children && node.children.length > 0) {
       node.children.forEach(child => {
         const childCounts = this.recursivelyCalculateTestCounts(child);

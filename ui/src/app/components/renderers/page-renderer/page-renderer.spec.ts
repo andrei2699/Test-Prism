@@ -27,10 +27,15 @@ describe('PageRenderer', () => {
 
   const mockTests: Test[] = [
     {
-      lastExecutionType: 'SUCCESS',
+      executions: [
+        {
+          timestamp: '2023-01-01T00:00:00Z',
+          status: 'SUCCESS',
+          durationMs: 2,
+        },
+      ],
       path: 'test/path',
       name: 'name',
-      durationMs: 2,
     },
   ];
 

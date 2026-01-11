@@ -14,43 +14,73 @@ describe('DataFilterService', () => {
     tests = [
       {
         name: 'Test 1',
-        lastExecutionType: 'SUCCESS',
-        durationMs: 100,
+        executions: [
+          {
+            timestamp: '2023-01-01T00:00:00Z',
+            status: 'SUCCESS',
+            durationMs: 100,
+          },
+        ],
         path: 'path/to/test1',
         tags: ['fast', 'smoke'],
       },
       {
         name: 'Test 2',
-        lastExecutionType: 'FAILURE',
-        durationMs: 200,
+        executions: [
+          {
+            timestamp: '2023-01-01T00:00:00Z',
+            status: 'FAILURE',
+            durationMs: 200,
+          },
+        ],
         path: 'path/to/test2',
         tags: ['slow'],
       },
       {
         name: 'Another Test',
-        lastExecutionType: 'SUCCESS',
-        durationMs: 150,
+        executions: [
+          {
+            timestamp: '2023-01-01T00:00:00Z',
+            status: 'SUCCESS',
+            durationMs: 150,
+          },
+        ],
         path: 'path/to/another',
         tags: ['smoke', 'regression'],
       },
       {
         name: 'Skipped Test',
-        lastExecutionType: 'SKIPPED',
-        durationMs: 50,
+        executions: [
+          {
+            timestamp: '2023-01-01T00:00:00Z',
+            status: 'SKIPPED',
+            durationMs: 50,
+          },
+        ],
         path: 'path/to/skipped',
         tags: [],
       },
       {
         name: 'Null Tag Test',
-        lastExecutionType: 'SUCCESS',
-        durationMs: 120,
+        executions: [
+          {
+            timestamp: '2023-01-01T00:00:00Z',
+            status: 'SUCCESS',
+            durationMs: 120,
+          },
+        ],
         path: 'path/to/null',
         tags: undefined,
       },
       {
         name: 'Nested Test',
-        lastExecutionType: 'SUCCESS',
-        durationMs: 110,
+        executions: [
+          {
+            timestamp: '2023-01-01T00:00:00Z',
+            status: 'SUCCESS',
+            durationMs: 110,
+          },
+        ],
         path: 'path/to/nested',
         tags: [],
       },
@@ -81,7 +111,7 @@ describe('DataFilterService', () => {
     it('should filter with "equals"', () => {
       const filter: DataFilter = {
         operator: 'AND',
-        conditions: [{ field: 'lastExecutionType', operator: 'equals', value: 'FAILURE' }],
+        conditions: [{ field: 'executions.status', operator: 'equals', value: 'FAILURE' }],
       };
 
       const result = service.applyFilter(tests, filter);
@@ -92,7 +122,7 @@ describe('DataFilterService', () => {
     it('should filter with "==" as an alias for "equals"', () => {
       const filter: DataFilter = {
         operator: 'AND',
-        conditions: [{ field: 'lastExecutionType', operator: '==', value: 'FAILURE' }],
+        conditions: [{ field: 'executions.status', operator: '==', value: 'FAILURE' }],
       };
 
       const result = service.applyFilter(tests, filter);
@@ -103,7 +133,7 @@ describe('DataFilterService', () => {
     it('should filter with "not equals"', () => {
       const filter: DataFilter = {
         operator: 'AND',
-        conditions: [{ field: 'lastExecutionType', operator: 'not equals', value: 'SUCCESS' }],
+        conditions: [{ field: 'executions.status', operator: 'not equals', value: 'SUCCESS' }],
       };
 
       const result = service.applyFilter(tests, filter);
@@ -114,7 +144,7 @@ describe('DataFilterService', () => {
     it('should filter with "!=" as an alias for "not equals"', () => {
       const filter: DataFilter = {
         operator: 'AND',
-        conditions: [{ field: 'lastExecutionType', operator: '!=', value: 'SUCCESS' }],
+        conditions: [{ field: 'executions.status', operator: '!=', value: 'SUCCESS' }],
       };
 
       const result = service.applyFilter(tests, filter);
@@ -125,7 +155,7 @@ describe('DataFilterService', () => {
     it('should filter with "in"', () => {
       const filter: DataFilter = {
         operator: 'AND',
-        conditions: [{ field: 'lastExecutionType', operator: 'in', value: ['FAILURE', 'SKIPPED'] }],
+        conditions: [{ field: 'executions.status', operator: 'in', value: ['FAILURE', 'SKIPPED'] }],
       };
 
       const result = service.applyFilter(tests, filter);
@@ -137,7 +167,7 @@ describe('DataFilterService', () => {
       const filter: DataFilter = {
         operator: 'AND',
         conditions: [
-          { field: 'lastExecutionType', operator: 'not in', value: ['SUCCESS', 'SKIPPED'] },
+          { field: 'executions.status', operator: 'not in', value: ['SUCCESS', 'SKIPPED'] },
         ],
       };
 
@@ -171,7 +201,7 @@ describe('DataFilterService', () => {
     it('should filter with ">="', () => {
       const filter: DataFilter = {
         operator: 'AND',
-        conditions: [{ field: 'durationMs', operator: '>=', value: 150 }],
+        conditions: [{ field: 'executions.durationMs', operator: '>=', value: 150 }],
       };
 
       const result = service.applyFilter(tests, filter);
@@ -182,7 +212,7 @@ describe('DataFilterService', () => {
     it('should filter with ">"', () => {
       const filter: DataFilter = {
         operator: 'AND',
-        conditions: [{ field: 'durationMs', operator: '>', value: 150 }],
+        conditions: [{ field: 'executions.durationMs', operator: '>', value: 150 }],
       };
 
       const result = service.applyFilter(tests, filter);
@@ -193,7 +223,7 @@ describe('DataFilterService', () => {
     it('should filter with "<="', () => {
       const filter: DataFilter = {
         operator: 'AND',
-        conditions: [{ field: 'durationMs', operator: '<=', value: 100 }],
+        conditions: [{ field: 'executions.durationMs', operator: '<=', value: 100 }],
       };
 
       const result = service.applyFilter(tests, filter);
@@ -204,7 +234,7 @@ describe('DataFilterService', () => {
     it('should filter with "<"', () => {
       const filter: DataFilter = {
         operator: 'AND',
-        conditions: [{ field: 'durationMs', operator: '<', value: 100 }],
+        conditions: [{ field: 'executions.durationMs', operator: '<', value: 100 }],
       };
 
       const result = service.applyFilter(tests, filter);
@@ -218,8 +248,8 @@ describe('DataFilterService', () => {
       const filter: DataFilter = {
         operator: 'AND',
         conditions: [
-          { field: 'lastExecutionType', operator: 'equals', value: 'SUCCESS' },
-          { field: 'durationMs', operator: 'equals', value: 150 },
+          { field: 'executions.status', operator: 'equals', value: 'SUCCESS' },
+          { field: 'executions.durationMs', operator: 'equals', value: 150 },
         ],
       };
 
@@ -232,8 +262,8 @@ describe('DataFilterService', () => {
       const filter: DataFilter = {
         operator: 'OR',
         conditions: [
-          { field: 'lastExecutionType', operator: 'equals', value: 'FAILURE' },
-          { field: 'lastExecutionType', operator: 'equals', value: 'SKIPPED' },
+          { field: 'executions.status', operator: 'equals', value: 'FAILURE' },
+          { field: 'executions.status', operator: 'equals', value: 'SKIPPED' },
         ],
       };
 
@@ -251,11 +281,11 @@ describe('DataFilterService', () => {
           {
             operator: 'AND',
             conditions: [
-              { field: 'lastExecutionType', operator: 'equals', value: 'SUCCESS' },
+              { field: 'executions.status', operator: 'equals', value: 'SUCCESS' },
               { field: 'name', operator: 'contains', value: '1' },
             ],
           },
-          { field: 'lastExecutionType', operator: 'equals', value: 'SKIPPED' },
+          { field: 'executions.status', operator: 'equals', value: 'SKIPPED' },
         ],
       };
 
@@ -268,12 +298,12 @@ describe('DataFilterService', () => {
       const filter: DataFilter = {
         operator: 'AND',
         conditions: [
-          { field: 'lastExecutionType', operator: 'equals', value: 'SUCCESS' },
+          { field: 'executions.status', operator: 'equals', value: 'SUCCESS' },
           {
             operator: 'OR',
             conditions: [
               { field: 'name', operator: 'contains', value: 'Another' },
-              { field: 'durationMs', operator: 'equals', value: 100 },
+              { field: 'executions.durationMs', operator: 'equals', value: 100 },
             ],
           },
         ],

@@ -14,8 +14,13 @@ describe('TestDataService', () => {
       {
         name: 'test 1',
         path: '/path/1',
-        lastExecutionType: 'SUCCESS',
-        durationMs: 100,
+        executions: [
+          {
+            timestamp: '2023-01-01T00:00:00Z',
+            status: 'SUCCESS',
+            durationMs: 100,
+          },
+        ],
       },
     ],
   };

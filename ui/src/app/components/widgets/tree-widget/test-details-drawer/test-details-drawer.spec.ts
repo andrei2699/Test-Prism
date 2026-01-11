@@ -10,8 +10,7 @@ describe('TestDetailsDrawer', () => {
   const mockTest: Test = {
     name: 'test1',
     path: '/path/to/test1',
-    lastExecutionType: 'SUCCESS',
-    durationMs: 1000,
+    executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 1000 }],
     tags: ['tag1', 'tag2'],
   };
 

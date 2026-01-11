@@ -66,6 +66,16 @@ export class DataFilterService {
   }
 
   private getTestFieldValue(obj: object, field: string): FieldValue | undefined {
+    if (field.startsWith('executions.')) {
+      const executionField = field.split('.')[1];
+      const test = obj as Test;
+      const lastExecution = test.executions[test.executions.length - 1];
+      if (!lastExecution) {
+        return undefined;
+      }
+      return (lastExecution as any)[executionField];
+    }
+
     let current: any = obj;
     for (const part of field.split('.')) {
       if (current == null) {

@@ -25,7 +25,8 @@ export class DurationDistributionStrategy implements DistributionStrategy {
     const counts = new Array(this.intervals.length).fill(0);
 
     tests.forEach(test => {
-      const duration = test.durationMs ?? 0;
+      const lastExecution = test.executions[test.executions.length - 1];
+      const duration = lastExecution?.durationMs ?? 0;
       const intervalIndex = this.intervals.findIndex(interval => {
         const min = interval.min ?? 0;
         const max = interval.max ?? Infinity;

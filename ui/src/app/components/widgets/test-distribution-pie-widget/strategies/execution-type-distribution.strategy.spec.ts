@@ -14,11 +14,31 @@ describe('ExecutionTypeDistributionStrategy', () => {
   it('should calculate the distribution of tests by execution type', () => {
     const strategy = new ExecutionTypeDistributionStrategy();
     const tests: Test[] = [
-      { lastExecutionType: 'SUCCESS', name: 'test1', path: '/test1' },
-      { lastExecutionType: 'SUCCESS', name: 'test2', path: '/test2' },
-      { lastExecutionType: 'FAILURE', name: 'test3', path: '/test3' },
-      { lastExecutionType: 'SKIPPED', name: 'test4', path: '/test4' },
-      { lastExecutionType: 'ERROR', name: 'test5', path: '/test5' },
+      {
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+        name: 'test1',
+        path: '/test1',
+      },
+      {
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+        name: 'test2',
+        path: '/test2',
+      },
+      {
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'FAILURE', durationMs: 100 }],
+        name: 'test3',
+        path: '/test3',
+      },
+      {
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SKIPPED', durationMs: 100 }],
+        name: 'test4',
+        path: '/test4',
+      },
+      {
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'ERROR', durationMs: 100 }],
+        name: 'test5',
+        path: '/test5',
+      },
     ];
 
     const distribution = strategy.calculateDistribution(tests, colors);

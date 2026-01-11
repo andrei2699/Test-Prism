@@ -33,10 +33,26 @@ describe('TestDistributionPie', () => {
 
   it('should pass the correct data to the chart when tests are provided', () => {
     const tests: Test[] = [
-      { lastExecutionType: 'SUCCESS', name: 'test1', path: '/test1' },
-      { lastExecutionType: 'SUCCESS', name: 'test2', path: '/test2' },
-      { lastExecutionType: 'FAILURE', name: 'test3', path: '/test3' },
-      { lastExecutionType: 'SKIPPED', name: 'test4', path: '/test4' },
+      {
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+        name: 'test1',
+        path: '/test1',
+      },
+      {
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+        name: 'test2',
+        path: '/test2',
+      },
+      {
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'FAILURE', durationMs: 100 }],
+        name: 'test3',
+        path: '/test3',
+      },
+      {
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SKIPPED', durationMs: 100 }],
+        name: 'test4',
+        path: '/test4',
+      },
     ];
     const strategy = DistributionStrategyFactory.create('status');
 
@@ -68,8 +84,16 @@ describe('TestDistributionPie', () => {
 
   it('should only include statuses that have tests', () => {
     const tests: Test[] = [
-      { lastExecutionType: 'SUCCESS', name: 'test1', path: '/test1' },
-      { lastExecutionType: 'SUCCESS', name: 'test2', path: '/test2' },
+      {
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+        name: 'test1',
+        path: '/test1',
+      },
+      {
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+        name: 'test2',
+        path: '/test2',
+      },
     ];
     const strategy = DistributionStrategyFactory.create('status');
 
@@ -87,10 +111,26 @@ describe('TestDistributionPie', () => {
 
   it('should render statuses in a consistent order', () => {
     const tests: Test[] = [
-      { lastExecutionType: 'SKIPPED', name: 'test1', path: '/test1' },
-      { lastExecutionType: 'ERROR', name: 'test2', path: '/test2' },
-      { lastExecutionType: 'SUCCESS', name: 'test3', path: '/test3' },
-      { lastExecutionType: 'FAILURE', name: 'test4', path: '/test4' },
+      {
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SKIPPED', durationMs: 100 }],
+        name: 'test1',
+        path: '/test1',
+      },
+      {
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'ERROR', durationMs: 100 }],
+        name: 'test2',
+        path: '/test2',
+      },
+      {
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SUCCESS', durationMs: 100 }],
+        name: 'test3',
+        path: '/test3',
+      },
+      {
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'FAILURE', durationMs: 100 }],
+        name: 'test4',
+        path: '/test4',
+      },
     ];
     const strategy = DistributionStrategyFactory.create('status');
 
