@@ -5,11 +5,13 @@ import { DistributionStrategy } from './strategies/distribution-strategy.interfa
 import { DistributionStrategyFactory } from './strategies/distribution-strategy.factory';
 import { TestColors } from '../../../types/Layout';
 import { Test } from '../../../types/TestReport';
+import { PieLegendParameters } from './parameters/LegendParameters';
 
 export interface TestDistributionPieParameters {
   title?: string;
   strategy: 'status' | 'duration';
   strategyParameters?: DurationDistributionStrategyParameters;
+  legendParameters?: PieLegendParameters;
 }
 
 @Component({
@@ -28,5 +30,12 @@ export class TestDistributionPieWidget {
     const strategy = params?.strategy ?? 'status';
 
     return DistributionStrategyFactory.create(strategy, params?.strategyParameters);
+  });
+
+  legendParameters = computed<PieLegendParameters>(() => {
+    return {
+      position: 'right',
+      ...this.parameters()?.legendParameters,
+    };
   });
 }

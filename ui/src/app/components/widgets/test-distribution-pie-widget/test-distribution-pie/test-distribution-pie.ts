@@ -5,12 +5,7 @@ import { Test } from '../../../../types/TestReport';
 import { DistributionDataItem } from '../strategies/distribution-data.interface';
 import { DistributionStrategy } from '../strategies/distribution-strategy.interface';
 import { TestColors } from '../../../../types/Layout';
-import { DurationDistributionStrategyParameters } from '../strategies/duration-distribution.strategy';
-
-export interface TestDistributionPieParameters {
-  strategy: 'status' | 'duration';
-  strategyParameters?: DurationDistributionStrategyParameters;
-}
+import { PieLegendParameters } from '../parameters/LegendParameters';
 
 interface PieChartData extends DistributionDataItem {
   percentage: number;
@@ -27,6 +22,7 @@ export class TestDistributionPie {
   colors = input.required<TestColors>();
   tests = input.required<Test[]>();
   strategy = input.required<DistributionStrategy>();
+  legendParameters = input.required<PieLegendParameters>();
 
   chartData = computed<PieChartData[]>(() => {
     const distribution: DistributionDataItem[] = this.strategy().calculateDistribution(
@@ -45,6 +41,7 @@ export class TestDistributionPie {
 
   pieChartConfiguration = computed<ChartConfiguration<'pie'>>(() => {
     const data = this.chartData();
+    const legendParameters = this.legendParameters();
 
     return {
       type: 'pie',
@@ -64,7 +61,7 @@ export class TestDistributionPie {
         maintainAspectRatio: true,
         plugins: {
           legend: {
-            position: 'right' as const,
+            ...legendParameters,
           },
         },
       },
