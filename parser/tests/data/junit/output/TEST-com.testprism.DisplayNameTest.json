@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "date": "2025-01-06T15:34:21.123Z",
+  "timestamp": "2025-01-06T15:34:21.123Z",
   "tests": [
     {
       "name": "This is a test with a custom display name that should appear in test reports",

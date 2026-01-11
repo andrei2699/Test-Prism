@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 #[derive(Serialize, Deserialize, Clone)]
 pub struct TestReport {
     pub version: u8,
-    pub date: String,
+    pub timestamp: String,
     pub tests: Vec<TestReportTest>,
 }
 

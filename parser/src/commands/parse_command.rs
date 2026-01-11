@@ -24,7 +24,7 @@ pub fn parse_command(
 
     let test_report = TestReport {
         version: 1,
-        date: current_date.to_string(),
+        timestamp: current_date.to_string(),
         tests: all_test_report_tests,
     };
 

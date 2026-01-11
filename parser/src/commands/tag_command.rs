@@ -351,7 +351,7 @@ mod tests {
     fn create_test_report(tests: Vec<TestReportTest>) -> TestReport {
         TestReport {
             version: 1,
-            date: "2024-01-01T00:00:00Z".to_string(),
+            timestamp: "2024-01-01T00:00:00Z".to_string(),
             tests,
         }
     }
