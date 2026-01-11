@@ -19,8 +19,9 @@ export default defineConfig({
         text: 'User Guide',
         items: [
           { text: 'Dashboard Features', link: '/features' },
-          { text: 'Layout Definition', link: '/layout-definition' },
           { text: 'Displaying Test Results', link: '/displaying-tests' },
+          { text: 'Layout Definition', link: '/layout-definition' },
+          { text: 'Available Widgets', link: '/available-widgets' },
           { text: 'CLI', link: '/cli-usage' },
         ],
       },
