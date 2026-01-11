@@ -1,12 +1,17 @@
 {
   "version": 1,
-  "date": "2025-01-06T15:34:21.123Z",
+  "timestamp": "2025-01-06T15:34:21.123Z",
   "tests": [
     {
-      "lastExecutionType": "SUCCESS",
       "name": "deeperInnerTest()",
       "path": "com.testprism.NestedTests$DeeperNestedTest$EvenDeeperNestedTest",
-      "durationMs": 1
+      "executions": [
+        {
+          "timestamp": "2026-01-06T13:06:33.821Z",
+          "status": "PASSED",
+          "durationMs": 1
+        }
+      ]
     }
   ]
 }

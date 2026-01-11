@@ -1,25 +1,40 @@
 {
   "version": 1,
-  "date": "2025-01-06T15:34:21.123Z",
+  "timestamp": "2025-01-06T15:34:21.123Z",
   "tests": [
     {
-      "lastExecutionType": "SUCCESS",
       "name": "[1] one",
       "path": "com.testprism.ParameterizedTests",
-      "durationMs": 44
+      "executions": [
+        {
+          "timestamp": "2026-01-06T13:06:33.888Z",
+          "status": "PASSED",
+          "durationMs": 44
+        }
+      ]
     },
     {
-      "lastExecutionType": "FAILURE",
       "name": "[2] two",
       "path": "com.testprism.ParameterizedTests",
-      "durationMs": 15,
-      "message": "org.opentest4j.AssertionFailedError: Intentional failure for input: two"
+      "executions": [
+        {
+          "timestamp": "2026-01-06T13:06:33.888Z",
+          "status": "FAILED",
+          "durationMs": 15,
+          "message": "org.opentest4j.AssertionFailedError: Intentional failure for input: two"
+        }
+      ]
     },
     {
-      "lastExecutionType": "SUCCESS",
       "name": "[3] three",
       "path": "com.testprism.ParameterizedTests",
-      "durationMs": 1
+      "executions": [
+        {
+          "timestamp": "2026-01-06T13:06:33.888Z",
+          "status": "PASSED",
+          "durationMs": 1
+        }
+      ]
     }
   ]
 }
