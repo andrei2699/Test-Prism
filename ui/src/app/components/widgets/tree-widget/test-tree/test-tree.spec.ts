@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import { MatTree } from '@angular/material/tree';
 import { TestTree, TestTreeNode } from './test-tree';
 import { TreeOrganizationStrategy } from '../strategies/organization/tree-organization-strategy.interface';
 import { Test, TestExecutionType } from '../../../../types/TestReport';
@@ -92,8 +94,9 @@ describe('TestTree Component', () => {
 
       const expectedResult: TestTreeNode[] = [
         {
+          id: 'folder',
           name: 'folder',
-          children: [{ name: 'test1' }],
+          children: [{ id: 'test1', name: 'test1' }],
           testCount: { SUCCESS: 1, FAILURE: 0, SKIPPED: 0, ERROR: 0 },
         },
       ];
@@ -142,6 +145,7 @@ describe('TestTree Component', () => {
 
       const strategy1 = createMockTreeOrganizationStrategy([
         {
+          id: 'result1',
           name: 'result1',
           test: {
             name: 'test1',
@@ -162,6 +166,7 @@ describe('TestTree Component', () => {
 
       const strategy2 = createMockTreeOrganizationStrategy([
         {
+          id: 'result2',
           name: 'result2',
           test: {
             name: 'test1',
@@ -183,26 +188,30 @@ describe('TestTree Component', () => {
 
   describe('childrenAccessor', () => {
     it('should return empty array when children is undefined', () => {
-      const node: TestTreeNode = { name: 'test' };
+      const node: TestTreeNode = { id: 'test', name: 'test' };
       expect(component.childrenAccessor(node)).toEqual([]);
     });
 
     it('should return children array when children exists', () => {
-      const children: TestTreeNode[] = [{ name: 'child1' }, { name: 'child2' }];
-      const node: TestTreeNode = { name: 'parent', children };
+      const children: TestTreeNode[] = [
+        { id: 'child1', name: 'child1' },
+        { id: 'child2', name: 'child2' },
+      ];
+      const node: TestTreeNode = { id: 'parent', name: 'parent', children };
 
       expect(component.childrenAccessor(node)).toEqual(children);
     });
 
     it('should return empty array for empty children', () => {
-      const node: TestTreeNode = { name: 'parent', children: [] };
+      const node: TestTreeNode = { id: 'parent', name: 'parent', children: [] };
       expect(component.childrenAccessor(node)).toEqual([]);
     });
 
     it('should work with single child', () => {
       const node: TestTreeNode = {
+        id: 'parent',
         name: 'parent',
-        children: [{ name: 'child' }],
+        children: [{ id: 'child', name: 'child' }],
       };
 
       expect(component.childrenAccessor(node)).toHaveLength(1);
@@ -212,19 +221,20 @@ describe('TestTree Component', () => {
 
   describe('hasChild', () => {
     it('should return false when children is undefined', () => {
-      const node: TestTreeNode = { name: 'test' };
+      const node: TestTreeNode = { id: 'test', name: 'test' };
       expect(component.hasChild(0, node)).toBe(false);
     });
 
     it('should return false when children is empty array', () => {
-      const node: TestTreeNode = { name: 'parent', children: [] };
+      const node: TestTreeNode = { id: 'parent', name: 'parent', children: [] };
       expect(component.hasChild(0, node)).toBe(false);
     });
 
     it('should return true when children exists with items', () => {
       const node: TestTreeNode = {
+        id: 'parent',
         name: 'parent',
-        children: [{ name: 'child' }],
+        children: [{ id: 'child', name: 'child' }],
       };
 
       expect(component.hasChild(0, node)).toBe(true);
@@ -232,8 +242,13 @@ describe('TestTree Component', () => {
 
     it('should return true with multiple children', () => {
       const node: TestTreeNode = {
+        id: 'parent',
         name: 'parent',
-        children: [{ name: 'child1' }, { name: 'child2' }, { name: 'child3' }],
+        children: [
+          { id: 'child1', name: 'child1' },
+          { id: 'child2', name: 'child2' },
+          { id: 'child3', name: 'child3' },
+        ],
       };
 
       expect(component.hasChild(0, node)).toBe(true);
@@ -241,8 +256,9 @@ describe('TestTree Component', () => {
 
     it('should ignore index parameter value', () => {
       const node: TestTreeNode = {
+        id: 'parent',
         name: 'parent',
-        children: [{ name: 'child' }],
+        children: [{ id: 'child', name: 'child' }],
       };
 
       expect(component.hasChild(0, node)).toBe(component.hasChild(999, node));
@@ -251,7 +267,7 @@ describe('TestTree Component', () => {
 
   describe('TestTreeNode Interface', () => {
     it('should support name property', () => {
-      const node: TestTreeNode = { name: 'test' };
+      const node: TestTreeNode = { id: 'test', name: 'test' };
       expect(node.name).toBe('test');
     });
 
@@ -263,13 +279,13 @@ describe('TestTree Component', () => {
         durationMs: 1500,
       };
 
-      const node: TestTreeNode = { name: 'test1', test };
+      const node: TestTreeNode = { id: 'test1', name: 'test1', test };
       expect(node.test).toEqual(test);
     });
 
     it('should support optional children property', () => {
-      const children: TestTreeNode[] = [{ name: 'child' }];
-      const node: TestTreeNode = { name: 'parent', children };
+      const children: TestTreeNode[] = [{ id: 'child', name: 'child' }];
+      const node: TestTreeNode = { id: 'parent', name: 'parent', children };
 
       expect(node.children).toEqual(children);
     });
@@ -282,15 +298,16 @@ describe('TestTree Component', () => {
         durationMs: 2000,
       };
 
-      const node: TestTreeNode = { name: 'test1', test };
+      const node: TestTreeNode = { id: 'test1', name: 'test1', test };
       expect(node.test).toBeDefined();
       expect(node.children).toBeUndefined();
     });
 
     it('should allow folder without test', () => {
       const node: TestTreeNode = {
+        id: 'folder',
         name: 'folder',
-        children: [{ name: 'test' }],
+        children: [{ id: 'test', name: 'test' }],
         testCount: { ...defaultTestCounts },
       };
 
@@ -308,12 +325,13 @@ describe('TestTree Component', () => {
         durationMs: 1500,
       };
 
-      const node: TestTreeNode = { name: 'test1', test };
+      const node: TestTreeNode = { id: 'test1', name: 'test1', test };
       expect(node.test?.durationMs).toBe(1500);
     });
 
     it('should support optional totalDurationMs on group', () => {
       const node: TestTreeNode = {
+        id: 'folder',
         name: 'folder',
         children: [],
         totalDurationMs: 5000,
@@ -323,7 +341,7 @@ describe('TestTree Component', () => {
     });
 
     it('should allow nodes without duration', () => {
-      const node: TestTreeNode = { name: 'test' };
+      const node: TestTreeNode = { id: 'test', name: 'test' };
       expect(node.totalDurationMs).toBeUndefined();
     });
   });
@@ -392,11 +410,13 @@ describe('TestTree Component', () => {
       const mockSort: TreeSortStrategy = {
         sort: vi
           .fn()
-          .mockReturnValue([{ name: 'sorted', children: [], testCount: { ...defaultTestCounts } }]),
+          .mockReturnValue([
+            { id: 'sorted', name: 'sorted', children: [], testCount: { ...defaultTestCounts } },
+          ]),
       };
 
       const mockStrategy = createMockTreeOrganizationStrategy([
-        { name: 'unsorted', children: [], testCount: { ...defaultTestCounts } },
+        { id: 'unsorted', name: 'unsorted', children: [], testCount: { ...defaultTestCounts } },
       ]);
 
       fixture.componentRef.setInput('tests', tests);
@@ -431,7 +451,7 @@ describe('TestTree Component', () => {
       };
 
       const mockStrategy = createMockTreeOrganizationStrategy([
-        { name: 'test', children: [], testCount: { ...defaultTestCounts } },
+        { id: 'test', name: 'test', children: [], testCount: { ...defaultTestCounts } },
       ]);
 
       fixture.componentRef.setInput('tests', tests);
@@ -451,7 +471,7 @@ describe('TestTree Component', () => {
       ];
 
       const expectedNodes: TestTreeNode[] = [
-        { name: 'test1', children: [], testCount: { ...defaultTestCounts } },
+        { id: 'test1', name: 'test1', children: [], testCount: { ...defaultTestCounts } },
       ];
 
       const mockStrategy = createMockTreeOrganizationStrategy(expectedNodes);
@@ -478,7 +498,7 @@ describe('TestTree Component', () => {
       const mockFilter = createMockTestFilterStrategy(filteredTests);
 
       const mockStrategy = createMockTreeOrganizationStrategy([
-        { name: 'test1', testCount: { ...defaultTestCounts } },
+        { id: 'test1', name: 'test1', testCount: { ...defaultTestCounts } },
       ]);
 
       fixture.componentRef.setInput('tests', tests);
@@ -504,11 +524,13 @@ describe('TestTree Component', () => {
       const mockSort: TreeSortStrategy = {
         sort: vi
           .fn()
-          .mockReturnValue([{ name: 'sorted', children: [], testCount: { ...defaultTestCounts } }]),
+          .mockReturnValue([
+            { id: 'sorted', name: 'sorted', children: [], testCount: { ...defaultTestCounts } },
+          ]),
       };
 
       const mockStrategy = createMockTreeOrganizationStrategy([
-        { name: 'unsorted', children: [], testCount: { ...defaultTestCounts } },
+        { id: 'unsorted', name: 'unsorted', children: [], testCount: { ...defaultTestCounts } },
       ]);
 
       fixture.componentRef.setInput('tests', tests);
@@ -540,7 +562,7 @@ describe('TestTree Component', () => {
         { name: 'test1', path: '/folder/test1', lastExecutionType: 'SUCCESS' },
       ];
       const mockStrategy = createMockTreeOrganizationStrategy([
-        { name: 'test1', children: [], testCount: { ...defaultTestCounts } },
+        { id: 'test1', name: 'test1', children: [], testCount: { ...defaultTestCounts } },
       ]);
 
       fixture.componentRef.setInput('tests', tests);
@@ -560,7 +582,7 @@ describe('TestTree Component', () => {
         lastExecutionType: 'SUCCESS',
         durationMs: 1500,
       };
-      const node: TestTreeNode = { name: 'test1', test };
+      const node: TestTreeNode = { id: 'test1', name: 'test1', test };
       const spy = vi.fn();
       component.testSelected.subscribe(spy);
 
@@ -570,7 +592,7 @@ describe('TestTree Component', () => {
     });
 
     it('should not emit testSelected when node does not have a test', () => {
-      const node: TestTreeNode = { name: 'folder' };
+      const node: TestTreeNode = { id: 'folder', name: 'folder' };
       const spy = vi.fn();
       component.testSelected.subscribe(spy);
 
@@ -588,7 +610,7 @@ describe('TestTree Component', () => {
         lastExecutionType: 'SUCCESS',
         durationMs: 1500,
       };
-      const node: TestTreeNode = { name: 'test1', test };
+      const node: TestTreeNode = { id: 'test1', name: 'test1', test };
       fixture.componentRef.setInput('selectedTest', test);
       fixture.detectChanges();
 
@@ -608,7 +630,7 @@ describe('TestTree Component', () => {
         lastExecutionType: 'FAILURE',
         durationMs: 2000,
       };
-      const node: TestTreeNode = { name: 'test1', test: test1 };
+      const node: TestTreeNode = { id: 'test1', name: 'test1', test: test1 };
       fixture.componentRef.setInput('selectedTest', test2);
       fixture.detectChanges();
 
@@ -622,11 +644,72 @@ describe('TestTree Component', () => {
         lastExecutionType: 'SUCCESS',
         durationMs: 1500,
       };
-      const node: TestTreeNode = { name: 'folder' };
+      const node: TestTreeNode = { id: 'folder', name: 'folder' };
       fixture.componentRef.setInput('selectedTest', test);
       fixture.detectChanges();
 
       expect(component.isNodeSelected(node)).toBe(false);
+    });
+  });
+
+  describe('Expansion state', () => {
+    it('should preserve expanded nodes on data source change', () => {
+      const nodes: TestTreeNode[] = [
+        {
+          id: 'folder',
+          name: 'folder',
+          children: [
+            {
+              id: 'test1',
+              name: 'test1',
+              test: { name: 'test1', path: '/folder/test1', lastExecutionType: 'SUCCESS' },
+            },
+          ],
+        },
+      ];
+      const mockStrategy = createMockTreeOrganizationStrategy(nodes);
+      fixture.componentRef.setInput('strategy', mockStrategy);
+      fixture.detectChanges();
+
+      const expandableNode = component.dataSource()[0];
+
+      const treeDebugElement = fixture.debugElement.query(By.directive(MatTree));
+      const tree = treeDebugElement.componentInstance as MatTree<TestTreeNode>;
+
+      tree.expand(expandableNode);
+      expect(tree.isExpanded(expandableNode)).toBe(true);
+
+      const newNodes: TestTreeNode[] = [
+        {
+          id: 'folder',
+          name: 'folder',
+          children: [
+            {
+              id: 'test1',
+              name: 'test1',
+              test: { name: 'test1', path: '/folder/test1', lastExecutionType: 'SUCCESS' },
+            },
+          ],
+        },
+        {
+          id: 'folder2',
+          name: 'folder2',
+          children: [
+            {
+              id: 'test2',
+              name: 'test2',
+              test: { name: 'test2', path: '/folder2/test2', lastExecutionType: 'SUCCESS' },
+            },
+          ],
+        },
+      ];
+      const newMockStrategy = createMockTreeOrganizationStrategy(newNodes);
+      fixture.componentRef.setInput('strategy', newMockStrategy);
+      fixture.detectChanges();
+
+      const newExpandableNode = component.dataSource().find(n => n.id === 'folder');
+      expect(newExpandableNode).toBeDefined();
+      expect(tree.isExpanded(newExpandableNode!)).toBe(true);
     });
   });
 });

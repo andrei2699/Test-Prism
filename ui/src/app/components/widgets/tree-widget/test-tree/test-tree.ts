@@ -12,6 +12,7 @@ import { TestCountDisplayComponent } from '../test-count-display/test-count-disp
 import { TestColors } from '../../../../types/Layout';
 
 export interface TestTreeNode {
+  id: string;
   name: string;
   test?: Test;
   children?: TestTreeNode[];
@@ -58,6 +59,10 @@ export class TestTree {
   });
 
   childrenAccessor = (node: TestTreeNode) => node.children ?? [];
+
+  trackByFn = (_: number, node: TestTreeNode) => node.id;
+
+  expansionKey = (node: TestTreeNode) => node.id;
 
   hasChild = (_: number, node: TestTreeNode) => !!node.children && node.children.length > 0;
 

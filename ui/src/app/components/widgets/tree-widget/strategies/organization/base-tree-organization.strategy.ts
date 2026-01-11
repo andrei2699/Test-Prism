@@ -37,13 +37,15 @@ export abstract class BaseTreeOrganizationStrategy implements TreeOrganizationSt
 
   protected createTestNode(test: Test): TestTreeNode {
     return {
+      id: `${test.path}/${test.name}`,
       name: test.name,
       test,
     };
   }
 
-  protected createGroupNode(name: string): TestTreeNode {
+  protected createGroupNode(key: string, name: string): TestTreeNode {
     return {
+      id: key,
       name,
       children: [],
       testCount: {
@@ -92,7 +94,7 @@ export abstract class BaseTreeOrganizationStrategy implements TreeOrganizationSt
     rootNodes: TestTreeNode[],
   ): void {
     if (!groupMap.has(groupKey)) {
-      const groupNode = this.createGroupNode(groupName);
+      const groupNode = this.createGroupNode(groupKey, groupName);
       groupMap.set(groupKey, groupNode);
       rootNodes.push(groupNode);
     }
