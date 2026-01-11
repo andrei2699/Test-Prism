@@ -30,13 +30,13 @@ The following layout templates are available as a starting point for your own co
 
 ## `TestColors`
 
-The `TestColors` object is a mapping from a `TestExecutionType` to a color string. The color can be any valid CSS color
+The `TestColors` object is a mapping from a `TestExecutionStatus` to a color string. The color can be any valid CSS color
 string, such as a hex code, RGB value, or color name.
 
-The possible values for `TestExecutionType` are:
+The possible values for `TestExecutionStatus` are:
 
-- `'SUCCESS'`
-- `'FAILURE'`
+- `'PASSED'`
+- `'FAILED'`
 - `'SKIPPED'`
 - `'ERROR'`
 
@@ -45,8 +45,8 @@ The possible values for `TestExecutionType` are:
 ```json
 {
   "colors": {
-    "SUCCESS": "#4CAF50",
-    "FAILURE": "#F44336",
+    "PASSED": "#4CAF50",
+    "FAILED": "#F44336",
     "SKIPPED": "#FFC107",
     "ERROR": "#FF9800"
   }
@@ -186,11 +186,11 @@ A `DataFilter` object has a recursive structure:
 
 A `Condition` object represents a single rule in the filter.
 
-| Field      | Type                | Description                                                                                                   |
-| ---------- | ------------------- | ------------------------------------------------------------------------------------------------------------- |
-| `field`    | `string`            | The property of the data object to evaluate. Use dot notation for nested properties (e.g., `details.author`). |
-| `operator` | `ConditionOperator` | The comparison operator to use.                                                                               |
-| `value`    | `FieldValue`        | The value to compare against. This can be a string, number, boolean, null, or an array of these types.        |
+| Field      | Type                | Description                                                                                                                                                                                         |
+| ---------- | ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `field`    | `string`            | The property of the data object to evaluate. Use dot notation for nested properties (e.g., `details.author`). For test execution properties, prefix with `executions.` (e.g., `executions.status`). |
+| `operator` | `ConditionOperator` | The comparison operator to use.                                                                                                                                                                     |
+| `value`    | `FieldValue`        | The value to compare against. This can be a string, number, boolean, null, or an array of these types.                                                                                              |
 
 ### `ConditionOperator`
 
@@ -312,9 +312,9 @@ This example demonstrates how to use a `DataFilter` to show only the tests that 
               "operator": "AND",
               "conditions": [
                 {
-                  "field": "lastExecutionType",
+                  "field": "executions.status",
                   "operator": "==",
-                  "value": "FAILURE"
+                  "value": "FAILED"
                 }
               ]
             }
@@ -387,8 +387,8 @@ Here is a complete example of a `Layout` configuration that combines multiple pa
 ```json
 {
   "colors": {
-    "SUCCESS": "#4CAF50",
-    "FAILURE": "#F44336",
+    "PASSED": "#4CAF50",
+    "FAILED": "#F44336",
     "SKIPPED": "#FFC107",
     "ERROR": "#FF9800"
   },
@@ -437,7 +437,7 @@ Here is a complete example of a `Layout` configuration that combines multiple pa
               "operator": "AND",
               "conditions": [
                 {
-                  "field": "lastExecutionType",
+                  "field": "executions.status",
                   "operator": "!=",
                   "value": "SKIPPED"
                 },
@@ -450,7 +450,7 @@ Here is a complete example of a `Layout` configuration that combines multiple pa
                       "value": "smoke"
                     },
                     {
-                      "field": "durationMs",
+                      "field": "executions.durationMs",
                       "operator": "==",
                       "value": 200
                     }
@@ -476,9 +476,9 @@ Here is a complete example of a `Layout` configuration that combines multiple pa
               "operator": "AND",
               "conditions": [
                 {
-                  "field": "lastExecutionType",
+                  "field": "executions.status",
                   "operator": "==",
-                  "value": "FAILURE"
+                  "value": "FAILED"
                 }
               ]
             }
