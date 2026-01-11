@@ -38,37 +38,62 @@
   },
   "results": {
     "version": 1,
-    "date": "2024-01-04T12:00:00Z",
+    "timestamp": "2024-01-04T12:00:00Z",
     "tests": [
       {
         "name": "should initialize",
         "path": "/src/app/components/navbar",
-        "lastExecutionType": "SUCCESS",
-        "durationMs": 150
+        "executions": [
+          {
+            "timestamp": "2024-01-04T12:00:00Z",
+            "status": "PASSED",
+            "durationMs": 150
+          }
+        ]
       },
       {
         "name": "should render",
         "path": "/src/app/components/test-tree",
-        "lastExecutionType": "SUCCESS",
-        "durationMs": 200
+        "executions": [
+          {
+            "timestamp": "2024-01-04T12:00:00Z",
+            "status": "PASSED",
+            "durationMs": 200
+          }
+        ]
       },
       {
         "name": "should handle error",
         "path": "/src/app/services/auth",
-        "lastExecutionType": "FAILURE",
-        "durationMs": 100
+        "executions": [
+          {
+            "timestamp": "2024-01-04T12:00:00Z",
+            "status": "FAILED",
+            "durationMs": 100
+          }
+        ]
       },
       {
         "name": "should be skipped",
         "path": "/src/app/services/auth",
-        "lastExecutionType": "SKIPPED",
-        "durationMs": 100
+        "executions": [
+          {
+            "timestamp": "2024-01-04T12:00:00Z",
+            "status": "SKIPPED",
+            "durationMs": 100
+          }
+        ]
       },
       {
         "name": "should have an error",
         "path": "/src/app/services/auth",
-        "lastExecutionType": "ERROR",
-        "durationMs": 100
+        "executions": [
+          {
+            "timestamp": "2024-01-04T12:00:00Z",
+            "status": "ERROR",
+            "durationMs": 100
+          }
+        ]
       }
     ]
   }

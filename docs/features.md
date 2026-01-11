@@ -34,7 +34,7 @@ The **Test Tree** widget organizes your test results in a hierarchical structure
 project's test suites and files.
 
 - **Expand & Collapse**: Click on any suite or folder to expand it and see the tests inside.
-- **Status Indicators**: Each test and suite is marked with an icon indicating its status (✅ Success, ❌ Failure, ⏩
+- **Status Indicators**: Each test and suite is marked with an icon indicating its status (✅ Passed, ❌ Failed, ⏩
   Skipped), allowing you to spot problem areas at a glance.
 
 ## Analyzing a Specific Test
