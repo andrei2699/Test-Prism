@@ -27,13 +27,27 @@ describe('DurationDistributionStrategy', () => {
 
     it('should correctly categorize tests by duration', () => {
       const tests: Test[] = [
-        { durationMs: 50 } as Test,
-        { durationMs: 999 } as Test,
-        { durationMs: 1000 } as Test,
-        { durationMs: 4999 } as Test,
-        { durationMs: 5000 } as Test,
-        { durationMs: 10000 } as Test,
-        { durationMs: 0 } as Test,
+        {
+          executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 50 }],
+        } as Test,
+        {
+          executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 999 }],
+        } as Test,
+        {
+          executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 1000 }],
+        } as Test,
+        {
+          executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 4999 }],
+        } as Test,
+        {
+          executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 5000 }],
+        } as Test,
+        {
+          executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 10000 }],
+        } as Test,
+        {
+          executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 0 }],
+        } as Test,
       ];
 
       const distribution = strategy.calculateDistribution(tests);
@@ -58,9 +72,15 @@ describe('DurationDistributionStrategy', () => {
 
     it('should handle tests with only one category', () => {
       const tests: Test[] = [
-        { durationMs: 10 } as Test,
-        { durationMs: 20 } as Test,
-        { durationMs: 30 } as Test,
+        {
+          executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 10 }],
+        } as Test,
+        {
+          executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 20 }],
+        } as Test,
+        {
+          executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 30 }],
+        } as Test,
       ];
       const distribution = strategy.calculateDistribution(tests);
 
@@ -81,11 +101,21 @@ describe('DurationDistributionStrategy', () => {
       ];
       const strategy = new DurationDistributionStrategy({ intervals });
       const tests: Test[] = [
-        { durationMs: 50 } as Test,
-        { durationMs: 100 } as Test,
-        { durationMs: 500 } as Test,
-        { durationMs: 1000 } as Test,
-        { durationMs: 2000 } as Test,
+        {
+          executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 50 }],
+        } as Test,
+        {
+          executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
+        } as Test,
+        {
+          executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 500 }],
+        } as Test,
+        {
+          executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 1000 }],
+        } as Test,
+        {
+          executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 2000 }],
+        } as Test,
       ];
 
       const distribution = strategy.calculateDistribution(tests);

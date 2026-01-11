@@ -9,18 +9,43 @@ import { TestColors } from '../../../types/Layout';
 describe('WidgetRenderer', () => {
   let fixture: ComponentFixture<WidgetRenderer>;
   const tests: Test[] = [
-    { name: 'Test 1', lastExecutionType: 'SUCCESS', durationMs: 100, path: 'path/to/test1' },
-    { name: 'Test 2', lastExecutionType: 'FAILURE', durationMs: 200, path: 'path/to/test2' },
+    {
+      name: 'Test 1',
+      executions: [
+        {
+          timestamp: '2023-01-01T00:00:00Z',
+          status: 'PASSED',
+          durationMs: 100,
+        },
+      ],
+      path: 'path/to/test1',
+    },
+    {
+      name: 'Test 2',
+      executions: [
+        {
+          timestamp: '2023-01-01T00:00:00Z',
+          status: 'FAILED',
+          durationMs: 200,
+        },
+      ],
+      path: 'path/to/test2',
+    },
     {
       name: 'Another Test',
-      lastExecutionType: 'SUCCESS',
-      durationMs: 150,
+      executions: [
+        {
+          timestamp: '2023-01-01T00:00:00Z',
+          status: 'PASSED',
+          durationMs: 150,
+        },
+      ],
       path: 'path/to/another',
     },
   ];
 
   const testReports: Record<string, TestReport> = {
-    id: { tests: tests, version: 0, date: '2025-01-01T00:00:00Z' },
+    id: { tests: tests, version: 0, timestamp: '2025-01-01T00:00:00Z' },
   };
 
   beforeEach(async () => {
@@ -31,8 +56,8 @@ describe('WidgetRenderer', () => {
 
     fixture = TestBed.createComponent(WidgetRenderer);
     fixture.componentRef.setInput('colors', {
-      SUCCESS: 'green',
-      FAILURE: 'red',
+      PASSED: 'green',
+      FAILED: 'red',
       SKIPPED: 'yellow',
       ERROR: 'orange',
     } satisfies TestColors);
@@ -95,7 +120,7 @@ describe('WidgetRenderer', () => {
   it('should filter tests based on widget data filter', () => {
     const filter: DataFilter = {
       operator: 'AND',
-      conditions: [{ field: 'lastExecutionType', operator: '==', value: 'FAILURE' }],
+      conditions: [{ field: 'executions.status', operator: '==', value: 'FAILED' }],
     };
 
     const widget: Widget = {

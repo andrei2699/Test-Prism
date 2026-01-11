@@ -27,15 +27,20 @@ describe('PageRenderer', () => {
 
   const mockTests: Test[] = [
     {
-      lastExecutionType: 'SUCCESS',
+      executions: [
+        {
+          timestamp: '2023-01-01T00:00:00Z',
+          status: 'PASSED',
+          durationMs: 2,
+        },
+      ],
       path: 'test/path',
       name: 'name',
-      durationMs: 2,
     },
   ];
 
   const mockTestReports: TestReport[] = [
-    { tests: mockTests, version: 0, date: '2023-01-01T00:00:00Z' },
+    { tests: mockTests, version: 0, timestamp: '2023-01-01T00:00:00Z' },
   ];
 
   const page1: Page = {
@@ -80,8 +85,8 @@ describe('PageRenderer', () => {
     fixture.componentRef.setInput('pages', pages);
     fixture.componentRef.setInput('testReports', mockTestReports);
     fixture.componentRef.setInput('colors', {
-      SUCCESS: 'green',
-      FAILURE: 'red',
+      PASSED: 'green',
+      FAILED: 'red',
       SKIPPED: 'yellow',
       ERROR: 'orange',
     } satisfies TestColors);

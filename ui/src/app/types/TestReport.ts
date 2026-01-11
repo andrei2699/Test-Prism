@@ -1,15 +1,20 @@
 ﻿export interface TestReport {
   version: number;
-  date: string;
+  timestamp: string;
   tests: Test[];
 }
 
 export interface Test {
-  lastExecutionType: TestExecutionType;
   name: string;
   path: string;
-  durationMs?: number;
+  executions: TestExecution[];
   tags?: string[];
 }
 
-export type TestExecutionType = 'SUCCESS' | 'FAILURE' | 'SKIPPED' | 'ERROR';
+export interface TestExecution {
+  timestamp: string;
+  status: TestExecutionStatus;
+  durationMs: number;
+}
+
+export type TestExecutionStatus = 'PASSED' | 'FAILED' | 'SKIPPED' | 'ERROR';

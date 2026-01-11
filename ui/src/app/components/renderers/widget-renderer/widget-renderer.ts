@@ -43,13 +43,13 @@ export class WidgetRenderer {
     return tests;
   });
 
-  date = computed<string | null>(() => {
+  timestamp = computed<string | null>(() => {
     const widget = this.widget();
     const testReports = this.testReports();
 
     const dataSourceId = widget.data.dataSourceId;
     const testReport = testReports[dataSourceId];
 
-    return testReport?.date;
+    return testReport?.timestamp;
   });
 }

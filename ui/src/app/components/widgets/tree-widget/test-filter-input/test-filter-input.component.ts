@@ -3,12 +3,12 @@ import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { Test, TestExecutionType } from '../../../../types/TestReport';
+import { Test, TestExecutionStatus } from '../../../../types/TestReport';
 import { TagFilterInputComponent } from '../tag-filter-input/tag-filter-input.component';
 
 export interface FilterState {
   name: string;
-  statuses: TestExecutionType[];
+  statuses: TestExecutionStatus[];
   tags: string[];
 }
 
@@ -28,7 +28,7 @@ export class TestFilterInputComponent {
   tests = input.required<Test[]>();
 
   filterText = signal<string>('');
-  selectedStatuses = signal<Set<TestExecutionType>>(new Set());
+  selectedStatuses = signal<Set<TestExecutionStatus>>(new Set());
   selectedTags = signal<string[]>([]);
 
   allTags = computed(() => {
@@ -41,7 +41,7 @@ export class TestFilterInputComponent {
     return Array.from(tags);
   });
 
-  statusOptions: TestExecutionType[] = ['SUCCESS', 'FAILURE', 'SKIPPED', 'ERROR'];
+  statusOptions: TestExecutionStatus[] = ['PASSED', 'FAILED', 'SKIPPED', 'ERROR'];
 
   filterChanged = output<FilterState>();
 
@@ -54,7 +54,7 @@ export class TestFilterInputComponent {
     this.emitFilterState();
   }
 
-  toggleStatus(status: TestExecutionType): void {
+  toggleStatus(status: TestExecutionStatus): void {
     const current = new Set(this.selectedStatuses());
     if (current.has(status)) {
       current.delete(status);
@@ -65,7 +65,7 @@ export class TestFilterInputComponent {
     this.emitFilterState();
   }
 
-  isStatusSelected(status: TestExecutionType): boolean {
+  isStatusSelected(status: TestExecutionStatus): boolean {
     return this.selectedStatuses().has(status);
   }
 

@@ -18,9 +18,9 @@
         {{ getIcon(node) }}
       </mat-icon>
       <span class="node-label">{{ node.name }}</span>
-      @if (node.test?.durationMs !== undefined) {
-        <span class="node-duration" [matTooltip]="(node.test?.durationMs ?? 0) + 'ms'">
-          ({{ node.test?.durationMs | humanizeDuration }})
+      @if (node.test) {
+        <span class="node-duration" [matTooltip]="getLastExecutionMilliseconds(node) + 'ms'">
+          ({{ getLastExecutionMilliseconds(node) | humanizeDuration }})
         </span>
       }
     </mat-tree-node>

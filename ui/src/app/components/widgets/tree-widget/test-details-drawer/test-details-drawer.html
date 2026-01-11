@@ -13,8 +13,8 @@
 
   <div class="detail-row">
     <span class="label">Status:</span>
-    <span class="value" [style.color]="statusColor">
-      {{ test().lastExecutionType }}
+    <span class="value" [style.color]="statusColor()">
+      {{ lastExecution()?.status }}
     </span>
   </div>
 

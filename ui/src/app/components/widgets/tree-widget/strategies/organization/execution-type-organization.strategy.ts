@@ -1,9 +1,10 @@
 ﻿import { Test } from '../../../../../types/TestReport';
 import { TestTreeNode } from '../../test-tree/test-tree';
 import { BaseTreeOrganizationStrategy } from './base-tree-organization.strategy';
+import { getLastExecution } from '../../../../../utils/testExecutionUtils';
 
 export class ExecutionTypeOrganizationStrategy extends BaseTreeOrganizationStrategy {
-  private readonly statusOrder = ['SUCCESS', 'FAILURE', 'SKIPPED', 'ERROR'];
+  private readonly statusOrder = ['PASSED', 'FAILED', 'SKIPPED', 'ERROR'];
 
   getName(): string {
     return 'status';
@@ -14,7 +15,11 @@ export class ExecutionTypeOrganizationStrategy extends BaseTreeOrganizationStrat
     const rootNodes: TestTreeNode[] = [];
 
     tests.forEach(test => {
-      const status = test.lastExecutionType;
+      const lastExecution = getLastExecution(test);
+      if (!lastExecution) {
+        return;
+      }
+      const status = lastExecution.status;
       this.ensureGroupNode(status, status, statusMap, rootNodes);
       this.addTestToGroup(test, status, statusMap);
     });

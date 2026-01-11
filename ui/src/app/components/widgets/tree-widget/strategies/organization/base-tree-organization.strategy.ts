@@ -1,7 +1,8 @@
 ﻿import { TestTreeNode } from '../../test-tree/test-tree';
-import { Test, TestExecutionType } from '../../../../../types/TestReport';
+import { Test, TestExecutionStatus } from '../../../../../types/TestReport';
 import { TreeOrganizationStrategy } from './tree-organization-strategy.interface';
 import { TestColors } from '../../../../../types/Layout';
+import { getLastExecution } from '../../../../../utils/testExecutionUtils';
 
 export abstract class BaseTreeOrganizationStrategy implements TreeOrganizationStrategy {
   abstract getName(): string;
@@ -13,10 +14,15 @@ export abstract class BaseTreeOrganizationStrategy implements TreeOrganizationSt
       return 'folder';
     }
 
-    switch (node.test.lastExecutionType) {
-      case 'SUCCESS':
+    const lastExecution = getLastExecution(node.test);
+    if (!lastExecution) {
+      return 'help';
+    }
+
+    switch (lastExecution.status) {
+      case 'PASSED':
         return 'check_circle';
-      case 'FAILURE':
+      case 'FAILED':
         return 'cancel';
       case 'ERROR':
         return 'error';
@@ -32,7 +38,12 @@ export abstract class BaseTreeOrganizationStrategy implements TreeOrganizationSt
       return 'inherit';
     }
 
-    return colors[node.test.lastExecutionType] || 'inherit';
+    const lastExecution = getLastExecution(node.test);
+    if (!lastExecution) {
+      return 'inherit';
+    }
+
+    return colors[lastExecution.status] || 'inherit';
   }
 
   protected createTestNode(test: Test): TestTreeNode {
@@ -49,8 +60,8 @@ export abstract class BaseTreeOrganizationStrategy implements TreeOrganizationSt
       name,
       children: [],
       testCount: {
-        SUCCESS: 0,
-        FAILURE: 0,
+        PASSED: 0,
+        FAILED: 0,
         SKIPPED: 0,
         ERROR: 0,
       },
@@ -107,8 +118,11 @@ export abstract class BaseTreeOrganizationStrategy implements TreeOrganizationSt
   }
 
   private calculateNodeTotalDuration(node: TestTreeNode): number {
-    if (node.test?.durationMs) {
-      return node.test.durationMs;
+    if (node.test) {
+      const lastExecution = getLastExecution(node.test);
+      if (lastExecution) {
+        return lastExecution.durationMs;
+      }
     }
 
     if (node.children && node.children.length > 0) {
@@ -129,20 +143,23 @@ export abstract class BaseTreeOrganizationStrategy implements TreeOrganizationSt
     });
   }
 
-  private recursivelyCalculateTestCounts(node: TestTreeNode): Record<TestExecutionType, number> {
-    const counts: Record<TestExecutionType, number> = {
-      SUCCESS: 0,
-      FAILURE: 0,
+  private recursivelyCalculateTestCounts(node: TestTreeNode): Record<TestExecutionStatus, number> {
+    const counts: Record<TestExecutionStatus, number> = {
+      PASSED: 0,
+      FAILED: 0,
       SKIPPED: 0,
       ERROR: 0,
     };
 
     if (node.test) {
-      counts[node.test.lastExecutionType] = 1;
+      const lastExecution = getLastExecution(node.test);
+      if (lastExecution) {
+        counts[lastExecution.status] = 1;
+      }
     } else if (node.children && node.children.length > 0) {
       node.children.forEach(child => {
         const childCounts = this.recursivelyCalculateTestCounts(child);
-        const executionTypes: TestExecutionType[] = ['SUCCESS', 'FAILURE', 'SKIPPED', 'ERROR'];
+        const executionTypes: TestExecutionStatus[] = ['PASSED', 'FAILED', 'SKIPPED', 'ERROR'];
         for (const type of executionTypes) {
           counts[type] += childCounts[type];
         }

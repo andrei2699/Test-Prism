@@ -5,6 +5,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { Test } from '../../../../types/TestReport';
 import { HumanizeDurationPipe } from '../../../../pipes/humanize-duration.pipe';
 import { TestColors } from '../../../../types/Layout';
+import { getLastExecution } from '../../../../utils/testExecutionUtils';
 
 @Component({
   selector: 'app-test-details-drawer',
@@ -17,11 +18,17 @@ export class TestDetailsDrawer {
   colors = input.required<TestColors>();
   close = output<void>();
 
+  lastExecution = computed(() => getLastExecution(this.test()));
+
   testDuration = computed<number>(() => {
-    return this.test().durationMs ?? 0;
+    return this.lastExecution()?.durationMs ?? 0;
   });
 
-  get statusColor(): string {
-    return this.colors()[this.test().lastExecutionType] || 'inherit';
-  }
+  statusColor = computed<string>(() => {
+    const lastExecution = this.lastExecution();
+    if (!lastExecution) {
+      return 'inherit';
+    }
+    return this.colors()[lastExecution.status] || 'inherit';
+  });
 }

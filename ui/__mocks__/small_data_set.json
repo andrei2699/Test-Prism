@@ -1,54 +1,89 @@
 ﻿{
   "version": 1,
-  "date": "2026-01-08T10:53:03.326Z",
+  "timestamp": "2026-01-08T10:53:03.326Z",
   "tests": [
     {
       "name": "should initialize #0",
       "path": "/src/app/components/navbar",
-      "lastExecutionType": "SUCCESS",
-      "durationMs": 641,
+      "executions": [
+        {
+          "timestamp": "2026-01-08T10:53:03.326Z",
+          "status": "PASSED",
+          "durationMs": 641
+        }
+      ],
       "tags": ["UI", "Navbar"]
     },
     {
       "name": "should render #1",
       "path": "/src/app/components/test-tree",
-      "lastExecutionType": "SUCCESS",
-      "durationMs": 532,
+      "executions": [
+        {
+          "timestamp": "2026-01-08T10:53:03.326Z",
+          "status": "PASSED",
+          "durationMs": 532
+        }
+      ],
       "tags": ["UI", "Tree"]
     },
     {
       "name": "should handle click #2",
       "path": "/src/app/components/test-tree/utils",
-      "lastExecutionType": "SUCCESS",
-      "durationMs": 999,
+      "executions": [
+        {
+          "timestamp": "2026-01-08T10:53:03.326Z",
+          "status": "PASSED",
+          "durationMs": 999
+        }
+      ],
       "tags": ["UI", "Tree", "Utils"]
     },
     {
       "name": "should validate #3",
       "path": "/src/app/components/modal/unit",
-      "lastExecutionType": "SUCCESS",
-      "durationMs": 4920,
+      "executions": [
+        {
+          "timestamp": "2026-01-08T10:53:03.326Z",
+          "status": "PASSED",
+          "durationMs": 4920
+        }
+      ],
       "tags": ["UI", "Modal", "Unit"]
     },
     {
       "name": "should submit #4",
       "path": "/src/app/components/modal/integration",
-      "lastExecutionType": "SUCCESS",
-      "durationMs": 2764,
+      "executions": [
+        {
+          "timestamp": "2026-01-08T10:53:03.326Z",
+          "status": "PASSED",
+          "durationMs": 2764
+        }
+      ],
       "tags": ["UI", "Modal", "Integration"]
     },
     {
       "name": "should complete the full user journey",
       "path": "/src/app/e2e/user-journey",
-      "lastExecutionType": "SUCCESS",
-      "durationMs": 15000,
+      "executions": [
+        {
+          "timestamp": "2026-01-08T10:53:03.326Z",
+          "status": "PASSED",
+          "durationMs": 15000
+        }
+      ],
       "tags": ["end-to-end", "critical"]
     },
     {
       "name": "should handle payment processing",
       "path": "/src/app/e2e/payment",
-      "lastExecutionType": "FAILURE",
-      "durationMs": 8500,
+      "executions": [
+        {
+          "timestamp": "2026-01-08T10:53:03.326Z",
+          "status": "FAILED",
+          "durationMs": 8500
+        }
+      ],
       "tags": ["end-to-end", "payment"]
     }
   ]

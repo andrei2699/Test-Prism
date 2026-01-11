@@ -12,7 +12,7 @@ describe('ContainerWidget', () => {
 
   const mockTestReports: Record<DataSourceId, TestReport> = {
     '1': {
-      date: '2025-01-01T00:00:00.000Z',
+      timestamp: '2025-01-01T00:00:00.000Z',
       version: 0,
       tests: [],
     },
@@ -26,8 +26,8 @@ describe('ContainerWidget', () => {
 
     fixture = TestBed.createComponent(ContainerWidget);
     fixture.componentRef.setInput('colors', {
-      SUCCESS: 'green',
-      FAILURE: 'red',
+      PASSED: 'green',
+      FAILED: 'red',
       SKIPPED: 'yellow',
       ERROR: 'orange',
     } satisfies TestColors);

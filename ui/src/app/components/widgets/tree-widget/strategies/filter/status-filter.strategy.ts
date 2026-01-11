@@ -1,10 +1,11 @@
-﻿import { Test, TestExecutionType } from '../../../../../types/TestReport';
+﻿import { Test, TestExecutionStatus } from '../../../../../types/TestReport';
 import { TestFilterStrategy } from './test-filter-strategy.interface';
+import { getLastExecution } from '../../../../../utils/testExecutionUtils';
 
 export class StatusFilterStrategy implements TestFilterStrategy {
-  private readonly statuses: Set<TestExecutionType>;
+  private readonly statuses: Set<TestExecutionStatus>;
 
-  constructor(selectedStatuses: TestExecutionType[]) {
+  constructor(selectedStatuses: TestExecutionStatus[]) {
     this.statuses = new Set(selectedStatuses);
   }
 
@@ -13,6 +14,9 @@ export class StatusFilterStrategy implements TestFilterStrategy {
       return tests;
     }
 
-    return tests.filter(test => this.statuses.has(test.lastExecutionType));
+    return tests.filter(test => {
+      const lastExecution = getLastExecution(test);
+      return lastExecution && this.statuses.has(lastExecution.status);
+    });
   }
 }

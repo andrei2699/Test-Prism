@@ -9,13 +9,18 @@ import { DataSource } from '../types/DataSource';
 describe('TestDataService', () => {
   const mockTestReport: TestReport = {
     version: 1,
-    date: '2023-01-01T00:00:00Z',
+    timestamp: '2023-01-01T00:00:00Z',
     tests: [
       {
         name: 'test 1',
         path: '/path/1',
-        lastExecutionType: 'SUCCESS',
-        durationMs: 100,
+        executions: [
+          {
+            timestamp: '2023-01-01T00:00:00Z',
+            status: 'PASSED',
+            durationMs: 100,
+          },
+        ],
       },
     ],
   };

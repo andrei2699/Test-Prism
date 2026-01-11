@@ -3,13 +3,14 @@ import { MatTreeModule } from '@angular/material/tree';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { Test, TestExecutionType } from '../../../../types/TestReport';
+import { Test, TestExecutionStatus } from '../../../../types/TestReport';
 import { TreeOrganizationStrategy } from '../strategies/organization/tree-organization-strategy.interface';
 import { TreeSortStrategy } from '../strategies/sort/tree-sort-strategy.interface';
 import { TestFilterStrategy } from '../strategies/filter/test-filter-strategy.interface';
 import { HumanizeDurationPipe } from '../../../../pipes/humanize-duration.pipe';
 import { TestCountDisplayComponent } from '../test-count-display/test-count-display';
 import { TestColors } from '../../../../types/Layout';
+import { getLastExecution } from '../../../../utils/testExecutionUtils';
 
 export interface TestTreeNode {
   id: string;
@@ -19,7 +20,7 @@ export interface TestTreeNode {
   icon?: string;
   color?: string;
   totalDurationMs?: number;
-  testCount?: Record<TestExecutionType, number>;
+  testCount?: Record<TestExecutionStatus, number>;
 }
 
 @Component({
@@ -78,5 +79,9 @@ export class TestTree {
 
   isNodeSelected(node: TestTreeNode): boolean {
     return !!node.test && node.test === this.selectedTest();
+  }
+
+  getLastExecutionMilliseconds(node: TestTreeNode): number {
+    return getLastExecution(node.test!)?.durationMs ?? 0;
   }
 }

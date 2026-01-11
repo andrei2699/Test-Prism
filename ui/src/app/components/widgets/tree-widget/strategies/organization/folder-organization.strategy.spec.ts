@@ -17,7 +17,7 @@ describe('FolderOrganizationStrategy', () => {
       {
         name: 'test1',
         path: '/test1',
-        lastExecutionType: 'SUCCESS',
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
       },
     ];
 
@@ -26,7 +26,7 @@ describe('FolderOrganizationStrategy', () => {
     expect(result).toHaveLength(1);
     expect(result[0].name).toBe('test1');
     expect(result[0].test).toEqual(tests[0]);
-    expect(result[0].testCount).toMatchObject({ SUCCESS: 1, FAILURE: 0, SKIPPED: 0, ERROR: 0 });
+    expect(result[0].testCount).toMatchObject({ PASSED: 1, FAILED: 0, SKIPPED: 0, ERROR: 0 });
   });
 
   it('should create folder hierarchy', () => {
@@ -34,7 +34,7 @@ describe('FolderOrganizationStrategy', () => {
       {
         name: 'test1',
         path: '/folder1/folder2/folder3/test1',
-        lastExecutionType: 'SUCCESS',
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
       },
     ];
 
@@ -49,8 +49,16 @@ describe('FolderOrganizationStrategy', () => {
 
   it('should group tests under same folder', () => {
     const tests: Test[] = [
-      { name: 'test1', path: '/folder/test1', lastExecutionType: 'SUCCESS' },
-      { name: 'test2', path: '/folder/test2', lastExecutionType: 'FAILURE' },
+      {
+        name: 'test1',
+        path: '/folder/test1',
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
+      },
+      {
+        name: 'test2',
+        path: '/folder/test2',
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'FAILED', durationMs: 100 }],
+      },
     ];
 
     const result = strategy.buildTree(tests);
@@ -62,8 +70,16 @@ describe('FolderOrganizationStrategy', () => {
 
   it('should handle multiple top-level folders', () => {
     const tests: Test[] = [
-      { name: 'test1', path: '/folder1/test1', lastExecutionType: 'SUCCESS' },
-      { name: 'test2', path: '/folder2/test2', lastExecutionType: 'SUCCESS' },
+      {
+        name: 'test1',
+        path: '/folder1/test1',
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
+      },
+      {
+        name: 'test2',
+        path: '/folder2/test2',
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
+      },
     ];
 
     const result = strategy.buildTree(tests);
@@ -74,17 +90,29 @@ describe('FolderOrganizationStrategy', () => {
   });
 
   it('should preserve test metadata', () => {
-    const tests: Test[] = [{ name: 'test1', path: '/folder/test1', lastExecutionType: 'ERROR' }];
+    const tests: Test[] = [
+      {
+        name: 'test1',
+        path: '/folder/test1',
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'ERROR', durationMs: 100 }],
+      },
+    ];
 
     const result = strategy.buildTree(tests);
     const testNode = result[0].children?.[0];
 
-    expect(testNode?.test?.lastExecutionType).toBe('ERROR');
+    expect(testNode?.test?.executions[0].status).toBe('ERROR');
     expect(testNode?.test?.path).toBe('/folder/test1');
   });
 
   it('should handle paths with trailing slashes', () => {
-    const tests: Test[] = [{ name: 'test1', path: '/folder//test1', lastExecutionType: 'SUCCESS' }];
+    const tests: Test[] = [
+      {
+        name: 'test1',
+        path: '/folder//test1',
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
+      },
+    ];
 
     const result = strategy.buildTree(tests);
 
@@ -93,8 +121,16 @@ describe('FolderOrganizationStrategy', () => {
 
   it('should maintain parent-child relationships', () => {
     const tests: Test[] = [
-      { name: 'test1', path: '/a/b/c/test1', lastExecutionType: 'SUCCESS' },
-      { name: 'test2', path: '/a/b/test2', lastExecutionType: 'SUCCESS' },
+      {
+        name: 'test1',
+        path: '/a/b/c/test1',
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
+      },
+      {
+        name: 'test2',
+        path: '/a/b/test2',
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
+      },
     ];
 
     const result = strategy.buildTree(tests);
@@ -107,7 +143,11 @@ describe('FolderOrganizationStrategy', () => {
 
   it('should calculate total duration for folders with single test', () => {
     const tests: Test[] = [
-      { name: 'test1', path: '/folder/test1', lastExecutionType: 'SUCCESS', durationMs: 1500 },
+      {
+        name: 'test1',
+        path: '/folder/test1',
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 1500 }],
+      },
     ];
 
     const result = strategy.buildTree(tests);
@@ -117,9 +157,21 @@ describe('FolderOrganizationStrategy', () => {
 
   it('should sum durations for folders with multiple tests', () => {
     const tests: Test[] = [
-      { name: 'test1', path: '/folder/test1', lastExecutionType: 'SUCCESS', durationMs: 1000 },
-      { name: 'test2', path: '/folder/test2', lastExecutionType: 'SUCCESS', durationMs: 2000 },
-      { name: 'test3', path: '/folder/test3', lastExecutionType: 'FAILURE', durationMs: 500 },
+      {
+        name: 'test1',
+        path: '/folder/test1',
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 1000 }],
+      },
+      {
+        name: 'test2',
+        path: '/folder/test2',
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 2000 }],
+      },
+      {
+        name: 'test3',
+        path: '/folder/test3',
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'FAILED', durationMs: 500 }],
+      },
     ];
 
     const result = strategy.buildTree(tests);
@@ -129,9 +181,21 @@ describe('FolderOrganizationStrategy', () => {
 
   it('should sum durations recursively for nested folders', () => {
     const tests: Test[] = [
-      { name: 'test1', path: '/a/b/test1', lastExecutionType: 'SUCCESS', durationMs: 1000 },
-      { name: 'test2', path: '/a/b/test2', lastExecutionType: 'SUCCESS', durationMs: 2000 },
-      { name: 'test3', path: '/a/c/test3', lastExecutionType: 'SUCCESS', durationMs: 500 },
+      {
+        name: 'test1',
+        path: '/a/b/test1',
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 1000 }],
+      },
+      {
+        name: 'test2',
+        path: '/a/b/test2',
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 2000 }],
+      },
+      {
+        name: 'test3',
+        path: '/a/c/test3',
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 500 }],
+      },
     ];
 
     const result = strategy.buildTree(tests);
@@ -144,8 +208,16 @@ describe('FolderOrganizationStrategy', () => {
 
   it('should handle tests without duration', () => {
     const tests: Test[] = [
-      { name: 'test1', path: '/folder/test1', lastExecutionType: 'SUCCESS' },
-      { name: 'test2', path: '/folder/test2', lastExecutionType: 'SUCCESS', durationMs: 2000 },
+      {
+        name: 'test1',
+        path: '/folder/test1',
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 0 }],
+      },
+      {
+        name: 'test2',
+        path: '/folder/test2',
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 2000 }],
+      },
     ];
 
     const result = strategy.buildTree(tests);
@@ -154,45 +226,75 @@ describe('FolderOrganizationStrategy', () => {
   });
 
   it('should calculate test count for a single test', () => {
-    const tests: Test[] = [{ name: 'test1', path: '/test1', lastExecutionType: 'SUCCESS' }];
-
-    const result = strategy.buildTree(tests);
-
-    expect(result[0].testCount).toMatchObject({ SUCCESS: 1, FAILURE: 0, SKIPPED: 0, ERROR: 0 });
-  });
-
-  it('should calculate test count for a folder with multiple tests', () => {
     const tests: Test[] = [
-      { name: 'test1', path: '/folder/test1', lastExecutionType: 'SUCCESS' },
-      { name: 'test2', path: '/folder/test2', lastExecutionType: 'FAILURE' },
+      {
+        name: 'test1',
+        path: '/test1',
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
+      },
     ];
 
     const result = strategy.buildTree(tests);
 
-    expect(result[0].testCount).toMatchObject({ SUCCESS: 1, FAILURE: 1, SKIPPED: 0, ERROR: 0 });
+    expect(result[0].testCount).toMatchObject({ PASSED: 1, FAILED: 0, SKIPPED: 0, ERROR: 0 });
+  });
+
+  it('should calculate test count for a folder with multiple tests', () => {
+    const tests: Test[] = [
+      {
+        name: 'test1',
+        path: '/folder/test1',
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
+      },
+      {
+        name: 'test2',
+        path: '/folder/test2',
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'FAILED', durationMs: 100 }],
+      },
+    ];
+
+    const result = strategy.buildTree(tests);
+
+    expect(result[0].testCount).toMatchObject({ PASSED: 1, FAILED: 1, SKIPPED: 0, ERROR: 0 });
   });
 
   it('should calculate test count recursively for nested folders', () => {
     const tests: Test[] = [
-      { name: 'test1', path: '/a/b/test1', lastExecutionType: 'SUCCESS' },
-      { name: 'test2', path: '/a/b/test2', lastExecutionType: 'SUCCESS' },
-      { name: 'test3', path: '/a/c/test3', lastExecutionType: 'SUCCESS' },
-      { name: 'test4', path: '/a/test4', lastExecutionType: 'SUCCESS' },
+      {
+        name: 'test1',
+        path: '/a/b/test1',
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
+      },
+      {
+        name: 'test2',
+        path: '/a/b/test2',
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
+      },
+      {
+        name: 'test3',
+        path: '/a/c/test3',
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
+      },
+      {
+        name: 'test4',
+        path: '/a/test4',
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
+      },
     ];
 
     const result = strategy.buildTree(tests);
     const folderA = result[0];
 
-    expect(folderA.testCount).toMatchObject({ SUCCESS: 4, FAILURE: 0, SKIPPED: 0, ERROR: 0 });
+    expect(folderA.testCount).toMatchObject({ PASSED: 4, FAILED: 0, SKIPPED: 0, ERROR: 0 });
     expect(folderA.children?.[0].testCount).toMatchObject({
-      SUCCESS: 2,
-      FAILURE: 0,
+      PASSED: 2,
+      FAILED: 0,
       SKIPPED: 0,
       ERROR: 0,
     });
     expect(folderA.children?.[1].testCount).toMatchObject({
-      SUCCESS: 1,
-      FAILURE: 0,
+      PASSED: 1,
+      FAILED: 0,
       SKIPPED: 0,
       ERROR: 0,
     });
@@ -200,17 +302,25 @@ describe('FolderOrganizationStrategy', () => {
 
   it('should calculate test count for mixed content (tests and subfolders)', () => {
     const tests: Test[] = [
-      { name: 'test1', path: '/folder1/subfolder/test1', lastExecutionType: 'SUCCESS' },
-      { name: 'test2', path: '/folder1/test2', lastExecutionType: 'SUCCESS' },
+      {
+        name: 'test1',
+        path: '/folder1/subfolder/test1',
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
+      },
+      {
+        name: 'test2',
+        path: '/folder1/test2',
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
+      },
     ];
 
     const result = strategy.buildTree(tests);
     const folder1 = result[0];
 
-    expect(folder1.testCount).toMatchObject({ SUCCESS: 2, FAILURE: 0, SKIPPED: 0, ERROR: 0 });
+    expect(folder1.testCount).toMatchObject({ PASSED: 2, FAILED: 0, SKIPPED: 0, ERROR: 0 });
     expect(folder1.children?.[0].testCount).toMatchObject({
-      SUCCESS: 1,
-      FAILURE: 0,
+      PASSED: 1,
+      FAILED: 0,
       SKIPPED: 0,
       ERROR: 0,
     });

@@ -4,6 +4,7 @@ import { DatePipe } from '@angular/common';
 import { MatChipsModule } from '@angular/material/chips';
 import { Test } from '../../../types/TestReport';
 import { TestColors } from '../../../types/Layout';
+import { getLastExecution } from '../../../utils/testExecutionUtils';
 
 export interface SummaryWidgetParameters {
   title: string;
@@ -18,7 +19,7 @@ export interface SummaryWidgetParameters {
 export class SummaryWidgetComponent {
   colors = input.required<TestColors>();
   tests = input.required<Test[]>();
-  date = input.required<string | null>();
+  timestamp = input.required<string | null>();
   parameters = input<SummaryWidgetParameters>();
 
   title = computed(() => this.parameters()?.title || 'Analysis Summary');
@@ -34,11 +35,16 @@ export class SummaryWidgetComponent {
     };
 
     for (const test of tests) {
-      switch (test.lastExecutionType) {
-        case 'SUCCESS':
+      const lastExecution = getLastExecution(test);
+      if (!lastExecution) {
+        continue;
+      }
+
+      switch (lastExecution.status) {
+        case 'PASSED':
           summary.passed++;
           break;
-        case 'FAILURE':
+        case 'FAILED':
           summary.failed++;
           break;
         case 'SKIPPED':

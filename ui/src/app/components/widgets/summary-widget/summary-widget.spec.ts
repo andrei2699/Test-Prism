@@ -17,8 +17,8 @@ describe('SummaryWidgetComponent', () => {
 
     fixture = TestBed.createComponent(SummaryWidgetComponent);
     fixture.componentRef.setInput('colors', {
-      SUCCESS: 'green',
-      FAILURE: 'red',
+      PASSED: 'green',
+      FAILED: 'red',
       SKIPPED: 'yellow',
       ERROR: 'orange',
     } satisfies TestColors);
@@ -27,7 +27,7 @@ describe('SummaryWidgetComponent', () => {
   it('should display the date in a human-readable format', () => {
     const testDate = '2023-10-27T10:00:00Z';
     fixture.componentRef.setInput('tests', []);
-    fixture.componentRef.setInput('date', testDate);
+    fixture.componentRef.setInput('timestamp', testDate);
 
     fixture.detectChanges();
 
@@ -38,7 +38,7 @@ describe('SummaryWidgetComponent', () => {
 
   it('should display the default title when no parameters are provided', () => {
     fixture.componentRef.setInput('tests', []);
-    fixture.componentRef.setInput('date', new Date().toISOString());
+    fixture.componentRef.setInput('timestamp', new Date().toISOString());
 
     fixture.detectChanges();
 
@@ -49,7 +49,7 @@ describe('SummaryWidgetComponent', () => {
   it('should display the custom title from parameters', () => {
     const parameters: SummaryWidgetParameters = { title: 'Custom Title' };
     fixture.componentRef.setInput('tests', []);
-    fixture.componentRef.setInput('date', new Date().toISOString());
+    fixture.componentRef.setInput('timestamp', new Date().toISOString());
     fixture.componentRef.setInput('parameters', parameters);
 
     fixture.detectChanges();
@@ -60,14 +60,34 @@ describe('SummaryWidgetComponent', () => {
 
   it('should display summary counts and colors including error status', () => {
     const tests: Test[] = [
-      { name: 'Test 1', path: '/test1', lastExecutionType: 'SUCCESS' },
-      { name: 'Test 2', path: '/test2', lastExecutionType: 'FAILURE' },
-      { name: 'Test 3', path: '/test3', lastExecutionType: 'SKIPPED' },
-      { name: 'Test 4', path: '/test4', lastExecutionType: 'SUCCESS' },
-      { name: 'Test 5', path: '/test5', lastExecutionType: 'ERROR' },
+      {
+        name: 'Test 1',
+        path: '/test1',
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
+      },
+      {
+        name: 'Test 2',
+        path: '/test2',
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'FAILED', durationMs: 100 }],
+      },
+      {
+        name: 'Test 3',
+        path: '/test3',
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SKIPPED', durationMs: 100 }],
+      },
+      {
+        name: 'Test 4',
+        path: '/test4',
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
+      },
+      {
+        name: 'Test 5',
+        path: '/test5',
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'ERROR', durationMs: 100 }],
+      },
     ];
     fixture.componentRef.setInput('tests', tests);
-    fixture.componentRef.setInput('date', new Date().toISOString());
+    fixture.componentRef.setInput('timestamp', new Date().toISOString());
 
     fixture.detectChanges();
 
