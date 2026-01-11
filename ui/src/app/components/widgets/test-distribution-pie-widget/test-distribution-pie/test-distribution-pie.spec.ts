@@ -7,7 +7,6 @@ import { TestColors } from '../../../../types/Layout';
 import { DistributionStrategyFactory } from '../strategies/distribution-strategy.factory';
 
 describe('TestDistributionPie', () => {
-  let component: TestDistributionPie;
   let fixture: ComponentFixture<TestDistributionPie>;
 
   beforeEach(async () => {
@@ -17,7 +16,7 @@ describe('TestDistributionPie', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(TestDistributionPie);
-    component = fixture.componentInstance;
+    fixture.componentRef.setInput('legendParameters', { display: true });
     fixture.componentRef.setInput('colors', {
       PASSED: 'green',
       FAILED: 'red',
@@ -149,5 +148,27 @@ describe('TestDistributionPie', () => {
       'ERROR (25.00%)',
     ]);
     expect(chartData!.datasets[0].data).toEqual([1, 1, 1, 1]);
+  });
+
+  it('should hide the legend when specified', () => {
+    const tests: Test[] = [
+      {
+        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
+        name: 'test1',
+        path: '/test1',
+      },
+    ];
+    const strategy = DistributionStrategyFactory.create('status');
+
+    fixture.componentRef.setInput('tests', tests);
+    fixture.componentRef.setInput('strategy', strategy);
+    fixture.componentRef.setInput('legendParameters', { display: false });
+    fixture.detectChanges();
+
+    const chartInstance = getChartInstance();
+    const legendOptions = chartInstance.options?.plugins?.legend;
+
+    expect(legendOptions).toBeDefined();
+    expect(legendOptions!.display).toBe(false);
   });
 });
