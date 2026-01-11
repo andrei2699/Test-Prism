@@ -12,7 +12,7 @@ export default defineConfig({
       { text: 'Dashboard Features', link: '/features' },
       { text: 'Layout Definition', link: '/layout-definition' },
       { text: 'Displaying Tests', link: '/displaying-tests' },
-      { text: 'Parser Usage', link: '/parser-usage' },
+      { text: 'CLI Usage', link: '/cli-usage' },
     ],
     sidebar: [
       {
@@ -21,7 +21,7 @@ export default defineConfig({
           { text: 'Dashboard Features', link: '/features' },
           { text: 'Layout Definition', link: '/layout-definition' },
           { text: 'Displaying Test Results', link: '/displaying-tests' },
-          { text: 'Parser CLI', link: '/parser-usage' },
+          { text: 'CLI', link: '/cli-usage' },
         ],
       },
       {

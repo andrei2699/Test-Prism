@@ -100,7 +100,7 @@ npm run docs:build
 
 The build artifacts will be stored in the `.vitepress/dist` directory.
 
-## Parser (Rust CLI)
+## CLI (Rust)
 
 ### Prerequisites
 
@@ -109,10 +109,10 @@ The build artifacts will be stored in the `.vitepress/dist` directory.
 
 ### Running Locally
 
-1. Navigate to the `parser` directory:
+1. Navigate to the `cli` directory:
 
    ```bash
-   cd parser
+   cd cli
    ```
 
 2. Build and run the CLI:
@@ -120,4 +120,4 @@ The build artifacts will be stored in the `.vitepress/dist` directory.
    cargo run -- --help
    ```
 
-For detailed usage instructions and command-line arguments, please refer to the [Parser Usage Guide](./parser-usage.md).
+For detailed usage instructions and command-line arguments, please refer to the [CLI Usage Guide](./cli-usage.md).

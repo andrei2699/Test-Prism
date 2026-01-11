@@ -13,7 +13,7 @@ An example of the setup described below can be found at [
 
 ### Step 1: Create a Directory and Test Data
 
-Create a new directory to hold your report files. Then, use the [Test Prism Parser](./parser-usage.md) to convert your
+Create a new directory to hold your report files. Then, use the [Test Prism Parser](./cli-usage.md#parse-command) to convert your
 test report (e.g., a JUnit XML file) into the required `test-results.json` format and place it in the directory you
 created.
 
