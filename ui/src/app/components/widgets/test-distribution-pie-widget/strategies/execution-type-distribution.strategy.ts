@@ -2,6 +2,7 @@
 import { DistributionDataItem } from './distribution-data.interface';
 import { Test, TestExecutionType } from '../../../../types/TestReport';
 import { TestColors } from '../../../../types/Layout';
+import { getLastExecution } from '../../../../utils/testExecutionUtils';
 
 export class ExecutionTypeDistributionStrategy implements DistributionStrategy {
   calculateDistribution(tests: Test[], colors: TestColors): DistributionDataItem[] {
@@ -13,7 +14,7 @@ export class ExecutionTypeDistributionStrategy implements DistributionStrategy {
     };
 
     tests.forEach(test => {
-      const lastExecution = test.executions[test.executions.length - 1];
+      const lastExecution = getLastExecution(test);
       if (lastExecution) {
         counts[lastExecution.status]++;
       }

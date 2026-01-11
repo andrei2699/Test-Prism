@@ -1,5 +1,6 @@
 ﻿import { Test, TestExecutionType } from '../../../../../types/TestReport';
 import { TestFilterStrategy } from './test-filter-strategy.interface';
+import { getLastExecution } from '../../../../../utils/testExecutionUtils';
 
 export class StatusFilterStrategy implements TestFilterStrategy {
   private readonly statuses: Set<TestExecutionType>;
@@ -14,7 +15,7 @@ export class StatusFilterStrategy implements TestFilterStrategy {
     }
 
     return tests.filter(test => {
-      const lastExecution = test.executions[test.executions.length - 1];
+      const lastExecution = getLastExecution(test);
       return lastExecution && this.statuses.has(lastExecution.status);
     });
   }

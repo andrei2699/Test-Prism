@@ -4,6 +4,7 @@ import { DatePipe } from '@angular/common';
 import { MatChipsModule } from '@angular/material/chips';
 import { Test } from '../../../types/TestReport';
 import { TestColors } from '../../../types/Layout';
+import { getLastExecution } from '../../../utils/testExecutionUtils';
 
 export interface SummaryWidgetParameters {
   title: string;
@@ -34,7 +35,7 @@ export class SummaryWidgetComponent {
     };
 
     for (const test of tests) {
-      const lastExecution = test.executions[test.executions.length - 1];
+      const lastExecution = getLastExecution(test);
       if (!lastExecution) {
         continue;
       }

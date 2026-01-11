@@ -10,6 +10,7 @@ import { TestFilterStrategy } from '../strategies/filter/test-filter-strategy.in
 import { HumanizeDurationPipe } from '../../../../pipes/humanize-duration.pipe';
 import { TestCountDisplayComponent } from '../test-count-display/test-count-display';
 import { TestColors } from '../../../../types/Layout';
+import { getLastExecution } from '../../../../utils/testExecutionUtils';
 
 export interface TestTreeNode {
   id: string;
@@ -78,5 +79,9 @@ export class TestTree {
 
   isNodeSelected(node: TestTreeNode): boolean {
     return !!node.test && node.test === this.selectedTest();
+  }
+
+  getLastExecutionMilliseconds(node: TestTreeNode): number {
+    return getLastExecution(node.test!)?.durationMs ?? 0;
   }
 }

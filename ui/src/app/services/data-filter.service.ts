@@ -1,6 +1,7 @@
 ﻿import { Injectable } from '@angular/core';
 import { Test } from '../types/TestReport';
 import { Condition, DataFilter, FieldValue } from '../types/Widget';
+import { getLastExecution } from '../utils/testExecutionUtils';
 
 @Injectable({
   providedIn: 'root',
@@ -69,7 +70,7 @@ export class DataFilterService {
     if (field.startsWith('executions.')) {
       const executionField = field.split('.')[1];
       const test = obj as Test;
-      const lastExecution = test.executions[test.executions.length - 1];
+      const lastExecution = getLastExecution(test);
       if (!lastExecution) {
         return undefined;
       }

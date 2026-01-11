@@ -2,6 +2,7 @@
 import { DistributionStrategy } from './distribution-strategy.interface';
 import { Test } from '../../../../types/TestReport';
 import humanizeDuration from 'humanize-duration';
+import { getLastExecution } from '../../../../utils/testExecutionUtils';
 
 export interface DurationDistributionStrategyParameters {
   intervals: DurationInterval[];
@@ -25,7 +26,7 @@ export class DurationDistributionStrategy implements DistributionStrategy {
     const counts = new Array(this.intervals.length).fill(0);
 
     tests.forEach(test => {
-      const lastExecution = test.executions[test.executions.length - 1];
+      const lastExecution = getLastExecution(test);
       const duration = lastExecution?.durationMs ?? 0;
       const intervalIndex = this.intervals.findIndex(interval => {
         const min = interval.min ?? 0;

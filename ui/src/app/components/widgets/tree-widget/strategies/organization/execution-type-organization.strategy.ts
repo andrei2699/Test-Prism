@@ -1,6 +1,7 @@
 ﻿import { Test } from '../../../../../types/TestReport';
 import { TestTreeNode } from '../../test-tree/test-tree';
 import { BaseTreeOrganizationStrategy } from './base-tree-organization.strategy';
+import { getLastExecution } from '../../../../../utils/testExecutionUtils';
 
 export class ExecutionTypeOrganizationStrategy extends BaseTreeOrganizationStrategy {
   private readonly statusOrder = ['SUCCESS', 'FAILURE', 'SKIPPED', 'ERROR'];
@@ -14,7 +15,7 @@ export class ExecutionTypeOrganizationStrategy extends BaseTreeOrganizationStrat
     const rootNodes: TestTreeNode[] = [];
 
     tests.forEach(test => {
-      const lastExecution = test.executions[test.executions.length - 1];
+      const lastExecution = getLastExecution(test);
       if (!lastExecution) {
         return;
       }

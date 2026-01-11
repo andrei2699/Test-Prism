@@ -2,6 +2,7 @@
 import { Test, TestExecutionType } from '../../../../../types/TestReport';
 import { TreeOrganizationStrategy } from './tree-organization-strategy.interface';
 import { TestColors } from '../../../../../types/Layout';
+import { getLastExecution } from '../../../../../utils/testExecutionUtils';
 
 export abstract class BaseTreeOrganizationStrategy implements TreeOrganizationStrategy {
   abstract getName(): string;
@@ -13,7 +14,7 @@ export abstract class BaseTreeOrganizationStrategy implements TreeOrganizationSt
       return 'folder';
     }
 
-    const lastExecution = node.test.executions[node.test.executions.length - 1];
+    const lastExecution = getLastExecution(node.test);
     if (!lastExecution) {
       return 'help';
     }
@@ -37,7 +38,7 @@ export abstract class BaseTreeOrganizationStrategy implements TreeOrganizationSt
       return 'inherit';
     }
 
-    const lastExecution = node.test.executions[node.test.executions.length - 1];
+    const lastExecution = getLastExecution(node.test);
     if (!lastExecution) {
       return 'inherit';
     }
@@ -118,7 +119,7 @@ export abstract class BaseTreeOrganizationStrategy implements TreeOrganizationSt
 
   private calculateNodeTotalDuration(node: TestTreeNode): number {
     if (node.test) {
-      const lastExecution = node.test.executions[node.test.executions.length - 1];
+      const lastExecution = getLastExecution(node.test);
       if (lastExecution) {
         return lastExecution.durationMs;
       }
@@ -151,7 +152,7 @@ export abstract class BaseTreeOrganizationStrategy implements TreeOrganizationSt
     };
 
     if (node.test) {
-      const lastExecution = node.test.executions[node.test.executions.length - 1];
+      const lastExecution = getLastExecution(node.test);
       if (lastExecution) {
         counts[lastExecution.status] = 1;
       }
