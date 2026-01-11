@@ -3,10 +3,15 @@
   "date": "2025-01-06T15:34:21.123Z",
   "tests": [
     {
-      "lastExecutionType": "SUCCESS",
       "name": "testSuccess()",
       "path": "com.testprism.SuccessTest",
-      "durationMs": 3
+      "executions": [
+        {
+          "timestamp": "2026-01-06T13:06:33.985Z",
+          "status": "SUCCESS",
+          "durationMs": 3
+        }
+      ]
     }
   ]
 }

@@ -127,7 +127,7 @@ fn write_report(report: &TestReport, output_path: &str) {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::test_report::{TestReport, TestReportStatus, TestReportTest};
+    use crate::test_report::{TestExecution, TestExecutionStatus, TestReport, TestReportTest};
     use parameterized::parameterized;
     use std::io::Write;
     use tempfile::NamedTempFile;
@@ -358,22 +358,28 @@ mod tests {
 
     fn create_test_without_tags(name: &str, path: &str) -> TestReportTest {
         TestReportTest {
-            last_execution_type: TestReportStatus::Success,
             name: name.to_string(),
             path: path.to_string(),
-            duration_ms: 100,
-            message: None,
+            executions: vec![TestExecution {
+                timestamp: "2024-01-01T00:00:00Z".to_string(),
+                status: TestExecutionStatus::Success,
+                duration_ms: 100,
+                message: None,
+            }],
             tags: None,
         }
     }
 
     fn create_test_with_tags(name: &str, path: &str, tags: Vec<&str>) -> TestReportTest {
         TestReportTest {
-            last_execution_type: TestReportStatus::Failure,
             name: name.to_string(),
             path: path.to_string(),
-            duration_ms: 200,
-            message: Some("failed".to_string()),
+            executions: vec![TestExecution {
+                timestamp: "2024-01-01T00:00:00Z".to_string(),
+                status: TestExecutionStatus::Failure,
+                duration_ms: 200,
+                message: Some("failed".to_string()),
+            }],
             tags: Some(tags.into_iter().map(|s| s.to_string()).collect()),
         }
     }

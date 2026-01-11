@@ -9,7 +9,7 @@ pub struct TestReport {
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
-pub enum TestReportStatus {
+pub enum TestExecutionStatus {
     #[serde(rename = "SUCCESS")]
     Success,
     #[serde(rename = "SKIPPED")]
@@ -21,37 +21,42 @@ pub enum TestReportStatus {
 }
 
 #[derive(Serialize, Deserialize, Clone)]
-pub struct TestReportTest {
-    #[serde(rename = "lastExecutionType")]
-    pub last_execution_type: TestReportStatus,
-    pub name: String,
-    pub path: String,
+pub struct TestExecution {
+    pub timestamp: String,
+    pub status: TestExecutionStatus,
     #[serde(rename = "durationMs")]
     pub duration_ms: u64,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub message: Option<String>,
+}
+
+#[derive(Serialize, Deserialize, Clone)]
+pub struct TestReportTest {
+    pub name: String,
+    pub path: String,
+    pub executions: Vec<TestExecution>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub tags: Option<Vec<String>>,
 }
 
-impl TestReportStatus {
-    pub fn from_test_status(status: TestStatus) -> TestReportStatus {
+impl TestExecutionStatus {
+    pub fn from_test_status(status: &TestStatus) -> TestExecutionStatus {
         match status {
-            TestStatus::Passed => TestReportStatus::Success,
-            TestStatus::Skipped(_) => TestReportStatus::Skipped,
-            TestStatus::Failed(_) => TestReportStatus::Failure,
-            TestStatus::Error(_) => TestReportStatus::Error,
+            TestStatus::Passed => TestExecutionStatus::Success,
+            TestStatus::Skipped(_) => TestExecutionStatus::Skipped,
+            TestStatus::Failed(_) => TestExecutionStatus::Failure,
+            TestStatus::Error(_) => TestExecutionStatus::Error,
         }
     }
 }
 
-impl TestReportTest {
-    pub fn message_from_test_status(status: TestStatus) -> Option<String> {
+impl TestExecution {
+    pub fn message_from_test_status(status: &TestStatus) -> Option<String> {
         match status {
             TestStatus::Passed => None,
-            TestStatus::Skipped(message) => Some(message),
-            TestStatus::Failed(message) => Some(message),
-            TestStatus::Error(message) => Some(message),
+            TestStatus::Skipped(message) => Some(message.clone()),
+            TestStatus::Failed(message) => Some(message.clone()),
+            TestStatus::Error(message) => Some(message.clone()),
         }
     }
 }

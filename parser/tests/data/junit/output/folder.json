@@ -3,16 +3,26 @@
   "date": "2025-01-06T15:34:21.123Z",
   "tests": [
     {
-      "lastExecutionType": "SUCCESS",
       "name": "test1",
       "path": "Sample1",
-      "durationMs": 1000
+      "executions": [
+        {
+          "timestamp": "2023-10-27T10:00:00Z",
+          "status": "SUCCESS",
+          "durationMs": 1000
+        }
+      ]
     },
     {
-      "lastExecutionType": "SUCCESS",
       "name": "test2",
       "path": "Sample2",
-      "durationMs": 2000
+      "executions": [
+        {
+          "timestamp": "2023-10-27T11:00:00Z",
+          "status": "SUCCESS",
+          "durationMs": 2000
+        }
+      ]
     }
   ]
 }

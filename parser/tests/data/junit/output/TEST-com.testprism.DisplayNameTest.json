@@ -3,10 +3,15 @@
   "date": "2025-01-06T15:34:21.123Z",
   "tests": [
     {
-      "lastExecutionType": "SUCCESS",
       "name": "This is a test with a custom display name that should appear in test reports",
       "path": "com.testprism.DisplayNameTest",
-      "durationMs": 30
+      "executions": [
+        {
+          "timestamp": "2026-01-06T13:06:33.758Z",
+          "status": "SUCCESS",
+          "durationMs": 30
+        }
+      ]
     }
   ]
 }

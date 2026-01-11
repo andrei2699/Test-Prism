@@ -1,6 +1,6 @@
 ﻿use crate::parsers::junit::JunitParser;
 use crate::test_parser::TestParser;
-use crate::test_report::{TestReport, TestReportStatus, TestReportTest};
+use crate::test_report::{TestExecution, TestExecutionStatus, TestReport, TestReportTest};
 use std::path::Path;
 
 pub fn parse_command(
@@ -17,7 +17,7 @@ pub fn parse_command(
 
     for path_string in input_paths {
         let path = Path::new(&path_string);
-        let tests = parse_file(&parser, &path_string, path, &tags);
+        let tests = parse_file(&parser, &path_string, path, &tags, &current_date);
 
         all_test_report_tests.extend(tests);
     }
@@ -36,22 +36,34 @@ fn parse_file(
     path_str: &str,
     path: &Path,
     tags: &[String],
+    timestamp: &str,
 ) -> Vec<TestReportTest> {
     match parser.parse(path) {
         Ok(tests) => tests
             .iter()
             .flat_map(|suite| {
-                suite.tests.iter().map(move |test| TestReportTest {
-                    last_execution_type: TestReportStatus::from_test_status(test.status.clone()),
-                    name: test.name.clone(),
-                    path: suite.name.clone(),
-                    duration_ms: (test.time * 1000.0) as u64,
-                    message: TestReportTest::message_from_test_status(test.status.clone()),
-                    tags: if tags.is_empty() {
-                        None
-                    } else {
-                        Some(tags.to_vec())
-                    },
+                suite.tests.iter().map(move |test| {
+                    let execution = TestExecution {
+                        timestamp: if suite.timestamp.is_empty() {
+                            timestamp.to_string()
+                        } else {
+                            suite.timestamp.clone()
+                        },
+                        status: TestExecutionStatus::from_test_status(&test.status),
+                        duration_ms: (test.time * 1000.0) as u64,
+                        message: TestExecution::message_from_test_status(&test.status),
+                    };
+
+                    TestReportTest {
+                        name: test.name.clone(),
+                        path: suite.name.clone(),
+                        executions: vec![execution],
+                        tags: if tags.is_empty() {
+                            None
+                        } else {
+                            Some(tags.to_vec())
+                        },
+                    }
                 })
             })
             .collect(),

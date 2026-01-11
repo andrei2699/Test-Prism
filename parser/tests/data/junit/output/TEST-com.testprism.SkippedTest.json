@@ -3,11 +3,16 @@
   "date": "2025-01-06T15:34:21.123Z",
   "tests": [
     {
-      "lastExecutionType": "SKIPPED",
       "name": "skippedTest()",
       "path": "com.testprism.SkippedTest",
-      "durationMs": 4,
-      "message": ""
+      "executions": [
+        {
+          "timestamp": "2026-01-06T13:06:33.967Z",
+          "status": "SKIPPED",
+          "durationMs": 4,
+          "message": ""
+        }
+      ]
     }
   ]
 }
