@@ -20,6 +20,7 @@ export interface TestDistributionPieParameters {
   dataset?: PieDatasetParameters;
   width?: string;
   height?: string;
+  shouldDisplayInnerPercentage?: boolean;
 }
 
 @Component({
