@@ -12,7 +12,7 @@ in each status (passed, failed, skipped, error).
 ### Parameters (`SummaryWidgetParameters`)
 
 | Field   | Type     | Description                                                         |
-|---------|----------|---------------------------------------------------------------------|
+| ------- | -------- | ------------------------------------------------------------------- |
 | `title` | `string` | (Optional) The title of the widget. Defaults to "Analysis Summary". |
 
 ## Container Widget (`container`)
@@ -34,7 +34,7 @@ tests.
 ### Parameters (`TreeWidgetParameters`)
 
 | Field            | Type       | Description                                                                                                    |
-|------------------|------------|----------------------------------------------------------------------------------------------------------------|
+| ---------------- | ---------- | -------------------------------------------------------------------------------------------------------------- |
 | `title`          | `string`   | (Optional) The title of the widget.                                                                            |
 | `strategy`       | `string`   | The organization strategy for the tree. Possible values are `'folder'` (default) and `'status'`.               |
 | `sortStrategies` | `string[]` | An array of sorting strategies to apply to the tree. Currently, the only possible value is `'name'` (default). |
@@ -48,7 +48,7 @@ The Test Distribution Pie widget displays a pie chart showing the distribution o
 ### Parameters (`TestDistributionPieParameters`)
 
 | Field                | Type     | Description                                                                                             |
-|----------------------|----------|---------------------------------------------------------------------------------------------------------|
+| -------------------- | -------- | ------------------------------------------------------------------------------------------------------- |
 | `title`              | `object` | (Optional) The title of the widget.                                                                     |
 | `subtitle`           | `object` | (Optional) The subtitle of the widget.                                                                  |
 | `strategy`           | `string` | The distribution strategy for the pie chart. Possible values are `'status'` (default) and `'duration'`. |
@@ -66,13 +66,13 @@ The `strategyParameters` object depends on the selected `strategy`.
 When `strategy` is set to `'duration'`, the `strategyParameters` object can contain the following fields:
 
 | Field       | Type                                      | Description                                                                               |
-|-------------|-------------------------------------------|-------------------------------------------------------------------------------------------|
+| ----------- | ----------------------------------------- | ----------------------------------------------------------------------------------------- |
 | `intervals` | `[DurationInterval](#durationinterval)[]` | An array of `DurationInterval` objects that define the duration ranges for the pie chart. |
 
 ##### `DurationInterval`
 
 | Field   | Type     | Description                                                                                                                           |
-|---------|----------|---------------------------------------------------------------------------------------------------------------------------------------|
+| ------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------- |
 | `label` | `string` | (Optional) The label for the duration interval. If not provided, a label will be generated automatically based on the duration range. |
 | `color` | `string` | The color for the duration interval. This can be any valid CSS color string.                                                          |
 | `min`   | `number` | (Optional) The minimum duration (in milliseconds) for this interval.                                                                  |
@@ -85,7 +85,7 @@ The `title` and `subtitle` objects can contain the following fields:
 See the [Chart.js title documentation](https://www.chartjs.org/docs/latest/configuration/title.html) for more details.
 
 | Field      | Type                          | Description                                                             |
-|------------|-------------------------------|-------------------------------------------------------------------------|
+| ---------- | ----------------------------- | ----------------------------------------------------------------------- |
 | `display`  | `boolean`                     | (Optional) If `true`, the title is shown. Defaults to `false`.          |
 | `position` | `top` `left` `bottom` `right` | (Optional) The position of the title. Defaults to `top`.                |
 | `align`    | `start` `center` `end`        | (Optional) The alignment of the title. Defaults to `center`.            |
@@ -102,7 +102,7 @@ The `legend` object can contain the following fields:
 See the [Chart.js legend documentation](https://www.chartjs.org/docs/latest/configuration/legend.html) for more details.
 
 | Field           | Type                          | Description                                                                                         |
-|-----------------|-------------------------------|-----------------------------------------------------------------------------------------------------|
+| --------------- | ----------------------------- | --------------------------------------------------------------------------------------------------- |
 | `display`       | `boolean`                     | (Optional) If `true`, the legend is shown. Defaults to `true`.                                      |
 | `position`      | `top` `left` `bottom` `right` | (Optional) The position of the legend. Defaults to `top`.                                           |
 | `align`         | `start` `center` `end`        | (Optional) The alignment of the legend. Defaults to `center`.                                       |
@@ -119,7 +119,7 @@ See the [Chart.js legend documentation](https://www.chartjs.org/docs/latest/conf
 The `labels` object can contain the following fields:
 
 | Field             | Type      | Description                                                                        |
-|-------------------|-----------|------------------------------------------------------------------------------------|
+| ----------------- | --------- | ---------------------------------------------------------------------------------- |
 | `boxWidth`        | `number`  | (Optional) The width of the colored box in the legend.                             |
 | `boxHeight`       | `number`  | (Optional) The height of the colored box in the legend.                            |
 | `color`           | `string`  | (Optional) The color of the label text.                                            |
@@ -138,7 +138,7 @@ See the [Chart.js dataset documentation](https://www.chartjs.org/docs/latest/cha
 for more details.
 
 | Field              | Type                | Description                                                    |
-|--------------------|---------------------|----------------------------------------------------------------|
+| ------------------ | ------------------- | -------------------------------------------------------------- |
 | `borderAlign`      | `center` `inner`    | (Optional) The alignment of the border.                        |
 | `borderColor`      | `string` `string[]` | (Optional) The color of the border.                            |
 | `borderWidth`      | `number` `object`   | (Optional) The width of the border in pixels.                  |
@@ -155,7 +155,7 @@ The `options` object allows for the customization of the pie chart's general opt
 See the [Chart.js options documentation](https://www.chartjs.org/docs/latest/charts/doughnut.html) for more details.
 
 | Field           | Type     | Description                                                           |
-|-----------------|----------|-----------------------------------------------------------------------|
+| --------------- | -------- | --------------------------------------------------------------------- |
 | `cutout`        | `number` | (Optional) The percentage of the chart that is cut out of the middle. |
 | `radius`        | `number` | (Optional) The outer radius of the chart.                             |
 | `rotation`      | `number` | (Optional) The starting angle to draw arcs from.                      |
