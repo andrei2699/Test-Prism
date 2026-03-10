@@ -10,7 +10,7 @@ COPY . .
 
 RUN npm run build
 
-FROM nginx:1.29.4-alpine
+FROM nginx:1.29.5-alpine
 
 RUN apk update && \
     apk upgrade && \
