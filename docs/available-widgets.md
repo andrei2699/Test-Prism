@@ -40,11 +40,11 @@ tests.
 
 ### Parameters (`TreeWidgetParameters`)
 
-| Field            | Type       | Description                                                                                                    |
-|------------------|------------|----------------------------------------------------------------------------------------------------------------|
-| `title`          | `string`   | (Optional) The title of the widget.                                                                            |
-| `strategy`       | `string`   | The organization strategy for the tree. Possible values are `'folder'` (default) and `'status'`.               |
-| `sortStrategies` | `string[]` | An array of sorting strategies to apply to the tree. Currently, the only possible value is `'name'` (default). |
+| Field            | Type       | Description                                                                                                 |
+|------------------|------------|-------------------------------------------------------------------------------------------------------------|
+| `title`          | `string`   | (Optional) The title of the widget.                                                                         |
+| `strategy`       | `string`   | The organization strategy for the tree. Possible values are `'folder'` (default) and `'status'`.            |
+| `sortStrategies` | `string[]` | An array of sorting strategies to apply to the tree. Possible values are `'name'` (default) and `'folder'`. |
 
 ## Test Distribution Pie (`distribution-pie`)
 
