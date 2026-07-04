@@ -1,4 +1,4 @@
-﻿use crate::parsers::junit::models::{JunitRoot, JunitTestCase, JunitTestSuite};
+use crate::parsers::junit::models::{JunitRoot, JunitTestCase, JunitTestSuite};
 use crate::test_models::{Test, TestStatus, TestSuite};
 use crate::test_parser::TestParser;
 use quick_xml::de::from_str;
@@ -37,6 +37,7 @@ impl JunitParser {
 
                 TestSuite {
                     name: junit_suite.name,
+                    file: None,
                     duration: junit_suite.time,
                     timestamp: junit_suite.timestamp,
                     tests,
@@ -59,6 +60,7 @@ impl JunitParser {
             name: case.name,
             time: case.time,
             status,
+            ancestor_titles: Vec::new(),
         }
     }
 }

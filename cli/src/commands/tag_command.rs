@@ -1,4 +1,4 @@
-﻿use crate::test_report::TestReport;
+use crate::test_report::TestReport;
 use regex::Regex;
 use std::fs;
 
@@ -72,6 +72,7 @@ fn parse_tag_expressions(tags: Vec<String>) -> Vec<ParsedExpression> {
 
 fn apply_tags(report: &mut TestReport, tag_expressions: &[ParsedExpression]) {
     for test in &mut report.tests {
+        let joined_path = test.path.join("/");
         for parsed_expression in tag_expressions {
             let ParsedExpression {
                 expression,
@@ -79,7 +80,7 @@ fn apply_tags(report: &mut TestReport, tag_expressions: &[ParsedExpression]) {
                 tags,
             } = parsed_expression;
 
-            if expression.is_match(&test.path) {
+            if expression.is_match(&joined_path) {
                 test.tags = match operation {
                     TagOperation::Add => add_tags_to_test(test.tags.as_ref(), tags),
                     TagOperation::Remove => remove_tags_from_test(test.tags.as_ref(), tags),
@@ -350,7 +351,7 @@ mod tests {
 
     fn create_test_report(tests: Vec<TestReportTest>) -> TestReport {
         TestReport {
-            version: 1,
+            version: 2,
             timestamp: "2024-01-01T00:00:00Z".to_string(),
             tests,
         }
@@ -359,7 +360,8 @@ mod tests {
     fn create_test_without_tags(name: &str, path: &str) -> TestReportTest {
         TestReportTest {
             name: name.to_string(),
-            path: path.to_string(),
+            file: None,
+            path: path.split('/').map(|s| s.to_string()).collect(),
             executions: vec![TestExecution {
                 timestamp: "2024-01-01T00:00:00Z".to_string(),
                 status: TestExecutionStatus::Passed,
@@ -373,7 +375,8 @@ mod tests {
     fn create_test_with_tags(name: &str, path: &str, tags: Vec<&str>) -> TestReportTest {
         TestReportTest {
             name: name.to_string(),
-            path: path.to_string(),
+            file: None,
+            path: path.split('/').map(|s| s.to_string()).collect(),
             executions: vec![TestExecution {
                 timestamp: "2024-01-01T00:00:00Z".to_string(),
                 status: TestExecutionStatus::Failed,
