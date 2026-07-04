@@ -14,7 +14,7 @@ The following layout templates are available as a starting point for your own co
 ## `Layout`
 
 | Field              | Type                                                | Description                                                                          |
-|--------------------|-----------------------------------------------------|--------------------------------------------------------------------------------------|
+| ------------------ | --------------------------------------------------- | ------------------------------------------------------------------------------------ |
 | `pages`            | `Page[]`                                            | An array of `Page` objects, each representing a page in the application.             |
 | `dataSources`      | `[DataSource](#datasource)[]`                       | An array of `DataSource` objects that can be used by widgets on the pages.           |
 | `colors`           | `[TestColors](#testcolors)`                         | (Optional) An object that defines the colors for the different test execution types. |
@@ -23,7 +23,7 @@ The following layout templates are available as a starting point for your own co
 ## `NavigationDrawerConfig`
 
 | Field           | Type                         | Default   | Description                                                                                  |
-|-----------------|------------------------------|-----------|----------------------------------------------------------------------------------------------|
+| --------------- | ---------------------------- | --------- | -------------------------------------------------------------------------------------------- |
 | `mode`          | `'over' \| 'push' \| 'side'` | `'over'`  | Controls how the drawer interacts with the page content.                                     |
 | `defaultOpened` | `boolean`                    | `false`   | Whether the drawer is open by default when the application loads.                            |
 | `position`      | `'start' \| 'end'`           | `'start'` | Controls which side of the layout the drawer appears on (`'start'` = left, `'end'` = right). |
@@ -46,10 +46,10 @@ The following layout templates are available as a starting point for your own co
 }
 ```
 
-## `Page`   
+## `Page`
 
 | Field     | Type       | Description                                                                      |
-|-----------|------------|----------------------------------------------------------------------------------|
+| --------- | ---------- | -------------------------------------------------------------------------------- |
 | `title`   | `string`   | The title of the page, displayed in the UI.                                      |
 | `path`    | `string`   | The URL path for the page.                                                       |
 | `navIcon` | `string`   | (Optional) The name of the icon to display in the navigation menu for this page. |
@@ -95,7 +95,7 @@ The widgets are implemented using [Chart.js](https://www.chartjs.org/docs/latest
 All widgets have the following base fields:
 
 | Field   | Type                        | Description                                                      |
-|---------|-----------------------------|------------------------------------------------------------------|
+| ------- | --------------------------- | ---------------------------------------------------------------- |
 | `id`    | `string`                    | A unique identifier for the widget.                              |
 | `type`  | `WidgetType`                | The type of the widget. See `WidgetType` for possible values.    |
 | `data`  | `[WidgetData](#widgetdata)` | An object that specifies the data to be displayed by the widget. |
@@ -113,7 +113,7 @@ The `WidgetType` can be one of the following:
 ### `WidgetData`
 
 | Field          | Type                        | Description                                                                                 |
-|----------------|-----------------------------|---------------------------------------------------------------------------------------------|
+| -------------- | --------------------------- | ------------------------------------------------------------------------------------------- |
 | `dataSourceId` | `DataSourceId`              | The ID of the `DataSource` to use for this widget.                                          |
 | `filter`       | `[DataFilter](#datafilter)` | (Optional) A `DataFilter` object that can be used to filter the data from the `DataSource`. |
 
@@ -122,7 +122,7 @@ The `WidgetType` can be one of the following:
 A `DataSource` defines how to fetch data from a remote source.
 
 | Field         | Type                     | Description                                                            |
-|---------------|--------------------------|------------------------------------------------------------------------|
+| ------------- | ------------------------ | ---------------------------------------------------------------------- |
 | `id`          | `DataSourceId`           | A unique identifier for the data source.                               |
 | `url`         | `string`                 | The URL to fetch the data from.                                        |
 | `headers`     | `Record<string, string>` | (Optional) An object containing HTTP headers to send with the request. |
@@ -136,7 +136,7 @@ nesting conditions.
 A `DataFilter` object has a recursive structure:
 
 | Field        | Type                             | Description                                                                                              |
-|--------------|----------------------------------|----------------------------------------------------------------------------------------------------------|
+| ------------ | -------------------------------- | -------------------------------------------------------------------------------------------------------- |
 | `operator`   | `LogicalOperator`                | The logical operator to apply to the `conditions` array. Can be `'AND'` or `'OR'`.                       |
 | `conditions` | `Array<DataFilter \| Condition>` | An array that can contain either `Condition` objects or other `DataFilter` objects for nested filtering. |
 
@@ -145,7 +145,7 @@ A `DataFilter` object has a recursive structure:
 A `Condition` object represents a single rule in the filter.
 
 | Field      | Type                | Description                                                                                                                                                                                         |
-|------------|---------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ---------- | ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `field`    | `string`            | The property of the data object to evaluate. Use dot notation for nested properties (e.g., `details.author`). For test execution properties, prefix with `executions.` (e.g., `executions.status`). |
 | `operator` | `ConditionOperator` | The comparison operator to use.                                                                                                                                                                     |
 | `value`    | `FieldValue`        | The value to compare against. This can be a string, number, boolean, null, or an array of these types.                                                                                              |
@@ -153,7 +153,7 @@ A `Condition` object represents a single rule in the filter.
 ### `ConditionOperator`
 
 | Operator             | Description                                                                                                                               |
-|----------------------|-------------------------------------------------------------------------------------------------------------------------------------------|
+| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
 | `==` or `equals`     | Checks for strict equality (`===`).                                                                                                       |
 | `!=` or `not equals` | Checks for strict inequality (`!==`).                                                                                                     |
 | `in`                 | Checks if the field's value is present in the provided array.                                                                             |
