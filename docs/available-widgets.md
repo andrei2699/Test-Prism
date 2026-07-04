@@ -20,6 +20,7 @@ in each status (passed, failed, skipped, error).
 | `align`       | `'left' \| 'center' \| 'right'` | (Optional) Alignment of the summary. Defaults to `"left"`.                                                    |
 | `styles`      | `object`                        | (Optional) Key-value pairs for inline CSS styles on the container.                                            |
 | `pie`         | `object`                        | (Optional) Custom settings for the inner pie widget (legend, dataset, options, shouldDisplayInnerPercentage). |
+| `link`        | `string`                        | (Optional) Route/path to navigate to when the summary widget card is clicked.                                 |
 
 ## Container Widget (`container`)
 
