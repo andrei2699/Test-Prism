@@ -1,4 +1,4 @@
-﻿{
+{
   "version": 1,
   "timestamp": "2026-01-08T10:53:03.326Z",
   "tests": [
@@ -10,6 +10,16 @@
           "timestamp": "2026-01-08T10:53:03.326Z",
           "status": "PASSED",
           "durationMs": 641
+        },
+        {
+          "timestamp": "2026-01-07T09:20:00.000Z",
+          "status": "FAILED",
+          "durationMs": 820
+        },
+        {
+          "timestamp": "2026-01-06T08:10:00.000Z",
+          "status": "PASSED",
+          "durationMs": 610
         }
       ],
       "tags": ["UI", "Navbar"]
@@ -22,6 +32,11 @@
           "timestamp": "2026-01-08T10:53:03.326Z",
           "status": "PASSED",
           "durationMs": 532
+        },
+        {
+          "timestamp": "2026-01-07T09:20:00.000Z",
+          "status": "PASSED",
+          "durationMs": 480
         }
       ],
       "tags": ["UI", "Tree"]
@@ -70,6 +85,21 @@
           "timestamp": "2026-01-08T10:53:03.326Z",
           "status": "PASSED",
           "durationMs": 15000
+        },
+        {
+          "timestamp": "2026-01-07T09:20:00.000Z",
+          "status": "ERROR",
+          "durationMs": 30000
+        },
+        {
+          "timestamp": "2026-01-06T08:10:00.000Z",
+          "status": "PASSED",
+          "durationMs": 14200
+        },
+        {
+          "timestamp": "2026-01-05T07:05:00.000Z",
+          "status": "SKIPPED",
+          "durationMs": 0
         }
       ],
       "tags": ["end-to-end", "critical"]
@@ -82,6 +112,16 @@
           "timestamp": "2026-01-08T10:53:03.326Z",
           "status": "FAILED",
           "durationMs": 8500
+        },
+        {
+          "timestamp": "2026-01-07T09:20:00.000Z",
+          "status": "FAILED",
+          "durationMs": 9100
+        },
+        {
+          "timestamp": "2026-01-06T08:10:00.000Z",
+          "status": "PASSED",
+          "durationMs": 7800
         }
       ],
       "tags": ["end-to-end", "payment"]

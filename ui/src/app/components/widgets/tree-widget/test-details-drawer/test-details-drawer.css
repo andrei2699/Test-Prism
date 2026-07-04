@@ -1,4 +1,4 @@
-﻿:host {
+:host {
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -55,4 +55,42 @@
   flex-wrap: wrap;
   gap: 0.5rem;
   align-items: center;
+}
+
+.executions-section {
+  margin-top: 24px;
+}
+
+.executions-title {
+  margin: 0 0 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #444;
+}
+
+.executions-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.executions-table th,
+.executions-table td {
+  text-align: left;
+  padding: 6px 8px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.executions-table th {
+  font-weight: 600;
+  color: #666;
+  background: #fafafa;
+}
+
+.executions-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.executions-table tbody tr:hover {
+  background: #f5f5f5;
 }
