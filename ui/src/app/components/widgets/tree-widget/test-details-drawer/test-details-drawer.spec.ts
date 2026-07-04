@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+﻿import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TestDetailsDrawer } from './test-details-drawer';
 import { Test } from '../../../../types/TestReport';
 import { TestColors } from '../../../../types/Layout';
@@ -9,7 +9,7 @@ describe('TestDetailsDrawer', () => {
 
   const mockTest: Test = {
     name: 'test1',
-    path: '/path/to/test1',
+    path: ['path', 'to', 'test1'],
     executions: [
       { timestamp: '2023-01-03T00:00:00Z', status: 'FAILED', durationMs: 500 },
       { timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 1000 },
@@ -48,7 +48,7 @@ describe('TestDetailsDrawer', () => {
 
   it('should display test path', () => {
     const element = fixture.nativeElement;
-    expect(element.textContent).toContain('/path/to/test1');
+    expect(element.textContent).toContain('path › to › test1');
   });
 
   it('should display last execution status with correct color', () => {

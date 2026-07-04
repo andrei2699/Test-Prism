@@ -1,4 +1,4 @@
-import { Component, computed, input, output } from '@angular/core';
+﻿import { Component, computed, input, output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
@@ -7,6 +7,7 @@ import { Test, TestExecution } from '../../../../types/TestReport';
 import { HumanizeDurationPipe } from '../../../../pipes/humanize-duration.pipe';
 import { TestColors } from '../../../../types/Layout';
 import { getLastExecution } from '../../../../utils/testExecutionUtils';
+import { getPathParts } from '../../../../utils/pathUtils';
 
 @Component({
   selector: 'app-test-details-drawer',
@@ -20,6 +21,8 @@ export class TestDetailsDrawer {
   close = output<void>();
 
   lastExecution = computed(() => getLastExecution(this.test()));
+
+  pathParts = computed<string[]>(() => getPathParts(this.test().path));
 
   sortedExecutions = computed<TestExecution[]>(() =>
     this.test()

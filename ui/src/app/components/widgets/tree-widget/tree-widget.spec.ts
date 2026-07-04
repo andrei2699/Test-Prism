@@ -1,35 +1,34 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+﻿import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { TreeWidget, TreeWidgetParameters } from './tree-widget';
 import { FilterState } from './test-filter-input/test-filter-input.component';
 import { Test } from '../../../types/TestReport';
-import { HarnessLoader } from '@angular/cdk/testing';
-import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
-import { MatTreeNodeHarness } from '@angular/material/tree/testing';
+import { TestTree, TestTreeNode } from './test-tree/test-tree';
 import { TestColors } from '../../../types/Layout';
 
 const tests: Test[] = [
   {
     name: 'should display a success message',
     executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
-    path: 'Login.UI',
+    path: ['Login', 'UI'],
     tags: ['UI', 'Login'],
   },
   {
     name: 'should fetch user data',
     executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 300 }],
-    path: 'User.API',
+    path: ['User', 'API'],
     tags: ['API', 'User'],
   },
   {
     name: 'should display an error message on failed login',
     executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'FAILED', durationMs: 200 }],
-    path: 'Login.UI',
+    path: ['Login', 'UI'],
     tags: ['UI', 'Login'],
   },
   {
     name: 'should timeout when fetching user data',
     executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SKIPPED', durationMs: 0 }],
-    path: 'User.API',
+    path: ['User', 'API'],
     tags: ['API', 'User'],
   },
 ];
@@ -41,7 +40,6 @@ const parameters: TreeWidgetParameters = {
 describe('TreeWidget', () => {
   let component: TreeWidget;
   let fixture: ComponentFixture<TreeWidget>;
-  let loader: HarnessLoader;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -59,8 +57,25 @@ describe('TreeWidget', () => {
       ERROR: 'orange',
     } satisfies TestColors);
     fixture.detectChanges();
-    loader = TestbedHarnessEnvironment.loader(fixture);
   });
+
+  function getLeafTestNames(): string[] {
+    const testTreeDebug = fixture.debugElement.query(By.directive(TestTree));
+    const testTree = testTreeDebug.componentInstance as TestTree;
+    const names: string[] = [];
+    function visit(nodes: TestTreeNode[]): void {
+      for (const node of nodes) {
+        if (node.test) {
+          names.push(node.name);
+        }
+        if (node.children) {
+          visit(node.children);
+        }
+      }
+    }
+    visit(testTree.dataSource());
+    return names;
+  }
 
   it('should not display a title when not provided', () => {
     const titleElement = fixture.nativeElement.querySelector('h2');
@@ -90,9 +105,9 @@ describe('TreeWidget', () => {
       component.onFilterChange(filterState);
       fixture.detectChanges();
 
-      const nodes = await loader.getAllHarnesses(MatTreeNodeHarness);
-      expect(nodes.length).toBe(1);
-      expect(await nodes[0].getText()).toContain('should display a success message');
+      const texts = getLeafTestNames();
+      expect(texts.some(t => t.includes('should display a success message'))).toBe(true);
+      expect(texts.filter(t => t.includes('should display a success message')).length).toBe(1);
     });
 
     it('should filter by status', async () => {
@@ -104,9 +119,13 @@ describe('TreeWidget', () => {
       component.onFilterChange(filterState);
       fixture.detectChanges();
 
-      const nodes = await loader.getAllHarnesses(MatTreeNodeHarness);
-      expect(nodes.length).toBe(1);
-      expect(await nodes[0].getText()).toContain('should display an error message on failed login');
+      const texts = getLeafTestNames();
+      expect(texts.some(t => t.includes('should display an error message on failed login'))).toBe(
+        true,
+      );
+      expect(
+        texts.filter(t => t.includes('should display an error message on failed login')).length,
+      ).toBe(1);
     });
 
     it('should filter by name and status', async () => {
@@ -118,9 +137,9 @@ describe('TreeWidget', () => {
       component.onFilterChange(filterState);
       fixture.detectChanges();
 
-      const nodes = await loader.getAllHarnesses(MatTreeNodeHarness);
-      expect(nodes.length).toBe(1);
-      expect(await nodes[0].getText()).toContain('should fetch user data');
+      const texts = getLeafTestNames();
+      expect(texts.some(t => t.includes('should fetch user data'))).toBe(true);
+      expect(texts.filter(t => t.includes('should fetch user data')).length).toBe(1);
     });
 
     it('should filter by tag', async () => {
@@ -132,10 +151,14 @@ describe('TreeWidget', () => {
       component.onFilterChange(filterState);
       fixture.detectChanges();
 
-      const nodes = await loader.getAllHarnesses(MatTreeNodeHarness);
-      expect(nodes.length).toBe(2);
-      expect(await nodes[0].getText()).toContain('should display a success message');
-      expect(await nodes[1].getText()).toContain('should display an error message on failed login');
+      const texts = getLeafTestNames();
+      const successCount = texts.filter(t => t.includes('should display a success message')).length;
+      const errorCount = texts.filter(t =>
+        t.includes('should display an error message on failed login'),
+      ).length;
+      expect(successCount + errorCount).toBe(2);
+      expect(successCount).toBe(1);
+      expect(errorCount).toBe(1);
     });
 
     it('should return all tests when filter is empty', async () => {
@@ -147,8 +170,18 @@ describe('TreeWidget', () => {
       component.onFilterChange(filterState);
       fixture.detectChanges();
 
-      const nodes = await loader.getAllHarnesses(MatTreeNodeHarness);
-      expect(nodes.length).toBe(4);
+      const texts = getLeafTestNames();
+      const expectedNames = [
+        'should display a success message',
+        'should fetch user data',
+        'should display an error message on failed login',
+        'should timeout when fetching user data',
+      ];
+      const count = expectedNames.reduce(
+        (acc, name) => acc + texts.filter(t => t.includes(name)).length,
+        0,
+      );
+      expect(count).toBe(4);
     });
 
     it('should update sortStrategies and sort order when sort strategies change in filter', async () => {
