@@ -1,4 +1,4 @@
-﻿use crate::parsers::junit::JunitParser;
+use crate::parsers::junit::JunitParser;
 use crate::test_parser::TestParser;
 use crate::test_report::{TestExecution, TestExecutionStatus, TestReport, TestReportTest};
 use std::path::Path;
@@ -88,7 +88,7 @@ fn extract_folder_path_first_level(file_path: &str) -> Vec<String> {
     let path = Path::new(file_path);
 
     if path.is_dir() {
-        path.read_dir()
+        let mut paths: Vec<String> = path.read_dir()
             .unwrap()
             .filter_map(|entry| {
                 let entry = entry.unwrap();
@@ -99,7 +99,9 @@ fn extract_folder_path_first_level(file_path: &str) -> Vec<String> {
                     None
                 }
             })
-            .collect()
+            .collect();
+        paths.sort();
+        paths
     } else {
         vec![file_path.to_string()]
     }
