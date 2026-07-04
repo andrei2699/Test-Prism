@@ -41,12 +41,10 @@ export class TestDistributionPie {
     );
     const total = this.tests().length;
 
-    return distribution.map(
-      (item): PieChartData => ({
-        ...item,
-        percentage: total > 0 ? (item.count / total) * 100 : 0,
-      }),
-    );
+    return distribution.map((item): PieChartData => ({
+      ...item,
+      percentage: total > 0 ? (item.count / total) * 100 : 0,
+    }));
   });
 
   plugins = computed<Plugin<'pie'>[]>(() => {
