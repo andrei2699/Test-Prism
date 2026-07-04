@@ -1,0 +1,98 @@
+{
+  "version": 2,
+  "timestamp": "2025-01-06T15:34:21.123Z",
+  "tests": [
+    {
+      "name": "skips",
+      "file": "cli/e2e-tests/jest-e2e-tests/utils.test.js",
+      "path": [
+        "cli/e2e-tests/jest-e2e-tests/utils.test.js",
+        "Utils"
+      ],
+      "executions": [
+        {
+          "timestamp": "2025-01-06T15:34:21.123Z",
+          "status": "SKIPPED",
+          "durationMs": 0,
+          "message": ""
+        }
+      ]
+    },
+    {
+      "name": "adds 1 + 2",
+      "file": "cli/e2e-tests/jest-e2e-tests/math.test.js",
+      "path": [
+        "cli/e2e-tests/jest-e2e-tests/math.test.js",
+        "Math"
+      ],
+      "executions": [
+        {
+          "timestamp": "2025-01-06T15:34:21.123Z",
+          "status": "PASSED",
+          "durationMs": 12
+        }
+      ]
+    },
+    {
+      "name": "fails",
+      "file": "cli/e2e-tests/jest-e2e-tests/math.test.js",
+      "path": [
+        "cli/e2e-tests/jest-e2e-tests/math.test.js",
+        "Math"
+      ],
+      "executions": [
+        {
+          "timestamp": "2025-01-06T15:34:21.123Z",
+          "status": "FAILED",
+          "durationMs": 4,
+          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m4\u001b[39m\nReceived: \u001b[31m3\u001b[39m\n    at Object.toBe (F:\\Work\\Applications\\Multi\\Test-Prism\\cli\\e2e-tests\\jest-e2e-tests\\math.test.js:7:19)\n    at Promise.then.completed (F:\\Work\\Applications\\Multi\\Test-Prism\\cli\\e2e-tests\\jest-e2e-tests\\node_modules\\jest-circus\\build\\utils.js:298:28)\n    at new Promise (<anonymous>)\n    at callAsyncCircusFn (F:\\Work\\Applications\\Multi\\Test-Prism\\cli\\e2e-tests\\jest-e2e-tests\\node_modules\\jest-circus\\build\\utils.js:231:10)\n    at _callCircusTest (F:\\Work\\Applications\\Multi\\Test-Prism\\cli\\e2e-tests\\jest-e2e-tests\\node_modules\\jest-circus\\build\\run.js:316:40)\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at _runTest (F:\\Work\\Applications\\Multi\\Test-Prism\\cli\\e2e-tests\\jest-e2e-tests\\node_modules\\jest-circus\\build\\run.js:252:3)\n    at _runTestsForDescribeBlock (F:\\Work\\Applications\\Multi\\Test-Prism\\cli\\e2e-tests\\jest-e2e-tests\\node_modules\\jest-circus\\build\\run.js:126:9)\n    at _runTestsForDescribeBlock (F:\\Work\\Applications\\Multi\\Test-Prism\\cli\\e2e-tests\\jest-e2e-tests\\node_modules\\jest-circus\\build\\run.js:121:9)\n    at run (F:\\Work\\Applications\\Multi\\Test-Prism\\cli\\e2e-tests\\jest-e2e-tests\\node_modules\\jest-circus\\build\\run.js:71:3)\n    at runAndTransformResultsToJestFormat (F:\\Work\\Applications\\Multi\\Test-Prism\\cli\\e2e-tests\\jest-e2e-tests\\node_modules\\jest-circus\\build\\legacy-code-todo-rewrite\\jestAdapterInit.js:122:21)\n    at jestAdapter (F:\\Work\\Applications\\Multi\\Test-Prism\\cli\\e2e-tests\\jest-e2e-tests\\node_modules\\jest-circus\\build\\legacy-code-todo-rewrite\\jestAdapter.js:79:19)\n    at runTestInternal (F:\\Work\\Applications\\Multi\\Test-Prism\\cli\\e2e-tests\\jest-e2e-tests\\node_modules\\jest-runner\\build\\runTest.js:367:16)\n    at runTest (F:\\Work\\Applications\\Multi\\Test-Prism\\cli\\e2e-tests\\jest-e2e-tests\\node_modules\\jest-runner\\build\\runTest.js:444:34)\n    at Object.worker (F:\\Work\\Applications\\Multi\\Test-Prism\\cli\\e2e-tests\\jest-e2e-tests\\node_modules\\jest-runner\\build\\testWorker.js:106:12)"
+        }
+      ]
+    },
+    {
+      "name": "This is a test with a custom display name that should appear in test reports",
+      "file": "cli/e2e-tests/jest-e2e-tests/display-name.test.js",
+      "path": [
+        "cli/e2e-tests/jest-e2e-tests/display-name.test.js"
+      ],
+      "executions": [
+        {
+          "timestamp": "2025-01-06T15:34:21.123Z",
+          "status": "PASSED",
+          "durationMs": 14
+        }
+      ]
+    },
+    {
+      "name": "parent test",
+      "file": "cli/e2e-tests/jest-e2e-tests/nested.test.js",
+      "path": [
+        "cli/e2e-tests/jest-e2e-tests/nested.test.js",
+        "Outer Suite"
+      ],
+      "executions": [
+        {
+          "timestamp": "2025-01-06T15:34:21.123Z",
+          "status": "PASSED",
+          "durationMs": 25
+        }
+      ]
+    },
+    {
+      "name": "inner test",
+      "file": "cli/e2e-tests/jest-e2e-tests/nested.test.js",
+      "path": [
+        "cli/e2e-tests/jest-e2e-tests/nested.test.js",
+        "Outer Suite",
+        "Inner Suite"
+      ],
+      "executions": [
+        {
+          "timestamp": "2025-01-06T15:34:21.123Z",
+          "status": "PASSED",
+          "durationMs": 0
+        }
+      ]
+    }
+  ]
+}

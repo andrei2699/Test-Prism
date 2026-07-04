@@ -1,0 +1,176 @@
+{
+  "numFailedTestSuites": 1,
+  "numFailedTests": 1,
+  "numPassedTestSuites": 2,
+  "numPassedTests": 4,
+  "numPendingTestSuites": 1,
+  "numPendingTests": 1,
+  "numRuntimeErrorTestSuites": 0,
+  "numTodoTests": 0,
+  "numTotalTestSuites": 4,
+  "numTotalTests": 6,
+  "openHandles": [],
+  "snapshot": {
+    "added": 0,
+    "didUpdate": false,
+    "failure": false,
+    "filesAdded": 0,
+    "filesRemoved": 0,
+    "filesRemovedList": [],
+    "filesUnmatched": 0,
+    "filesUpdated": 0,
+    "matched": 0,
+    "total": 0,
+    "unchecked": 0,
+    "uncheckedKeysByFile": [],
+    "unmatched": 0,
+    "updated": 0
+  },
+  "startTime": 1783172548786,
+  "success": false,
+  "testResults": [
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [
+            "Utils"
+          ],
+          "duration": null,
+          "failureDetails": [],
+          "failureMessages": [],
+          "fullName": "Utils skips",
+          "invocations": 1,
+          "location": null,
+          "numPassingAsserts": 0,
+          "retryReasons": [],
+          "status": "pending",
+          "title": "skips"
+        }
+      ],
+      "coverage": {},
+      "endTime": 1783172550392,
+      "message": "",
+      "name": "F:\\Work\\Applications\\Multi\\Test-Prism\\cli\\e2e-tests\\jest-e2e-tests\\utils.test.js",
+      "startTime": 1783172550392,
+      "status": "skipped",
+      "summary": ""
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [
+            "Math"
+          ],
+          "duration": 12,
+          "failureDetails": [],
+          "failureMessages": [],
+          "fullName": "Math adds 1 + 2",
+          "invocations": 1,
+          "location": null,
+          "numPassingAsserts": 1,
+          "retryReasons": [],
+          "status": "passed",
+          "title": "adds 1 + 2"
+        },
+        {
+          "ancestorTitles": [
+            "Math"
+          ],
+          "duration": 4,
+          "failureDetails": [
+            {
+              "matcherResult": {
+                "actual": 3,
+                "expected": 4,
+                "message": "\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m4\u001b[39m\nReceived: \u001b[31m3\u001b[39m",
+                "name": "toBe",
+                "pass": false
+              }
+            }
+          ],
+          "failureMessages": [
+            "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m4\u001b[39m\nReceived: \u001b[31m3\u001b[39m\n    at Object.toBe (F:\\Work\\Applications\\Multi\\Test-Prism\\cli\\e2e-tests\\jest-e2e-tests\\math.test.js:7:19)\n    at Promise.then.completed (F:\\Work\\Applications\\Multi\\Test-Prism\\cli\\e2e-tests\\jest-e2e-tests\\node_modules\\jest-circus\\build\\utils.js:298:28)\n    at new Promise (<anonymous>)\n    at callAsyncCircusFn (F:\\Work\\Applications\\Multi\\Test-Prism\\cli\\e2e-tests\\jest-e2e-tests\\node_modules\\jest-circus\\build\\utils.js:231:10)\n    at _callCircusTest (F:\\Work\\Applications\\Multi\\Test-Prism\\cli\\e2e-tests\\jest-e2e-tests\\node_modules\\jest-circus\\build\\run.js:316:40)\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at _runTest (F:\\Work\\Applications\\Multi\\Test-Prism\\cli\\e2e-tests\\jest-e2e-tests\\node_modules\\jest-circus\\build\\run.js:252:3)\n    at _runTestsForDescribeBlock (F:\\Work\\Applications\\Multi\\Test-Prism\\cli\\e2e-tests\\jest-e2e-tests\\node_modules\\jest-circus\\build\\run.js:126:9)\n    at _runTestsForDescribeBlock (F:\\Work\\Applications\\Multi\\Test-Prism\\cli\\e2e-tests\\jest-e2e-tests\\node_modules\\jest-circus\\build\\run.js:121:9)\n    at run (F:\\Work\\Applications\\Multi\\Test-Prism\\cli\\e2e-tests\\jest-e2e-tests\\node_modules\\jest-circus\\build\\run.js:71:3)\n    at runAndTransformResultsToJestFormat (F:\\Work\\Applications\\Multi\\Test-Prism\\cli\\e2e-tests\\jest-e2e-tests\\node_modules\\jest-circus\\build\\legacy-code-todo-rewrite\\jestAdapterInit.js:122:21)\n    at jestAdapter (F:\\Work\\Applications\\Multi\\Test-Prism\\cli\\e2e-tests\\jest-e2e-tests\\node_modules\\jest-circus\\build\\legacy-code-todo-rewrite\\jestAdapter.js:79:19)\n    at runTestInternal (F:\\Work\\Applications\\Multi\\Test-Prism\\cli\\e2e-tests\\jest-e2e-tests\\node_modules\\jest-runner\\build\\runTest.js:367:16)\n    at runTest (F:\\Work\\Applications\\Multi\\Test-Prism\\cli\\e2e-tests\\jest-e2e-tests\\node_modules\\jest-runner\\build\\runTest.js:444:34)\n    at Object.worker (F:\\Work\\Applications\\Multi\\Test-Prism\\cli\\e2e-tests\\jest-e2e-tests\\node_modules\\jest-runner\\build\\testWorker.js:106:12)"
+          ],
+          "fullName": "Math fails",
+          "invocations": 1,
+          "location": null,
+          "numPassingAsserts": 0,
+          "retryReasons": [],
+          "status": "failed",
+          "title": "fails"
+        }
+      ],
+      "endTime": 1783172550120,
+      "message": "\u001b[1m\u001b[31m  \u001b[1m● \u001b[22m\u001b[1mMath › fails\u001b[39m\u001b[22m\n\n    \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\n    Expected: \u001b[32m4\u001b[39m\n    Received: \u001b[31m3\u001b[39m\n\u001b[2m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m  5 |\u001b[39m\u001b[22m\n\u001b[2m     \u001b[90m  6 |\u001b[39m   test(\u001b[32m'fails'\u001b[39m\u001b[33m,\u001b[39m () \u001b[33m=>\u001b[39m {\u001b[22m\n\u001b[2m    \u001b[31m\u001b[1m>\u001b[22m\u001b[2m\u001b[39m\u001b[90m  7 |\u001b[39m     expect(\u001b[35m1\u001b[39m \u001b[33m+\u001b[39m \u001b[35m2\u001b[39m)\u001b[33m.\u001b[39mtoBe(\u001b[35m4\u001b[39m)\u001b[33m;\u001b[39m\u001b[22m\n\u001b[2m     \u001b[90m    |\u001b[39m                   \u001b[31m\u001b[1m^\u001b[22m\u001b[2m\u001b[39m\u001b[22m\n\u001b[2m     \u001b[90m  8 |\u001b[39m   })\u001b[33m;\u001b[39m\u001b[22m\n\u001b[2m     \u001b[90m  9 |\u001b[39m })\u001b[33m;\u001b[39m\u001b[22m\n\u001b[2m     \u001b[90m 10 |\u001b[39m\u001b[0m\u001b[22m\n\u001b[2m\u001b[22m\n\u001b[2m      \u001b[2mat Object.toBe (\u001b[22m\u001b[2m\u001b[0m\u001b[36mmath.test.js\u001b[39m\u001b[0m\u001b[2m:7:19)\u001b[22m\u001b[2m\u001b[22m\n",
+      "name": "F:\\Work\\Applications\\Multi\\Test-Prism\\cli\\e2e-tests\\jest-e2e-tests\\math.test.js",
+      "startTime": 1783172549200,
+      "status": "failed",
+      "summary": ""
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [],
+          "duration": 14,
+          "failureDetails": [],
+          "failureMessages": [],
+          "fullName": "This is a test with a custom display name that should appear in test reports",
+          "invocations": 1,
+          "location": null,
+          "numPassingAsserts": 1,
+          "retryReasons": [],
+          "status": "passed",
+          "title": "This is a test with a custom display name that should appear in test reports"
+        }
+      ],
+      "endTime": 1783172550330,
+      "message": "",
+      "name": "F:\\Work\\Applications\\Multi\\Test-Prism\\cli\\e2e-tests\\jest-e2e-tests\\display-name.test.js",
+      "startTime": 1783172549191,
+      "status": "passed",
+      "summary": ""
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [
+            "Outer Suite"
+          ],
+          "duration": 25,
+          "failureDetails": [],
+          "failureMessages": [],
+          "fullName": "Outer Suite parent test",
+          "invocations": 1,
+          "location": null,
+          "numPassingAsserts": 1,
+          "retryReasons": [],
+          "status": "passed",
+          "title": "parent test"
+        },
+        {
+          "ancestorTitles": [
+            "Outer Suite",
+            "Inner Suite"
+          ],
+          "duration": 0,
+          "failureDetails": [],
+          "failureMessages": [],
+          "fullName": "Outer Suite Inner Suite inner test",
+          "invocations": 1,
+          "location": null,
+          "numPassingAsserts": 1,
+          "retryReasons": [],
+          "status": "passed",
+          "title": "inner test"
+        }
+      ],
+      "endTime": 1783172550343,
+      "message": "",
+      "name": "F:\\Work\\Applications\\Multi\\Test-Prism\\cli\\e2e-tests\\jest-e2e-tests\\nested.test.js",
+      "startTime": 1783172549197,
+      "status": "passed",
+      "summary": ""
+    }
+  ],
+  "wasInterrupted": false
+}
