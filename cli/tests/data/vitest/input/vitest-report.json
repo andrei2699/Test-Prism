@@ -1,0 +1,174 @@
+{
+  "numTotalTestSuites": 10,
+  "numPassedTestSuites": 10,
+  "numFailedTestSuites": 0,
+  "numPendingTestSuites": 0,
+  "numTotalTests": 9,
+  "numPassedTests": 7,
+  "numFailedTests": 2,
+  "numPendingTests": 0,
+  "numTodoTests": 1,
+  "startTime": 1783152907126,
+  "success": false,
+  "testResults": [
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [
+            ""
+          ],
+          "fullName": " always fails",
+          "status": "failed",
+          "title": "always fails",
+          "duration": 16,
+          "failureMessages": [
+            "expected 3 to be 4 // Object.is equality"
+          ],
+          "location": {
+            "line": 4,
+            "column": 17
+          }
+        }
+      ],
+      "startTime": 1783152907805,
+      "endTime": 1783152907821,
+      "status": "failed",
+      "message": "",
+      "name": "F:/Work/Applications/Multi/Test-Prism/cli/e2e-tests/vitest-e2e-tests/src/failing.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [
+            "",
+            "Mixed Suite"
+          ],
+          "fullName": " Mixed Suite passed test",
+          "status": "passed",
+          "title": "passed test",
+          "duration": 4,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": [
+            "",
+            "Mixed Suite"
+          ],
+          "fullName": " Mixed Suite failed test",
+          "status": "failed",
+          "title": "failed test",
+          "duration": 16,
+          "failureMessages": [
+            "expected 1 to be 2 // Object.is equality"
+          ],
+          "location": {
+            "line": 9,
+            "column": 15
+          }
+        },
+        {
+          "ancestorTitles": [
+            "",
+            "Mixed Suite"
+          ],
+          "fullName": " Mixed Suite skipped test",
+          "status": "skipped",
+          "title": "skipped test",
+          "failureMessages": []
+        }
+      ],
+      "startTime": 1783152907817,
+      "endTime": 1783152907838,
+      "status": "failed",
+      "message": "",
+      "name": "F:/Work/Applications/Multi/Test-Prism/cli/e2e-tests/vitest-e2e-tests/src/mixed.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [
+            "",
+            "Level 1 Suite",
+            "Level 2 Suite",
+            "Level 3 Suite"
+          ],
+          "fullName": " Level 1 Suite Level 2 Suite Level 3 Suite nested test success",
+          "status": "passed",
+          "title": "nested test success",
+          "duration": 2,
+          "failureMessages": []
+        }
+      ],
+      "startTime": 1783152907805,
+      "endTime": 1783152907807,
+      "status": "passed",
+      "message": "",
+      "name": "F:/Work/Applications/Multi/Test-Prism/cli/e2e-tests/vitest-e2e-tests/src/nested-describes.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [
+            ""
+          ],
+          "fullName": " adds 1 + 2 to equal 3",
+          "status": "passed",
+          "title": "adds 1 + 2 to equal 3",
+          "duration": 2,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": [
+            ""
+          ],
+          "fullName": " subtracted 5 - 2 to equal 3",
+          "status": "passed",
+          "title": "subtracted 5 - 2 to equal 3",
+          "duration": 1,
+          "failureMessages": []
+        }
+      ],
+      "startTime": 1783152907840,
+      "endTime": 1783152907843,
+      "status": "passed",
+      "message": "",
+      "name": "F:/Work/Applications/Multi/Test-Prism/cli/e2e-tests/vitest-e2e-tests/src/passing.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [
+            ""
+          ],
+          "fullName": " skipped test",
+          "status": "skipped",
+          "title": "skipped test",
+          "failureMessages": []
+        }
+      ],
+      "startTime": 1783152907126,
+      "endTime": 1783152907126,
+      "status": "passed",
+      "message": "",
+      "name": "F:/Work/Applications/Multi/Test-Prism/cli/e2e-tests/vitest-e2e-tests/src/skipped.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [
+            ""
+          ],
+          "fullName": " todo test",
+          "status": "todo",
+          "title": "todo test",
+          "failureMessages": []
+        }
+      ],
+      "startTime": 1783152907126,
+      "endTime": 1783152907126,
+      "status": "passed",
+      "message": "",
+      "name": "F:/Work/Applications/Multi/Test-Prism/cli/e2e-tests/vitest-e2e-tests/src/todo.test.ts"
+    }
+  ]
+}
