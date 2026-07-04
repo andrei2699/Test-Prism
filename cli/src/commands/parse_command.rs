@@ -1,3 +1,4 @@
+use crate::parsers::jest::JestParser;
 use crate::parsers::junit::JunitParser;
 use crate::parsers::vitest::VitestParser;
 use crate::test_parser::TestParser;
@@ -86,9 +87,10 @@ fn parse_file(
 fn get_parser(report_type: &str) -> Box<dyn TestParser> {
     match report_type {
         "junit" => Box::new(JunitParser),
+        "jest" => Box::new(JestParser),
         "vitest" => Box::new(VitestParser),
         _ => panic!(
-            "Unknown report_type: {}. Supported types: junit, vitest",
+            "Unknown report_type: {}. Supported types: junit, jest, vitest",
             report_type
         ),
     }

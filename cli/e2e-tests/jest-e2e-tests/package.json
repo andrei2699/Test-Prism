@@ -1,0 +1,11 @@
+{
+  "name": "jest-e2e-tests",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "test": "jest --json --outputFile=jest-report.json"
+  },
+  "devDependencies": {
+    "jest": "^30.4.2"
+  }
+}
