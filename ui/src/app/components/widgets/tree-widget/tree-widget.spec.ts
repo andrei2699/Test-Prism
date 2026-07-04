@@ -150,6 +150,19 @@ describe('TreeWidget', () => {
       const nodes = await loader.getAllHarnesses(MatTreeNodeHarness);
       expect(nodes.length).toBe(4);
     });
+
+    it('should update sortStrategies and sort order when sort strategies change in filter', async () => {
+      const filterState: FilterState = {
+        name: '',
+        statuses: [],
+        tags: [],
+        sortStrategies: ['folder'],
+      };
+      component.onFilterChange(filterState);
+      fixture.detectChanges();
+
+      expect(component.userSortStrategies()).toEqual(['folder']);
+    });
   });
 
   describe('Test Details Drawer', () => {

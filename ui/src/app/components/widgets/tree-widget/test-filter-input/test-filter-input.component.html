@@ -1,4 +1,4 @@
-﻿<div>
+<div>
   <div class="filter-group">
     <mat-form-field appearance="outline" class="filter-full-width">
       <mat-label>Filter tests by name</mat-label>
@@ -16,12 +16,28 @@
       (tagsChanged)="onTagsChanged($event)" />
   </div>
 
-  <label class="status-filter-label">Filter by status:</label>
-  <div class="status-checkboxes">
-    @for (status of statusOptions; track status) {
-      <mat-checkbox [checked]="isStatusSelected(status)" (change)="toggleStatus(status)">
-        {{ status }}
-      </mat-checkbox>
-    }
+  <div class="sort-and-filter-container">
+    <div>
+      <label class="status-filter-label">Filter by status:</label>
+      <div class="status-checkboxes">
+        @for (status of statusOptions; track status) {
+          <mat-checkbox [checked]="isStatusSelected(status)" (change)="toggleStatus(status)">
+            {{ status }}
+          </mat-checkbox>
+        }
+      </div>
+    </div>
+
+    <div>
+      <label class="sort-label">Sort by:</label>
+      <div class="sort-checkboxes">
+        <mat-checkbox [checked]="isSortSelected('name')" (change)="toggleSort('name')">
+          Name
+        </mat-checkbox>
+        <mat-checkbox [checked]="isSortSelected('folder')" (change)="toggleSort('folder')">
+          Folder
+        </mat-checkbox>
+      </div>
+    </div>
   </div>
 </div>

@@ -1,4 +1,4 @@
-﻿import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TestFilterInputComponent } from './test-filter-input.component';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -31,6 +31,7 @@ describe('TestFilterInputComponent', () => {
       name: 'test filter',
       statuses: [],
       tags: [],
+      sortStrategies: ['name'],
     });
   });
 
@@ -45,6 +46,7 @@ describe('TestFilterInputComponent', () => {
       name: 'UI, Tree',
       statuses: [],
       tags: [],
+      sortStrategies: ['name'],
     });
   });
 
@@ -57,5 +59,31 @@ describe('TestFilterInputComponent', () => {
     fixture.detectChanges();
 
     expect(component.filterText()).toBe(testFilterText);
+  });
+
+  it('should toggle sort strategy and emit updated list', () => {
+    const spy = vi.spyOn(component.filterChanged, 'emit');
+
+    component.toggleSort('folder');
+    fixture.detectChanges();
+
+    expect(component.selectedSortStrategies()).toEqual(['name', 'folder']);
+    expect(spy).toHaveBeenCalledWith({
+      name: '',
+      statuses: [],
+      tags: [],
+      sortStrategies: ['name', 'folder'],
+    });
+
+    component.toggleSort('name');
+    fixture.detectChanges();
+
+    expect(component.selectedSortStrategies()).toEqual(['folder']);
+    expect(spy).toHaveBeenCalledWith({
+      name: '',
+      statuses: [],
+      tags: [],
+      sortStrategies: ['folder'],
+    });
   });
 });

@@ -39,13 +39,16 @@ export class TreeWidget {
   filterStrategy = signal(this.createFilterStrategy('', [], []));
   selectedTest = signal<Test | null>(null);
 
+  userSortStrategies = signal<string[] | null>(null);
+
   treeOrganizationStrategy = computed(() => {
     const strategy = this.parameters()?.strategy ?? 'folder';
 
     return TreeOrganizationStrategyFactory.create(strategy);
   });
   sortStrategies = computed<TreeSortStrategy[]>(() => {
-    const sortStrategies = this.parameters()?.sortStrategies ?? ['name'];
+    const sortStrategies = this.userSortStrategies() ??
+      this.parameters()?.sortStrategies ?? ['name', 'folder'];
 
     return sortStrategies.map(strategy => TreeSortStrategyFactory.create(strategy));
   });
@@ -54,6 +57,9 @@ export class TreeWidget {
     this.filterText.set(filterState.name);
     this.selectedStatuses.set(filterState.statuses);
     this.selectedTags.set(filterState.tags);
+    if (filterState.sortStrategies) {
+      this.userSortStrategies.set(filterState.sortStrategies);
+    }
     this.filterStrategy.set(
       this.createFilterStrategy(filterState.name, filterState.statuses, filterState.tags),
     );
