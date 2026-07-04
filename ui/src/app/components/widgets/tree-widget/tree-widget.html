@@ -18,7 +18,10 @@
       @if (parameters()?.title) {
         <h2>{{ parameters()?.title }}</h2>
       }
-      <app-test-filter-input [tests]="tests()" (filterChanged)="onFilterChange($event)" />
+      <app-test-filter-input
+        [tests]="tests()"
+        [initialSortStrategies]="parameters()?.sortStrategies ?? ['name']"
+        (filterChanged)="onFilterChange($event)" />
 
       <app-test-tree
         [colors]="colors()"

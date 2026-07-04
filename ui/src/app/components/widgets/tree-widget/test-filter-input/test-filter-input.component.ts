@@ -1,4 +1,4 @@
-﻿import { Component, computed, input, output, signal } from '@angular/core';
+import { Component, computed, input, OnInit, output, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -10,6 +10,7 @@ export interface FilterState {
   name: string;
   statuses: TestExecutionStatus[];
   tags: string[];
+  sortStrategies?: string[];
 }
 
 @Component({
@@ -24,12 +25,18 @@ export interface FilterState {
   templateUrl: './test-filter-input.component.html',
   styleUrl: './test-filter-input.component.css',
 })
-export class TestFilterInputComponent {
+export class TestFilterInputComponent implements OnInit {
   tests = input.required<Test[]>();
+  initialSortStrategies = input<string[]>(['name']);
 
   filterText = signal<string>('');
   selectedStatuses = signal<Set<TestExecutionStatus>>(new Set());
   selectedTags = signal<string[]>([]);
+  selectedSortStrategies = signal<string[]>([]);
+
+  ngOnInit(): void {
+    this.selectedSortStrategies.set([...this.initialSortStrategies()]);
+  }
 
   allTags = computed(() => {
     const tags = new Set<string>();
@@ -69,11 +76,28 @@ export class TestFilterInputComponent {
     return this.selectedStatuses().has(status);
   }
 
+  isSortSelected(strategy: string): boolean {
+    return this.selectedSortStrategies().includes(strategy);
+  }
+
+  toggleSort(strategy: string): void {
+    const current = [...this.selectedSortStrategies()];
+    const index = current.indexOf(strategy);
+    if (index > -1) {
+      current.splice(index, 1);
+    } else {
+      current.push(strategy);
+    }
+    this.selectedSortStrategies.set(current);
+    this.emitFilterState();
+  }
+
   private emitFilterState(): void {
     this.filterChanged.emit({
       name: this.filterText(),
       statuses: Array.from(this.selectedStatuses()),
       tags: this.selectedTags(),
+      sortStrategies: this.selectedSortStrategies(),
     });
   }
 }

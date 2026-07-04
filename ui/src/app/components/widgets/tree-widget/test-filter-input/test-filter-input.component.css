@@ -1,4 +1,4 @@
-﻿.filter-full-width {
+.filter-full-width {
   width: 100%;
 }
 
@@ -17,4 +17,24 @@
   display: flex;
   gap: 0.5rem;
   justify-content: center;
+}
+
+.sort-label {
+  display: block;
+  font-weight: 500;
+  margin-top: 12px;
+}
+
+.sort-checkboxes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.sort-and-filter-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 4rem;
 }

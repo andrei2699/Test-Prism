@@ -132,7 +132,7 @@
           "parameters": {
             "title": "All Tests",
             "strategy": "folder",
-            "sortStrategies": ["name"]
+            "sortStrategies": ["name", "folder"]
           }
         }
       ]
