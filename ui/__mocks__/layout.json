@@ -1,10 +1,15 @@
-﻿{
+{
   "dataSources": [
     {
       "id": "all",
       "url": "http://localhost:3000/small_data_set"
     }
   ],
+  "navigationDrawer": {
+    "mode": "over",
+    "defaultOpened": false,
+    "position": "start"
+  },
   "pages": [
     {
       "title": "Dashboard",

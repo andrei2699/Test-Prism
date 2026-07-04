@@ -1,4 +1,4 @@
-import { Component, inject, viewChild } from '@angular/core';
+import { Component, computed, inject, viewChild } from '@angular/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -19,6 +19,12 @@ export class Navbar {
   private layoutService = inject(LayoutService);
 
   layout = this.layoutService.layout;
+
+  drawerMode = computed(() => this.layout.value()?.navigationDrawer?.mode ?? 'over');
+  drawerDefaultOpened = computed(
+    () => this.layout.value()?.navigationDrawer?.defaultOpened ?? false,
+  );
+  drawerPosition = computed(() => this.layout.value()?.navigationDrawer?.position ?? 'start');
 
   navigateHome() {
     void this.router.navigate(['/']);
