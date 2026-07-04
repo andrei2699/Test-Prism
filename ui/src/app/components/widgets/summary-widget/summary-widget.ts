@@ -1,4 +1,4 @@
-import { Component, computed, input } from '@angular/core';
+import { Component, computed, inject, input } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { DatePipe, NgStyle } from '@angular/common';
 import { MatChipsModule } from '@angular/material/chips';
@@ -11,6 +11,7 @@ import { DistributionStrategyFactory } from '../test-distribution-pie-widget/str
 import { PieLegendParameters } from '../test-distribution-pie-widget/parameters/LegendParameters';
 import { PieDatasetParameters } from '../test-distribution-pie-widget/parameters/DataSetParameters';
 import { PieOptionsParameters } from '../test-distribution-pie-widget/parameters/OptionsParameters';
+import { Router } from '@angular/router';
 
 export interface SummaryWidgetParameters {
   title?: string;
@@ -25,6 +26,7 @@ export interface SummaryWidgetParameters {
     dataset?: PieDatasetParameters;
     shouldDisplayInnerPercentage?: boolean;
   };
+  link?: string;
 }
 
 @Component({
@@ -34,6 +36,8 @@ export interface SummaryWidgetParameters {
   imports: [MatCardModule, DatePipe, NgStyle, MatChipsModule, TestDistributionPie],
 })
 export class SummaryWidgetComponent {
+  private router = inject(Router);
+
   colors = input.required<TestColors>();
   tests = input.required<Test[]>();
   timestamp = input.required<string | null>();
@@ -127,4 +131,13 @@ export class SummaryWidgetComponent {
 
     return summary;
   });
+
+  link = computed(() => this.parameters()?.link);
+
+  navigate(): void {
+    const destination = this.link();
+    if (destination) {
+      void this.router.navigate([destination]);
+    }
+  }
 }

@@ -1,4 +1,4 @@
-<mat-card>
+<mat-card [class.clickable]="link()" (click)="navigate()">
   <mat-card-header>
     <mat-card-title>{{ title() }}</mat-card-title>
     @if (timestamp()) {

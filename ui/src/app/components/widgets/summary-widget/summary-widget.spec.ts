@@ -7,17 +7,29 @@ import { By } from '@angular/platform-browser';
 import { MatChipsModule } from '@angular/material/chips';
 import { TestColors } from '../../../types/Layout';
 import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
+import { Router } from '@angular/router';
+import { vi } from 'vitest';
 
 describe('SummaryWidgetComponent', () => {
   let fixture: ComponentFixture<SummaryWidgetComponent>;
+  let router: Router;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [SummaryWidgetComponent, MatCardModule, MatChipsModule],
-      providers: [provideCharts(withDefaultRegisterables())],
+      providers: [
+        provideCharts(withDefaultRegisterables()),
+        {
+          provide: Router,
+          useValue: {
+            navigate: vi.fn(),
+          },
+        },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SummaryWidgetComponent);
+    router = TestBed.inject(Router);
     fixture.componentRef.setInput('colors', {
       PASSED: 'green',
       FAILED: 'red',
@@ -129,5 +141,31 @@ describe('SummaryWidgetComponent', () => {
     expect(summaryTexts).toContain('Failed: 1');
     expect(summaryTexts).toContain('Skipped: 1');
     expect(summaryTexts).toContain('Error: 1');
+  });
+
+  it('should navigate to the configured link when the card is clicked', () => {
+    fixture.componentRef.setInput('tests', []);
+    fixture.componentRef.setInput('timestamp', new Date().toISOString());
+    fixture.componentRef.setInput('parameters', { link: '/target-page' });
+
+    fixture.detectChanges();
+
+    const card = fixture.debugElement.query(By.css('mat-card')).nativeElement;
+    card.click();
+
+    expect(router.navigate).toHaveBeenCalledWith(['/target-page']);
+  });
+
+  it('should not navigate when the card is clicked and no link is configured', () => {
+    fixture.componentRef.setInput('tests', []);
+    fixture.componentRef.setInput('timestamp', new Date().toISOString());
+    fixture.componentRef.setInput('parameters', {});
+
+    fixture.detectChanges();
+
+    const card = fixture.debugElement.query(By.css('mat-card')).nativeElement;
+    card.click();
+
+    expect(router.navigate).not.toHaveBeenCalled();
   });
 });
