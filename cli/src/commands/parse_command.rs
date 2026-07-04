@@ -98,7 +98,8 @@ fn extract_folder_path_first_level(file_path: &str) -> Vec<String> {
     let path = Path::new(file_path);
 
     if path.is_dir() {
-        let mut paths: Vec<String> = path.read_dir()
+        let mut paths: Vec<String> = path
+            .read_dir()
             .unwrap()
             .filter_map(|entry| {
                 let entry = entry.unwrap();
