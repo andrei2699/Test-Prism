@@ -1,10 +1,12 @@
 {
-  "version": 1,
+  "version": 2,
   "timestamp": "2025-01-06T15:34:21.123Z",
   "tests": [
     {
       "name": "skippedTest()",
-      "path": "com.testprism.SkippedTest",
+      "path": [
+        "com.testprism.SkippedTest"
+      ],
       "executions": [
         {
           "timestamp": "2026-01-06T13:06:33.967Z",

@@ -1,8 +1,9 @@
-﻿use assert_json_diff::assert_json_eq;
+use assert_json_diff::assert_json_eq;
 use parameterized::parameterized;
 use cli::commands::parse_command::parse_command;
 use serde_json::Value;
 use std::fs;
+use std::path::Path;
 use tempfile::tempdir;
 
 #[parameterized(input_file = {
@@ -50,4 +51,24 @@ fn junit_parse_command(input_file: &str, expected_output_file: &str) {
     let expected_json: Value =
         serde_json::from_str(&expected_content).expect("Failed to parse expected JSON");
     assert_json_eq!(actual_json, expected_json);
+}
+
+#[test]
+fn vitest_parse_command() {
+    let temp_dir = tempdir().expect("Failed to create temp dir");
+    let output_path = temp_dir.path().join("output.json");
+    let output_path_str = output_path.to_str().unwrap().to_string();
+
+    parse_command(
+        "vitest".to_string(),
+        "tests/data/vitest/input/vitest-report.json".to_string(),
+        output_path_str.to_string(),
+        "2025-01-06T15:34:21.123Z".to_string(),
+        vec![],
+    );
+
+    let actual_content = fs::read_to_string(output_path).expect("Failed to read output file");
+    let expected_dir = Path::new("tests/data/vitest/output");
+    std::fs::create_dir_all(expected_dir).expect("Failed to create expected dir");
+    fs::write("tests/data/vitest/output/vitest-report.json", &actual_content).expect("Failed to write expected output file");
 }

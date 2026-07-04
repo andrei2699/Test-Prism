@@ -1,10 +1,12 @@
 {
-  "version": 1,
+  "version": 2,
   "timestamp": "2025-01-06T15:34:21.123Z",
   "tests": [
     {
       "name": "[1] one",
-      "path": "com.testprism.ParameterizedTests",
+      "path": [
+        "com.testprism.ParameterizedTests"
+      ],
       "executions": [
         {
           "timestamp": "2026-01-06T13:06:33.888Z",
@@ -15,7 +17,9 @@
     },
     {
       "name": "[2] two",
-      "path": "com.testprism.ParameterizedTests",
+      "path": [
+        "com.testprism.ParameterizedTests"
+      ],
       "executions": [
         {
           "timestamp": "2026-01-06T13:06:33.888Z",
@@ -27,7 +31,9 @@
     },
     {
       "name": "[3] three",
-      "path": "com.testprism.ParameterizedTests",
+      "path": [
+        "com.testprism.ParameterizedTests"
+      ],
       "executions": [
         {
           "timestamp": "2026-01-06T13:06:33.888Z",

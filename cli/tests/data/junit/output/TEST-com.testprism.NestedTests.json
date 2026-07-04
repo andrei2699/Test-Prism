@@ -1,10 +1,12 @@
 {
-  "version": 1,
+  "version": 2,
   "timestamp": "2025-01-06T15:34:21.123Z",
   "tests": [
     {
       "name": "parentTest()",
-      "path": "com.testprism.NestedTests",
+      "path": [
+        "com.testprism.NestedTests"
+      ],
       "executions": [
         {
           "timestamp": "2026-01-06T13:06:33.814Z",
