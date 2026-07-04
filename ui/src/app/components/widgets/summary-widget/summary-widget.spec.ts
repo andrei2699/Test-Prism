@@ -1,4 +1,4 @@
-﻿import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SummaryWidgetComponent, SummaryWidgetParameters } from './summary-widget';
 import { MatCardModule } from '@angular/material/card';
 import { Test } from '../../../types/TestReport';
@@ -6,6 +6,7 @@ import { DatePipe } from '@angular/common';
 import { By } from '@angular/platform-browser';
 import { MatChipsModule } from '@angular/material/chips';
 import { TestColors } from '../../../types/Layout';
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 
 describe('SummaryWidgetComponent', () => {
   let fixture: ComponentFixture<SummaryWidgetComponent>;
@@ -13,6 +14,7 @@ describe('SummaryWidgetComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [SummaryWidgetComponent, MatCardModule, MatChipsModule],
+      providers: [provideCharts(withDefaultRegisterables())],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SummaryWidgetComponent);
@@ -58,6 +60,34 @@ describe('SummaryWidgetComponent', () => {
     expect(titleElement.textContent).toContain('Custom Title');
   });
 
+  it('should display the distribution pie chart by default', () => {
+    fixture.componentRef.setInput('tests', []);
+    fixture.componentRef.setInput('timestamp', new Date().toISOString());
+
+    fixture.detectChanges();
+
+    const pieElement = fixture.nativeElement.querySelector('app-test-distribution-pie');
+    expect(pieElement).toBeTruthy();
+
+    const chipsElement = fixture.nativeElement.querySelector('mat-chip-listbox');
+    expect(chipsElement).toBeFalsy();
+  });
+
+  it('should display chips when displayType is chips', () => {
+    const parameters: SummaryWidgetParameters = { displayType: 'chips' };
+    fixture.componentRef.setInput('tests', []);
+    fixture.componentRef.setInput('timestamp', new Date().toISOString());
+    fixture.componentRef.setInput('parameters', parameters);
+
+    fixture.detectChanges();
+
+    const pieElement = fixture.nativeElement.querySelector('app-test-distribution-pie');
+    expect(pieElement).toBeFalsy();
+
+    const chipsElement = fixture.nativeElement.querySelector('mat-chip-listbox');
+    expect(chipsElement).toBeTruthy();
+  });
+
   it('should display summary counts and colors including error status', () => {
     const tests: Test[] = [
       {
@@ -88,6 +118,7 @@ describe('SummaryWidgetComponent', () => {
     ];
     fixture.componentRef.setInput('tests', tests);
     fixture.componentRef.setInput('timestamp', new Date().toISOString());
+    fixture.componentRef.setInput('parameters', { displayType: 'chips' });
 
     fixture.detectChanges();
 

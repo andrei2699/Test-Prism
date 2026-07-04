@@ -22,13 +22,11 @@ export class ExecutionTypeDistributionStrategy implements DistributionStrategy {
 
     const statusOrder: TestExecutionStatus[] = ['PASSED', 'FAILED', 'SKIPPED', 'ERROR'];
     return statusOrder
-      .map(
-        (executionType): DistributionDataItem => ({
-          label: executionType,
-          count: counts[executionType],
-          color: colors[executionType],
-        }),
-      )
+      .map((executionType): DistributionDataItem => ({
+        label: executionType,
+        count: counts[executionType],
+        color: colors[executionType],
+      }))
       .filter(item => item.count > 0);
   }
 }

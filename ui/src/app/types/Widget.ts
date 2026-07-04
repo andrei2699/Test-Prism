@@ -41,17 +41,7 @@ export interface WidgetData {
 
 export type LogicalOperator = 'AND' | 'OR';
 export type ConditionOperator =
-  | '=='
-  | 'equals'
-  | '!='
-  | 'not equals'
-  | 'in'
-  | 'not in'
-  | 'contains'
-  | '>='
-  | '>'
-  | '<'
-  | '<=';
+  '==' | 'equals' | '!=' | 'not equals' | 'in' | 'not in' | 'contains' | '>=' | '>' | '<' | '<=';
 
 export type FieldValue = object | string | number | boolean | null | FieldValue[];
 

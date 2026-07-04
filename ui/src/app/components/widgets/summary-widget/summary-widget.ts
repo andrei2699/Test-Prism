@@ -1,20 +1,37 @@
-﻿import { Component, computed, input } from '@angular/core';
+import { Component, computed, input } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
-import { DatePipe } from '@angular/common';
+import { DatePipe, NgStyle } from '@angular/common';
 import { MatChipsModule } from '@angular/material/chips';
 import { Test } from '../../../types/TestReport';
 import { TestColors } from '../../../types/Layout';
 import { getLastExecution } from '../../../utils/testExecutionUtils';
+import { TestDistributionPie } from '../test-distribution-pie-widget/test-distribution-pie/test-distribution-pie';
+import { DistributionStrategy } from '../test-distribution-pie-widget/strategies/distribution-strategy.interface';
+import { DistributionStrategyFactory } from '../test-distribution-pie-widget/strategies/distribution-strategy.factory';
+import { PieLegendParameters } from '../test-distribution-pie-widget/parameters/LegendParameters';
+import { PieDatasetParameters } from '../test-distribution-pie-widget/parameters/DataSetParameters';
+import { PieOptionsParameters } from '../test-distribution-pie-widget/parameters/OptionsParameters';
 
 export interface SummaryWidgetParameters {
-  title: string;
+  title?: string;
+  displayType?: 'chips' | 'pie';
+  width?: string;
+  height?: string;
+  align?: 'left' | 'center' | 'right';
+  styles?: Record<string, string>;
+  pie?: {
+    legend?: PieLegendParameters;
+    options?: PieOptionsParameters;
+    dataset?: PieDatasetParameters;
+    shouldDisplayInnerPercentage?: boolean;
+  };
 }
 
 @Component({
   selector: 'app-summary-widget',
   templateUrl: './summary-widget.html',
   styleUrls: ['./summary-widget.css'],
-  imports: [MatCardModule, DatePipe, MatChipsModule],
+  imports: [MatCardModule, DatePipe, NgStyle, MatChipsModule, TestDistributionPie],
 })
 export class SummaryWidgetComponent {
   colors = input.required<TestColors>();
@@ -23,6 +40,58 @@ export class SummaryWidgetComponent {
   parameters = input<SummaryWidgetParameters>();
 
   title = computed(() => this.parameters()?.title || 'Analysis Summary');
+  displayType = computed(() => this.parameters()?.displayType || 'pie');
+  width = computed(() => this.parameters()?.width || '400px');
+  height = computed(() => this.parameters()?.height || 'auto');
+  align = computed(() => this.parameters()?.align || 'left');
+  justifyContent = computed(() => {
+    const alignment = this.align();
+    if (alignment === 'left') {
+      return 'flex-start';
+    }
+    if (alignment === 'right') {
+      return 'flex-end';
+    }
+    return 'center';
+  });
+  styles = computed(() => this.parameters()?.styles || {});
+
+  pieStrategy = computed<DistributionStrategy>(() => {
+    return DistributionStrategyFactory.create('status');
+  });
+
+  pieLegend = computed<PieLegendParameters>(() => {
+    return {
+      position: 'right',
+      ...this.parameters()?.pie?.legend,
+    };
+  });
+
+  pieDataset = computed<PieDatasetParameters>(() => {
+    return {
+      borderColor: '#fff',
+      borderWidth: 2,
+      ...this.parameters()?.pie?.dataset,
+    };
+  });
+
+  pieOptions = computed<PieOptionsParameters>(() => {
+    return {
+      layout: {
+        padding: {
+          top: 10,
+          bottom: 10,
+          left: 10,
+          right: 15,
+        },
+      },
+      ...this.parameters()?.pie?.options,
+    };
+  });
+
+  pieShouldDisplayInnerPercentage = computed<boolean | undefined>(() => {
+    return this.parameters()?.pie?.shouldDisplayInnerPercentage;
+  });
 
   summary = computed(() => {
     const tests = this.tests();

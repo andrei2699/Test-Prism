@@ -1,4 +1,4 @@
-﻿<mat-card>
+<mat-card>
   <mat-card-header>
     <mat-card-title>{{ title() }}</mat-card-title>
     @if (timestamp()) {
@@ -6,22 +6,39 @@
     }
   </mat-card-header>
   <mat-card-content>
-    <mat-chip-listbox>
-      <mat-chip-option [selectable]="false" [style.background-color]="'#e0e0e0'"
-        >Total: {{ summary().total }}
-      </mat-chip-option>
-      <mat-chip-option [selectable]="false" [style.background-color]="colors().PASSED"
-        >Passed: {{ summary().passed }}
-      </mat-chip-option>
-      <mat-chip-option [selectable]="false" [style.background-color]="colors().FAILED"
-        >Failed: {{ summary().failed }}
-      </mat-chip-option>
-      <mat-chip-option [selectable]="false" [style.background-color]="colors().SKIPPED"
-        >Skipped: {{ summary().skipped }}
-      </mat-chip-option>
-      <mat-chip-option [selectable]="false" [style.background-color]="colors().ERROR"
-        >Error: {{ summary().error }}
-      </mat-chip-option>
-    </mat-chip-listbox>
+    @if (displayType() === 'pie') {
+      <div class="pie-container" [style.justify-content]="justifyContent()" [ngStyle]="styles()">
+        <app-test-distribution-pie
+          [colors]="colors()"
+          [tests]="tests()"
+          [strategy]="pieStrategy()"
+          [legend]="pieLegend()"
+          [dataset]="pieDataset()"
+          [options]="pieOptions()"
+          [shouldDisplayInnerPercentage]="pieShouldDisplayInnerPercentage()"
+          [width]="width()"
+          [height]="height()" />
+      </div>
+    } @else {
+      <div [style.display]="'flex'" [style.justify-content]="justifyContent()" [ngStyle]="styles()">
+        <mat-chip-listbox>
+          <mat-chip-option [selectable]="false" [style.background-color]="'#e0e0e0'"
+            >Total: {{ summary().total }}
+          </mat-chip-option>
+          <mat-chip-option [selectable]="false" [style.background-color]="colors().PASSED">
+            Passed: {{ summary().passed }}
+          </mat-chip-option>
+          <mat-chip-option [selectable]="false" [style.background-color]="colors().FAILED">
+            Failed: {{ summary().failed }}
+          </mat-chip-option>
+          <mat-chip-option [selectable]="false" [style.background-color]="colors().SKIPPED"
+            >Skipped: {{ summary().skipped }}
+          </mat-chip-option>
+          <mat-chip-option [selectable]="false" [style.background-color]="colors().ERROR"
+            >Error: {{ summary().error }}
+          </mat-chip-option>
+        </mat-chip-listbox>
+      </div>
+    }
   </mat-card-content>
 </mat-card>
