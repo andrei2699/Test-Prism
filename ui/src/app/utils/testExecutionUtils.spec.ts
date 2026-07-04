@@ -3,7 +3,7 @@ import { Test } from '../types/TestReport';
 
 describe('getLastExecution', () => {
   it('should return undefined for tests with no executions', () => {
-    const test = { name: 'Test 1', path: '/tests/test1', executions: [] };
+    const test = { name: 'Test 1', path: ['/tests/test1'], executions: [] };
 
     expect(getLastExecution(test)).toBeUndefined();
   });
@@ -11,7 +11,7 @@ describe('getLastExecution', () => {
   it('should return undefined for tests with undefined executions', () => {
     const test = {
       name: 'Test 2',
-      path: '/tests/test2',
+      path: ['/tests/test2'],
       executions: undefined,
     } as unknown as Test;
 
@@ -21,7 +21,7 @@ describe('getLastExecution', () => {
   it('should return the last execution based on timestamp', () => {
     const test: Test = {
       name: 'Test 2',
-      path: '/tests/test2',
+      path: ['/tests/test2'],
       executions: [
         { status: 'PASSED', durationMs: 100, timestamp: '2023-01-01T10:00:00Z' },
         { status: 'FAILED', durationMs: 150, timestamp: '2023-01-02T12:00:00Z' },

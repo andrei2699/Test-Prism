@@ -1,10 +1,9 @@
-﻿import { Test } from '../../../../../types/TestReport';
+import { Test } from '../../../../../types/TestReport';
+import { getPathParts } from '../../../../../utils/pathUtils';
 import { TestTreeNode } from '../../test-tree/test-tree';
 import { BaseTreeOrganizationStrategy } from './base-tree-organization.strategy';
 
 export class FolderOrganizationStrategy extends BaseTreeOrganizationStrategy {
-  private readonly separator = '/';
-
   getName(): string {
     return 'folder';
   }
@@ -14,56 +13,51 @@ export class FolderOrganizationStrategy extends BaseTreeOrganizationStrategy {
     const rootNodes: TestTreeNode[] = [];
 
     tests.forEach(test => {
-      const pathParts = this.parsePath(test.path);
-      this.createHierarchy(pathParts.slice(0, -1), nodeMap, rootNodes);
-      this.addTestToHierarchy(test, pathParts, nodeMap, rootNodes);
+      let currentPath = '';
+      let parentNode: TestTreeNode | null = null;
+
+      if (test.file) {
+        currentPath = test.file;
+        let fileNode = nodeMap.get(currentPath);
+        if (!fileNode) {
+          const fileName = test.file.split(/[/\\]/).pop() || test.file;
+          fileNode = this.createGroupNode(currentPath, fileName);
+          fileNode.icon = 'description';
+          nodeMap.set(currentPath, fileNode);
+          rootNodes.push(fileNode);
+        }
+        parentNode = fileNode;
+      }
+
+      const parts = getPathParts(test.path);
+      parts.forEach((part: string) => {
+        const nextPath = currentPath ? `${currentPath}/${part}` : part;
+        let folderNode = nodeMap.get(nextPath);
+        if (!folderNode) {
+          folderNode = this.createGroupNode(nextPath, part);
+          nodeMap.set(nextPath, folderNode);
+          if (parentNode) {
+            parentNode.children = parentNode.children || [];
+            parentNode.children.push(folderNode);
+          } else {
+            rootNodes.push(folderNode);
+          }
+        }
+        currentPath = nextPath;
+        parentNode = folderNode;
+      });
+
+      const testNode = this.createTestNode(test);
+      if (parentNode) {
+        parentNode.children = parentNode.children || [];
+        parentNode.children.push(testNode);
+      } else {
+        rootNodes.push(testNode);
+      }
     });
 
     this.calculateTotalDurations(rootNodes);
     this.calculateTestCounts(rootNodes);
     return rootNodes;
-  }
-
-  private parsePath(path: string): string[] {
-    return path.split(this.separator).filter(part => part.length > 0);
-  }
-
-  private createHierarchy(
-    pathParts: string[],
-    nodeMap: Map<string, TestTreeNode>,
-    rootNodes: TestTreeNode[],
-  ): void {
-    let currentPath = '';
-
-    pathParts.forEach(part => {
-      currentPath = currentPath ? `${currentPath}${this.separator}${part}` : part;
-
-      if (nodeMap.has(currentPath)) {
-        return;
-      }
-
-      const folderNode = this.createGroupNode(currentPath, part);
-      nodeMap.set(currentPath, folderNode);
-      this.addNodeToParent(currentPath, folderNode, nodeMap, rootNodes, this.separator);
-    });
-  }
-
-  private addTestToHierarchy(
-    test: Test,
-    pathParts: string[],
-    nodeMap: Map<string, TestTreeNode>,
-    rootNodes: TestTreeNode[],
-  ): void {
-    const testNode = this.createTestNode(test);
-
-    if (pathParts.length > 1) {
-      const parentPath = pathParts.slice(0, -1).join(this.separator);
-      const parentNode = nodeMap.get(parentPath);
-      if (parentNode?.children) {
-        parentNode.children.push(testNode);
-      }
-    } else {
-      rootNodes.push(testNode);
-    }
   }
 }

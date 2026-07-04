@@ -1,4 +1,4 @@
-﻿export interface TestReport {
+export interface TestReport {
   version: number;
   timestamp: string;
   tests: Test[];
@@ -6,7 +6,8 @@
 
 export interface Test {
   name: string;
-  path: string;
+  file?: string;
+  path: string | string[];
   executions: TestExecution[];
   tags?: string[];
 }

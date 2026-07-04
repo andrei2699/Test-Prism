@@ -13,7 +13,7 @@ describe('TestDataService', () => {
     tests: [
       {
         name: 'test 1',
-        path: '/path/1',
+        path: ['/path/1'],
         executions: [
           {
             timestamp: '2023-01-01T00:00:00Z',

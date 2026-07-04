@@ -1,4 +1,4 @@
-﻿import { ExecutionTypeOrganizationStrategy } from './execution-type-organization.strategy';
+import { ExecutionTypeOrganizationStrategy } from './execution-type-organization.strategy';
 import { Test } from '../../../../../types/TestReport';
 import { TestTreeNode } from '../../test-tree/test-tree';
 
@@ -17,17 +17,17 @@ describe('ExecutionTypeOrganizationStrategy', () => {
     const tests: Test[] = [
       {
         name: 'test1',
-        path: '/folder/test1',
+        path: ['folder', 'test1'],
         executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
       },
       {
         name: 'test2',
-        path: '/folder/test2',
+        path: ['folder', 'test2'],
         executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'FAILED', durationMs: 100 }],
       },
       {
         name: 'test3',
-        path: '/folder/test3',
+        path: ['folder', 'test3'],
         executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
       },
     ];
@@ -40,13 +40,13 @@ describe('ExecutionTypeOrganizationStrategy', () => {
         name: 'PASSED',
         children: [
           {
-            id: '/folder/test1/test1',
+            id: 'folder/test1/test1',
             name: 'test1',
             test: tests[0],
             testCount: { PASSED: 1, FAILED: 0, SKIPPED: 0, ERROR: 0 },
           },
           {
-            id: '/folder/test3/test3',
+            id: 'folder/test3/test3',
             name: 'test3',
             test: tests[2],
             testCount: { PASSED: 1, FAILED: 0, SKIPPED: 0, ERROR: 0 },
@@ -65,7 +65,7 @@ describe('ExecutionTypeOrganizationStrategy', () => {
         name: 'FAILED',
         children: [
           {
-            id: '/folder/test2/test2',
+            id: 'folder/test2/test2',
             name: 'test2',
             test: tests[1],
             testCount: { PASSED: 0, FAILED: 1, SKIPPED: 0, ERROR: 0 },
@@ -88,22 +88,22 @@ describe('ExecutionTypeOrganizationStrategy', () => {
     const tests: Test[] = [
       {
         name: 'test1',
-        path: '/test1',
+        path: ['test1'],
         executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'ERROR', durationMs: 100 }],
       },
       {
         name: 'test2',
-        path: '/test2',
+        path: ['test2'],
         executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
       },
       {
         name: 'test3',
-        path: '/test3',
+        path: ['test3'],
         executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'FAILED', durationMs: 100 }],
       },
       {
         name: 'test4',
-        path: '/test4',
+        path: ['test4'],
         executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SKIPPED', durationMs: 100 }],
       },
     ];
@@ -118,14 +118,14 @@ describe('ExecutionTypeOrganizationStrategy', () => {
     const tests: Test[] = [
       {
         name: 'test1',
-        path: '/folder/test1',
+        path: ['folder', 'test1'],
         executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'FAILED', durationMs: 100 }],
       },
     ];
 
     const result = strategy.buildTree(tests);
     const expectedTestNode: TestTreeNode = {
-      id: '/folder/test1/test1',
+      id: 'folder/test1/test1',
       name: 'test1',
       test: tests[0],
       testCount: { PASSED: 0, FAILED: 1, SKIPPED: 0, ERROR: 0 },
@@ -138,22 +138,22 @@ describe('ExecutionTypeOrganizationStrategy', () => {
     const tests: Test[] = [
       {
         name: 'test1',
-        path: '/test1',
+        path: ['test1'],
         executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
       },
       {
         name: 'test2',
-        path: '/test2',
+        path: ['test2'],
         executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'FAILED', durationMs: 100 }],
       },
       {
         name: 'test3',
-        path: '/test3',
+        path: ['test3'],
         executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'SKIPPED', durationMs: 100 }],
       },
       {
         name: 'test4',
-        path: '/test4',
+        path: ['test4'],
         executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'ERROR', durationMs: 100 }],
       },
     ];
@@ -166,7 +166,7 @@ describe('ExecutionTypeOrganizationStrategy', () => {
         name: 'PASSED',
         children: [
           {
-            id: '/test1/test1',
+            id: 'test1/test1',
             name: 'test1',
             test: tests[0],
             testCount: { PASSED: 1, FAILED: 0, SKIPPED: 0, ERROR: 0 },
@@ -185,7 +185,7 @@ describe('ExecutionTypeOrganizationStrategy', () => {
         name: 'FAILED',
         children: [
           {
-            id: '/test2/test2',
+            id: 'test2/test2',
             name: 'test2',
             test: tests[1],
             testCount: { PASSED: 0, FAILED: 1, SKIPPED: 0, ERROR: 0 },
@@ -204,7 +204,7 @@ describe('ExecutionTypeOrganizationStrategy', () => {
         name: 'SKIPPED',
         children: [
           {
-            id: '/test3/test3',
+            id: 'test3/test3',
             name: 'test3',
             test: tests[2],
             testCount: { PASSED: 0, FAILED: 0, SKIPPED: 1, ERROR: 0 },
@@ -223,7 +223,7 @@ describe('ExecutionTypeOrganizationStrategy', () => {
         name: 'ERROR',
         children: [
           {
-            id: '/test4/test4',
+            id: 'test4/test4',
             name: 'test4',
             test: tests[3],
             testCount: { PASSED: 0, FAILED: 0, SKIPPED: 0, ERROR: 1 },
@@ -246,17 +246,17 @@ describe('ExecutionTypeOrganizationStrategy', () => {
     const tests: Test[] = [
       {
         name: 'test1',
-        path: '/test1',
+        path: ['test1'],
         executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 1000 }],
       },
       {
         name: 'test2',
-        path: '/test2',
+        path: ['test2'],
         executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 2000 }],
       },
       {
         name: 'test3',
-        path: '/test3',
+        path: ['test3'],
         executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'FAILED', durationMs: 3000 }],
       },
     ];
@@ -268,13 +268,13 @@ describe('ExecutionTypeOrganizationStrategy', () => {
       name: 'PASSED',
       children: [
         {
-          id: '/test1/test1',
+          id: 'test1/test1',
           name: 'test1',
           test: tests[0],
           testCount: { PASSED: 1, FAILED: 0, SKIPPED: 0, ERROR: 0 },
         },
         {
-          id: '/test2/test2',
+          id: 'test2/test2',
           name: 'test2',
           test: tests[1],
           testCount: { PASSED: 1, FAILED: 0, SKIPPED: 0, ERROR: 0 },
@@ -294,7 +294,7 @@ describe('ExecutionTypeOrganizationStrategy', () => {
       name: 'FAILED',
       children: [
         {
-          id: '/test3/test3',
+          id: 'test3/test3',
           name: 'test3',
           test: tests[2],
           testCount: { PASSED: 0, FAILED: 1, SKIPPED: 0, ERROR: 0 },
@@ -317,17 +317,17 @@ describe('ExecutionTypeOrganizationStrategy', () => {
     const tests: Test[] = [
       {
         name: 'test1',
-        path: '/test1',
+        path: ['test1'],
         executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 500 }],
       },
       {
         name: 'test2',
-        path: '/test2',
+        path: ['test2'],
         executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 750 }],
       },
       {
         name: 'test3',
-        path: '/test3',
+        path: ['test3'],
         executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 250 }],
       },
     ];
@@ -339,19 +339,19 @@ describe('ExecutionTypeOrganizationStrategy', () => {
       name: 'PASSED',
       children: [
         {
-          id: '/test1/test1',
+          id: 'test1/test1',
           name: 'test1',
           test: tests[0],
           testCount: { PASSED: 1, FAILED: 0, SKIPPED: 0, ERROR: 0 },
         },
         {
-          id: '/test2/test2',
+          id: 'test2/test2',
           name: 'test2',
           test: tests[1],
           testCount: { PASSED: 1, FAILED: 0, SKIPPED: 0, ERROR: 0 },
         },
         {
-          id: '/test3/test3',
+          id: 'test3/test3',
           name: 'test3',
           test: tests[2],
           testCount: { PASSED: 1, FAILED: 0, SKIPPED: 0, ERROR: 0 },
@@ -373,17 +373,17 @@ describe('ExecutionTypeOrganizationStrategy', () => {
     const tests: Test[] = [
       {
         name: 'test1',
-        path: '/test1',
+        path: ['test1'],
         executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
       },
       {
         name: 'test2',
-        path: '/test2',
+        path: ['test2'],
         executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
       },
       {
         name: 'test3',
-        path: '/test3',
+        path: ['test3'],
         executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'FAILED', durationMs: 100 }],
       },
     ];
@@ -395,13 +395,13 @@ describe('ExecutionTypeOrganizationStrategy', () => {
       name: 'PASSED',
       children: [
         {
-          id: '/test1/test1',
+          id: 'test1/test1',
           name: 'test1',
           test: tests[0],
           testCount: { PASSED: 1, FAILED: 0, SKIPPED: 0, ERROR: 0 },
         },
         {
-          id: '/test2/test2',
+          id: 'test2/test2',
           name: 'test2',
           test: tests[1],
           testCount: { PASSED: 1, FAILED: 0, SKIPPED: 0, ERROR: 0 },
@@ -421,7 +421,7 @@ describe('ExecutionTypeOrganizationStrategy', () => {
       name: 'FAILED',
       children: [
         {
-          id: '/test3/test3',
+          id: 'test3/test3',
           name: 'test3',
           test: tests[2],
           testCount: { PASSED: 0, FAILED: 1, SKIPPED: 0, ERROR: 0 },
@@ -444,17 +444,17 @@ describe('ExecutionTypeOrganizationStrategy', () => {
     const tests: Test[] = [
       {
         name: 'test1',
-        path: '/test1',
+        path: ['test1'],
         executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
       },
       {
         name: 'test2',
-        path: '/test2',
+        path: ['test2'],
         executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
       },
       {
         name: 'test3',
-        path: '/test3',
+        path: ['test3'],
         executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
       },
     ];
@@ -466,19 +466,19 @@ describe('ExecutionTypeOrganizationStrategy', () => {
       name: 'PASSED',
       children: [
         {
-          id: '/test1/test1',
+          id: 'test1/test1',
           name: 'test1',
           test: tests[0],
           testCount: { PASSED: 1, FAILED: 0, SKIPPED: 0, ERROR: 0 },
         },
         {
-          id: '/test2/test2',
+          id: 'test2/test2',
           name: 'test2',
           test: tests[1],
           testCount: { PASSED: 1, FAILED: 0, SKIPPED: 0, ERROR: 0 },
         },
         {
-          id: '/test3/test3',
+          id: 'test3/test3',
           name: 'test3',
           test: tests[2],
           testCount: { PASSED: 1, FAILED: 0, SKIPPED: 0, ERROR: 0 },

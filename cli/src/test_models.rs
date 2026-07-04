@@ -1,6 +1,7 @@
-﻿#[derive(Debug, Clone)]
+#[derive(Debug, Clone)]
 pub struct TestSuite {
     pub name: String,
+    pub file: Option<String>,
     pub duration: f64,
     pub timestamp: String,
     pub tests: Vec<Test>,
@@ -19,4 +20,5 @@ pub struct Test {
     pub name: String,
     pub time: f64,
     pub status: TestStatus,
+    pub ancestor_titles: Vec<String>,
 }

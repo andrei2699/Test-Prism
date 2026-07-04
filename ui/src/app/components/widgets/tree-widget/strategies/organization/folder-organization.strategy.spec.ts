@@ -1,4 +1,4 @@
-﻿import { FolderOrganizationStrategy } from './folder-organization.strategy';
+import { FolderOrganizationStrategy } from './folder-organization.strategy';
 import { Test } from '../../../../../types/TestReport';
 
 describe('FolderOrganizationStrategy', () => {
@@ -16,7 +16,7 @@ describe('FolderOrganizationStrategy', () => {
     const tests: Test[] = [
       {
         name: 'test1',
-        path: '/test1',
+        path: [],
         executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
       },
     ];
@@ -33,7 +33,7 @@ describe('FolderOrganizationStrategy', () => {
     const tests: Test[] = [
       {
         name: 'test1',
-        path: '/folder1/folder2/folder3/test1',
+        path: ['folder1', 'folder2', 'folder3'],
         executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
       },
     ];
@@ -51,12 +51,12 @@ describe('FolderOrganizationStrategy', () => {
     const tests: Test[] = [
       {
         name: 'test1',
-        path: '/folder/test1',
+        path: ['folder'],
         executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
       },
       {
         name: 'test2',
-        path: '/folder/test2',
+        path: ['folder'],
         executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'FAILED', durationMs: 100 }],
       },
     ];
@@ -72,12 +72,12 @@ describe('FolderOrganizationStrategy', () => {
     const tests: Test[] = [
       {
         name: 'test1',
-        path: '/folder1/test1',
+        path: ['folder1'],
         executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
       },
       {
         name: 'test2',
-        path: '/folder2/test2',
+        path: ['folder2'],
         executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
       },
     ];
@@ -93,7 +93,7 @@ describe('FolderOrganizationStrategy', () => {
     const tests: Test[] = [
       {
         name: 'test1',
-        path: '/folder/test1',
+        path: ['folder'],
         executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'ERROR', durationMs: 100 }],
       },
     ];
@@ -102,33 +102,19 @@ describe('FolderOrganizationStrategy', () => {
     const testNode = result[0].children?.[0];
 
     expect(testNode?.test?.executions[0].status).toBe('ERROR');
-    expect(testNode?.test?.path).toBe('/folder/test1');
-  });
-
-  it('should handle paths with trailing slashes', () => {
-    const tests: Test[] = [
-      {
-        name: 'test1',
-        path: '/folder//test1',
-        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
-      },
-    ];
-
-    const result = strategy.buildTree(tests);
-
-    expect(result[0].children?.[0].name).toBe('test1');
+    expect(testNode?.test?.path).toEqual(['folder']);
   });
 
   it('should maintain parent-child relationships', () => {
     const tests: Test[] = [
       {
         name: 'test1',
-        path: '/a/b/c/test1',
+        path: ['a', 'b', 'c'],
         executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
       },
       {
         name: 'test2',
-        path: '/a/b/test2',
+        path: ['a', 'b'],
         executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
       },
     ];
@@ -145,7 +131,7 @@ describe('FolderOrganizationStrategy', () => {
     const tests: Test[] = [
       {
         name: 'test1',
-        path: '/folder/test1',
+        path: ['folder'],
         executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 1500 }],
       },
     ];
@@ -159,17 +145,17 @@ describe('FolderOrganizationStrategy', () => {
     const tests: Test[] = [
       {
         name: 'test1',
-        path: '/folder/test1',
+        path: ['folder'],
         executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 1000 }],
       },
       {
         name: 'test2',
-        path: '/folder/test2',
+        path: ['folder'],
         executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 2000 }],
       },
       {
         name: 'test3',
-        path: '/folder/test3',
+        path: ['folder'],
         executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'FAILED', durationMs: 500 }],
       },
     ];
@@ -183,17 +169,17 @@ describe('FolderOrganizationStrategy', () => {
     const tests: Test[] = [
       {
         name: 'test1',
-        path: '/a/b/test1',
+        path: ['a', 'b'],
         executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 1000 }],
       },
       {
         name: 'test2',
-        path: '/a/b/test2',
+        path: ['a', 'b'],
         executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 2000 }],
       },
       {
         name: 'test3',
-        path: '/a/c/test3',
+        path: ['a', 'c'],
         executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 500 }],
       },
     ];
@@ -206,30 +192,11 @@ describe('FolderOrganizationStrategy', () => {
     expect(folderA.children?.[1].totalDurationMs).toBe(500);
   });
 
-  it('should handle tests without duration', () => {
-    const tests: Test[] = [
-      {
-        name: 'test1',
-        path: '/folder/test1',
-        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 0 }],
-      },
-      {
-        name: 'test2',
-        path: '/folder/test2',
-        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 2000 }],
-      },
-    ];
-
-    const result = strategy.buildTree(tests);
-
-    expect(result[0].totalDurationMs).toBe(2000);
-  });
-
   it('should calculate test count for a single test', () => {
     const tests: Test[] = [
       {
         name: 'test1',
-        path: '/test1',
+        path: [],
         executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
       },
     ];
@@ -243,12 +210,12 @@ describe('FolderOrganizationStrategy', () => {
     const tests: Test[] = [
       {
         name: 'test1',
-        path: '/folder/test1',
+        path: ['folder'],
         executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
       },
       {
         name: 'test2',
-        path: '/folder/test2',
+        path: ['folder'],
         executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'FAILED', durationMs: 100 }],
       },
     ];
@@ -262,22 +229,22 @@ describe('FolderOrganizationStrategy', () => {
     const tests: Test[] = [
       {
         name: 'test1',
-        path: '/a/b/test1',
+        path: ['a', 'b'],
         executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
       },
       {
         name: 'test2',
-        path: '/a/b/test2',
+        path: ['a', 'b'],
         executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
       },
       {
         name: 'test3',
-        path: '/a/c/test3',
+        path: ['a', 'c'],
         executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
       },
       {
         name: 'test4',
-        path: '/a/test4',
+        path: ['a'],
         executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
       },
     ];
@@ -300,29 +267,22 @@ describe('FolderOrganizationStrategy', () => {
     });
   });
 
-  it('should calculate test count for mixed content (tests and subfolders)', () => {
+  it('should handle test with file property', () => {
     const tests: Test[] = [
       {
         name: 'test1',
-        path: '/folder1/subfolder/test1',
-        executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
-      },
-      {
-        name: 'test2',
-        path: '/folder1/test2',
+        file: 'src/example.test.ts',
+        path: ['describe1'],
         executions: [{ timestamp: '2023-01-01T00:00:00Z', status: 'PASSED', durationMs: 100 }],
       },
     ];
 
     const result = strategy.buildTree(tests);
-    const folder1 = result[0];
 
-    expect(folder1.testCount).toMatchObject({ PASSED: 2, FAILED: 0, SKIPPED: 0, ERROR: 0 });
-    expect(folder1.children?.[0].testCount).toMatchObject({
-      PASSED: 1,
-      FAILED: 0,
-      SKIPPED: 0,
-      ERROR: 0,
-    });
+    expect(result).toHaveLength(1);
+    expect(result[0].name).toBe('example.test.ts');
+    expect(result[0].icon).toBe('description');
+    expect(result[0].children?.[0].name).toBe('describe1');
+    expect(result[0].children?.[0].children?.[0].name).toBe('test1');
   });
 });

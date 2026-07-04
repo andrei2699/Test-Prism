@@ -1,0 +1,143 @@
+{
+  "version": 2,
+  "timestamp": "2025-01-06T15:34:21.123Z",
+  "tests": [
+    {
+      "name": "always fails",
+      "file": "cli/e2e-tests/vitest-e2e-tests/src/failing.test.ts",
+      "path": [
+        "cli/e2e-tests/vitest-e2e-tests/src/failing.test.ts"
+      ],
+      "executions": [
+        {
+          "timestamp": "2025-01-06T15:34:21.123Z",
+          "status": "FAILED",
+          "durationMs": 16,
+          "message": "expected 3 to be 4 // Object.is equality"
+        }
+      ]
+    },
+    {
+      "name": "passed test",
+      "file": "cli/e2e-tests/vitest-e2e-tests/src/mixed.test.ts",
+      "path": [
+        "cli/e2e-tests/vitest-e2e-tests/src/mixed.test.ts",
+        "Mixed Suite"
+      ],
+      "executions": [
+        {
+          "timestamp": "2025-01-06T15:34:21.123Z",
+          "status": "PASSED",
+          "durationMs": 4
+        }
+      ]
+    },
+    {
+      "name": "failed test",
+      "file": "cli/e2e-tests/vitest-e2e-tests/src/mixed.test.ts",
+      "path": [
+        "cli/e2e-tests/vitest-e2e-tests/src/mixed.test.ts",
+        "Mixed Suite"
+      ],
+      "executions": [
+        {
+          "timestamp": "2025-01-06T15:34:21.123Z",
+          "status": "FAILED",
+          "durationMs": 16,
+          "message": "expected 1 to be 2 // Object.is equality"
+        }
+      ]
+    },
+    {
+      "name": "skipped test",
+      "file": "cli/e2e-tests/vitest-e2e-tests/src/mixed.test.ts",
+      "path": [
+        "cli/e2e-tests/vitest-e2e-tests/src/mixed.test.ts",
+        "Mixed Suite"
+      ],
+      "executions": [
+        {
+          "timestamp": "2025-01-06T15:34:21.123Z",
+          "status": "SKIPPED",
+          "durationMs": 0,
+          "message": ""
+        }
+      ]
+    },
+    {
+      "name": "nested test success",
+      "file": "cli/e2e-tests/vitest-e2e-tests/src/nested-describes.test.ts",
+      "path": [
+        "cli/e2e-tests/vitest-e2e-tests/src/nested-describes.test.ts",
+        "Level 1 Suite",
+        "Level 2 Suite",
+        "Level 3 Suite"
+      ],
+      "executions": [
+        {
+          "timestamp": "2025-01-06T15:34:21.123Z",
+          "status": "PASSED",
+          "durationMs": 2
+        }
+      ]
+    },
+    {
+      "name": "adds 1 + 2 to equal 3",
+      "file": "cli/e2e-tests/vitest-e2e-tests/src/passing.test.ts",
+      "path": [
+        "cli/e2e-tests/vitest-e2e-tests/src/passing.test.ts"
+      ],
+      "executions": [
+        {
+          "timestamp": "2025-01-06T15:34:21.123Z",
+          "status": "PASSED",
+          "durationMs": 2
+        }
+      ]
+    },
+    {
+      "name": "subtracted 5 - 2 to equal 3",
+      "file": "cli/e2e-tests/vitest-e2e-tests/src/passing.test.ts",
+      "path": [
+        "cli/e2e-tests/vitest-e2e-tests/src/passing.test.ts"
+      ],
+      "executions": [
+        {
+          "timestamp": "2025-01-06T15:34:21.123Z",
+          "status": "PASSED",
+          "durationMs": 1
+        }
+      ]
+    },
+    {
+      "name": "skipped test",
+      "file": "cli/e2e-tests/vitest-e2e-tests/src/skipped.test.ts",
+      "path": [
+        "cli/e2e-tests/vitest-e2e-tests/src/skipped.test.ts"
+      ],
+      "executions": [
+        {
+          "timestamp": "2025-01-06T15:34:21.123Z",
+          "status": "SKIPPED",
+          "durationMs": 0,
+          "message": ""
+        }
+      ]
+    },
+    {
+      "name": "todo test",
+      "file": "cli/e2e-tests/vitest-e2e-tests/src/todo.test.ts",
+      "path": [
+        "cli/e2e-tests/vitest-e2e-tests/src/todo.test.ts"
+      ],
+      "executions": [
+        {
+          "timestamp": "2025-01-06T15:34:21.123Z",
+          "status": "SKIPPED",
+          "durationMs": 0,
+          "message": ""
+        }
+      ]
+    }
+  ]
+}

@@ -1,8 +1,9 @@
-﻿import { TestTreeNode } from '../../test-tree/test-tree';
+import { TestTreeNode } from '../../test-tree/test-tree';
 import { Test, TestExecutionStatus } from '../../../../../types/TestReport';
 import { TreeOrganizationStrategy } from './tree-organization-strategy.interface';
 import { TestColors } from '../../../../../types/Layout';
 import { getLastExecution } from '../../../../../utils/testExecutionUtils';
+import { getPathParts } from '../../../../../utils/pathUtils';
 
 export abstract class BaseTreeOrganizationStrategy implements TreeOrganizationStrategy {
   abstract getName(): string;
@@ -11,7 +12,7 @@ export abstract class BaseTreeOrganizationStrategy implements TreeOrganizationSt
 
   getIcon(node: TestTreeNode): string {
     if (!node.test) {
-      return 'folder';
+      return node.icon ?? 'folder';
     }
 
     const lastExecution = getLastExecution(node.test);
@@ -47,8 +48,9 @@ export abstract class BaseTreeOrganizationStrategy implements TreeOrganizationSt
   }
 
   protected createTestNode(test: Test): TestTreeNode {
+    const parts = getPathParts(test.path);
     return {
-      id: `${test.path}/${test.name}`,
+      id: [test.file, ...parts, test.name].filter(Boolean).join('/'),
       name: test.name,
       test,
     };

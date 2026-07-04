@@ -1,10 +1,12 @@
 {
-  "version": 1,
+  "version": 2,
   "timestamp": "2025-01-06T15:34:21.123Z",
   "tests": [
     {
       "name": "successTest()",
-      "path": "com.testprism.TestWithMultipleTypes",
+      "path": [
+        "com.testprism.TestWithMultipleTypes"
+      ],
       "executions": [
         {
           "timestamp": "2026-01-06T13:06:34.010Z",
@@ -15,7 +17,9 @@
     },
     {
       "name": "skippedTest()",
-      "path": "com.testprism.TestWithMultipleTypes",
+      "path": [
+        "com.testprism.TestWithMultipleTypes"
+      ],
       "executions": [
         {
           "timestamp": "2026-01-06T13:06:34.010Z",
@@ -27,7 +31,9 @@
     },
     {
       "name": "failedTest()",
-      "path": "com.testprism.TestWithMultipleTypes",
+      "path": [
+        "com.testprism.TestWithMultipleTypes"
+      ],
       "executions": [
         {
           "timestamp": "2026-01-06T13:06:34.010Z",

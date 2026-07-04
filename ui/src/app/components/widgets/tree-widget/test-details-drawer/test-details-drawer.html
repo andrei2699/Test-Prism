@@ -25,8 +25,15 @@
 
   <div class="detail-row">
     <span class="label">Path:</span>
-    <span class="value path">{{ test().path }}</span>
+    <span class="value path">{{ pathParts().join(' › ') }}</span>
   </div>
+
+  @if (test().file) {
+    <div class="detail-row">
+      <span class="label">File:</span>
+      <span class="value path">{{ test().file }}</span>
+    </div>
+  }
 
   @if (test().tags?.length) {
     <div class="tags">

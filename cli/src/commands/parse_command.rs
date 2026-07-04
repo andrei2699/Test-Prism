@@ -1,4 +1,5 @@
 use crate::parsers::junit::JunitParser;
+use crate::parsers::vitest::VitestParser;
 use crate::test_parser::TestParser;
 use crate::test_report::{TestExecution, TestExecutionStatus, TestReport, TestReportTest};
 use std::path::Path;
@@ -17,13 +18,13 @@ pub fn parse_command(
 
     for path_string in input_paths {
         let path = Path::new(&path_string);
-        let tests = parse_file(&parser, &path_string, path, &tags, &current_date);
+        let tests = parse_file(parser.as_ref(), &path_string, path, &tags, &current_date);
 
         all_test_report_tests.extend(tests);
     }
 
     let test_report = TestReport {
-        version: 1,
+        version: 2,
         timestamp: current_date.to_string(),
         tests: all_test_report_tests,
     };
@@ -32,7 +33,7 @@ pub fn parse_command(
 }
 
 fn parse_file(
-    parser: &impl TestParser,
+    parser: &dyn TestParser,
     path_str: &str,
     path: &Path,
     tags: &[String],
@@ -54,9 +55,17 @@ fn parse_file(
                         message: TestExecution::message_from_test_status(&test.status),
                     };
 
+                    let mut logical_path: Vec<String> = if suite.name.is_empty() {
+                        Vec::new()
+                    } else {
+                        suite.name.split('$').map(|s| s.to_string()).collect()
+                    };
+                    logical_path.extend(test.ancestor_titles.clone());
+
                     TestReportTest {
                         name: test.name.clone(),
-                        path: suite.name.clone(),
+                        file: suite.file.clone(),
+                        path: logical_path,
                         executions: vec![execution],
                         tags: if tags.is_empty() {
                             None
@@ -74,11 +83,12 @@ fn parse_file(
     }
 }
 
-fn get_parser(report_type: &str) -> impl TestParser {
+fn get_parser(report_type: &str) -> Box<dyn TestParser> {
     match report_type {
-        "junit" => JunitParser,
+        "junit" => Box::new(JunitParser),
+        "vitest" => Box::new(VitestParser),
         _ => panic!(
-            "Unknown report_type: {}. Supported types: junit",
+            "Unknown report_type: {}. Supported types: junit, vitest",
             report_type
         ),
     }
@@ -88,7 +98,8 @@ fn extract_folder_path_first_level(file_path: &str) -> Vec<String> {
     let path = Path::new(file_path);
 
     if path.is_dir() {
-        let mut paths: Vec<String> = path.read_dir()
+        let mut paths: Vec<String> = path
+            .read_dir()
             .unwrap()
             .filter_map(|entry| {
                 let entry = entry.unwrap();

@@ -1,4 +1,4 @@
-﻿use crate::test_models::TestStatus;
+use crate::test_models::TestStatus;
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Clone)]
@@ -33,7 +33,9 @@ pub struct TestExecution {
 #[derive(Serialize, Deserialize, Clone)]
 pub struct TestReportTest {
     pub name: String,
-    pub path: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub file: Option<String>,
+    pub path: Vec<String>,
     pub executions: Vec<TestExecution>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub tags: Option<Vec<String>>,
