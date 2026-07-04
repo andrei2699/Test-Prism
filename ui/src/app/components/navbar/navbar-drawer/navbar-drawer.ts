@@ -1,5 +1,5 @@
-import { Component, viewChild } from '@angular/core';
-import { MatDrawer, MatDrawerContainer } from '@angular/material/sidenav';
+import { Component, input, viewChild } from '@angular/core';
+import { MatDrawer, MatDrawerContainer, MatDrawerMode } from '@angular/material/sidenav';
 import { NavbarDrawerContent } from '../navbar-drawer-content/navbar-drawer-content';
 
 @Component({
@@ -10,6 +10,10 @@ import { NavbarDrawerContent } from '../navbar-drawer-content/navbar-drawer-cont
 })
 export class NavbarDrawer {
   private drawerRef = viewChild(MatDrawer);
+
+  mode = input<MatDrawerMode>('over');
+  defaultOpened = input<boolean>(false);
+  position = input<'start' | 'end'>('start');
 
   toggle() {
     this.drawerRef()?.toggle();

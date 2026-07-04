@@ -1,4 +1,4 @@
-﻿import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { vi } from 'vitest';
 import { Navbar } from './navbar';
@@ -87,6 +87,56 @@ describe('Navbar', () => {
       fixture.detectChanges();
       const button = fixture.debugElement.query(By.css('button[matIconButton]'));
       expect(button).toBeFalsy();
+    });
+  });
+
+  describe('Drawer config computed signals', () => {
+    it('should default drawerMode to over when no config is set', () => {
+      (layoutService.layout.value as any).set({ pages: [], dataSources: [] });
+      fixture.detectChanges();
+      expect(component.drawerMode()).toBe('over');
+    });
+
+    it('should reflect the configured drawerMode', () => {
+      (layoutService.layout.value as any).set({
+        pages: [],
+        dataSources: [],
+        navigationDrawer: { mode: 'side' },
+      });
+      fixture.detectChanges();
+      expect(component.drawerMode()).toBe('side');
+    });
+
+    it('should default drawerDefaultOpened to false when no config is set', () => {
+      (layoutService.layout.value as any).set({ pages: [], dataSources: [] });
+      fixture.detectChanges();
+      expect(component.drawerDefaultOpened()).toBe(false);
+    });
+
+    it('should reflect the configured drawerDefaultOpened', () => {
+      (layoutService.layout.value as any).set({
+        pages: [],
+        dataSources: [],
+        navigationDrawer: { defaultOpened: true },
+      });
+      fixture.detectChanges();
+      expect(component.drawerDefaultOpened()).toBe(true);
+    });
+
+    it('should default drawerPosition to start when no config is set', () => {
+      (layoutService.layout.value as any).set({ pages: [], dataSources: [] });
+      fixture.detectChanges();
+      expect(component.drawerPosition()).toBe('start');
+    });
+
+    it('should reflect the configured drawerPosition', () => {
+      (layoutService.layout.value as any).set({
+        pages: [],
+        dataSources: [],
+        navigationDrawer: { position: 'end' },
+      });
+      fixture.detectChanges();
+      expect(component.drawerPosition()).toBe('end');
     });
   });
 });
