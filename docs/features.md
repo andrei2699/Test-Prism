@@ -1,4 +1,4 @@
-﻿# Using the Test Prism Dashboard
+# Using the Test Prism Dashboard
 
 The Test Prism UI provides an interactive dashboard to explore and analyze test execution results. It helps you quickly
 identify failures, understand trends, and gain insights into your testing cycles.
@@ -26,7 +26,8 @@ Common widgets include:
 - **Test Tree**: A hierarchical navigation tool that mirrors your project's test structure, allowing you to drill down
   into specific suites and tests.
 
-You can see all the available widgets and how to configure them in the [All Available Widgets Documentation](/layout-definition.md#available-widgets).
+You can see all the available widgets and how to configure them in
+the [All Available Widgets Documentation](/layout-definition.md#available-widgets).
 
 ## Navigating Test Results
 
@@ -42,12 +43,13 @@ project's test suites and files.
 Clicking on a specific test in the Test Tree will bring up the **Test Details** view. This is where you can perform a
 deep dive into a single test's execution.
 
-[//]: # 'TODO: update with image'
-[//]: # '![Test Details](./public/test-details.png)'
+'![Test Details](/images/features/test-details.png)'
 
 Information available in this view includes:
 
 - **Full Test Name & Path**: The complete identifier for the test.
-- **Execution Status & Duration**: The final result and how long it took to run.
-- **Error Logs**: For failed tests, this section will display the complete error message, stack trace, or failure
-  output, which is critical for debugging.
+- **Execution Status & Duration**: The final result and how long it took to run (based on the most recent execution).
+- **Tags**: Any metadata tags associated with the test.
+- **Execution History**: A table showing every recorded execution of the test, sorted from newest to oldest, with the
+  timestamp, status (color-coded), and duration for each run. This lets you quickly spot flaky tests or regressions
+  across multiple runs.

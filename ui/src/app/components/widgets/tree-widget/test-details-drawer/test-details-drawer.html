@@ -1,4 +1,4 @@
-﻿<div class="drawer-header">
+<div class="drawer-header">
   <h3>Test Details</h3>
   <button mat-icon-button (click)="close.emit()">
     <mat-icon>close</mat-icon>
@@ -38,4 +38,26 @@
       </mat-chip-set>
     </div>
   }
+
+  <div class="executions-section">
+    <h4 class="executions-title">Execution History</h4>
+    <table class="executions-table">
+      <thead>
+        <tr>
+          <th>Timestamp</th>
+          <th>Status</th>
+          <th>Duration</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (execution of sortedExecutions(); track execution.timestamp) {
+          <tr>
+            <td>{{ execution.timestamp | date: 'short' }}</td>
+            <td [style.color]="colors()[execution.status]">{{ execution.status }}</td>
+            <td>{{ execution.durationMs | humanizeDuration }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
 </div>
