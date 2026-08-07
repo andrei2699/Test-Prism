@@ -21,8 +21,8 @@ impl GenericParser {
     }
 
     fn parse_value(&self, root: &serde_json::Value) -> Result<Vec<TestSuite>, String> {
-        let suites_value = self.query(root, &self.mapping.suite_path)?;
-        let suite_values = Self::as_array(suites_value);
+        let suite_nodes = self.query_nodes(root, &self.mapping.suite_path)?;
+        let suite_values = Self::flatten_nodes(suite_nodes);
 
         let mut suites = Vec::new();
         for suite_val in suite_values {
@@ -46,8 +46,8 @@ impl GenericParser {
             .and_then(|s| s.parse::<f64>().ok())
             .unwrap_or(0.0);
 
-        let tests_value = self.query(suite_val, &self.mapping.test_path)?;
-        let test_values = Self::as_array(tests_value);
+        let test_nodes = self.query_nodes(suite_val, &self.mapping.test_path)?;
+        let test_values = Self::flatten_nodes(test_nodes);
 
         let mut tests = Vec::new();
         for test_val in &test_values {
@@ -126,10 +126,27 @@ impl GenericParser {
     fn query(&self, root: &serde_json::Value, path: &str) -> Result<serde_json::Value, String> {
         let compiled = JsonPath::parse(path).map_err(|e| format!("Invalid path '{}': {}", path, e))?;
         let nodes = compiled.query(root);
-        if nodes.is_empty() {
-            return Ok(serde_json::Value::Null);
+        match nodes.first() {
+            Some(node) => Ok((*node).clone()),
+            None => Ok(serde_json::Value::Null),
         }
-        Ok(nodes[0].clone())
+    }
+
+    fn query_nodes(&self, root: &serde_json::Value, path: &str) -> Result<Vec<serde_json::Value>, String> {
+        let compiled = JsonPath::parse(path).map_err(|e| format!("Invalid path '{}': {}", path, e))?;
+        let nodes = compiled.query(root);
+        Ok(nodes.into_iter().cloned().collect())
+    }
+
+    fn flatten_nodes(nodes: Vec<serde_json::Value>) -> Vec<serde_json::Value> {
+        if nodes.len() == 1 {
+            match &nodes[0] {
+                serde_json::Value::Array(arr) => arr.clone(),
+                _ => nodes,
+            }
+        } else {
+            nodes
+        }
     }
 
     fn query_required(
@@ -174,11 +191,108 @@ impl GenericParser {
         )
     }
 
-    fn as_array(value: serde_json::Value) -> Vec<serde_json::Value> {
-        match value {
-            serde_json::Value::Array(arr) => arr,
-            serde_json::Value::Null => Vec::new(),
-            other => vec![other],
+    fn parse_xml(content: &str) -> Result<serde_json::Value, String> {
+        Self::xml_to_json(content)
+    }
+
+    fn xml_to_json(xml: &str) -> Result<serde_json::Value, String> {
+        use quick_xml::events::Event;
+        use quick_xml::reader::Reader;
+        use serde_json::{Map, Value};
+
+        let mut reader = Reader::from_str(xml);
+        reader.config_mut().trim_text(true);
+
+        let mut stack: Vec<(String, Map<String, Value>, Option<String>)> = Vec::new();
+        let mut root: Option<Value> = None;
+
+        let mut buf = Vec::new();
+        loop {
+            match reader.read_event_into(&mut buf) {
+                Ok(Event::Start(e)) => {
+                    let tag_name = String::from_utf8_lossy(e.name().as_ref()).to_string();
+                    let mut map = Map::new();
+                    for attr in e.attributes().flatten() {
+                        let key = format!("@{}", String::from_utf8_lossy(attr.key.as_ref()));
+                        let val = String::from_utf8_lossy(&attr.value).to_string();
+                        map.insert(key, Value::String(val));
+                    }
+                    stack.push((tag_name, map, None));
+                }
+                Ok(Event::Empty(e)) => {
+                    let tag_name = String::from_utf8_lossy(e.name().as_ref()).to_string();
+                    let mut map = Map::new();
+                    for attr in e.attributes().flatten() {
+                        let key = format!("@{}", String::from_utf8_lossy(attr.key.as_ref()));
+                        let val = String::from_utf8_lossy(&attr.value).to_string();
+                        map.insert(key, Value::String(val));
+                    }
+                    let elem_val = Value::Object(map);
+                    if let Some((_, parent_map, _)) = stack.last_mut() {
+                        Self::append_child(parent_map, tag_name, elem_val);
+                    } else {
+                        let mut wrapper = Map::new();
+                        wrapper.insert(tag_name, elem_val);
+                        root = Some(Value::Object(wrapper));
+                    }
+                }
+                Ok(Event::Text(e)) => {
+                    let text = String::from_utf8_lossy(e.as_ref()).trim().to_string();
+                    if !text.is_empty() {
+                        if let Some((_, _, text_slot)) = stack.last_mut() {
+                            *text_slot = Some(text);
+                        }
+                    }
+                }
+                Ok(Event::End(_)) => {
+                    if let Some((tag_name, mut map, text_slot)) = stack.pop() {
+                        if let Some(text) = text_slot {
+                            if map.is_empty() {
+                                let elem_val = Value::String(text);
+                                if let Some((_, parent_map, _)) = stack.last_mut() {
+                                    Self::append_child(parent_map, tag_name, elem_val);
+                                } else {
+                                    let mut wrapper = Map::new();
+                                    wrapper.insert(tag_name, elem_val);
+                                    root = Some(Value::Object(wrapper));
+                                }
+                                continue;
+                            } else {
+                                map.insert("#text".to_string(), Value::String(text));
+                            }
+                        }
+                        let elem_val = Value::Object(map);
+                        if let Some((_, parent_map, _)) = stack.last_mut() {
+                            Self::append_child(parent_map, tag_name, elem_val);
+                        } else {
+                            let mut wrapper = Map::new();
+                            wrapper.insert(tag_name, elem_val);
+                            root = Some(Value::Object(wrapper));
+                        }
+                    }
+                }
+                Ok(Event::Eof) => break,
+                Err(e) => return Err(format!("XML parse error: {}", e)),
+                _ => {}
+            }
+            buf.clear();
+        }
+
+        root.ok_or_else(|| "Empty XML document".to_string())
+    }
+
+    fn append_child(map: &mut serde_json::Map<String, serde_json::Value>, key: String, val: serde_json::Value) {
+        match map.get_mut(&key) {
+            Some(serde_json::Value::Array(arr)) => {
+                arr.push(val);
+            }
+            Some(existing) => {
+                let prev = existing.take();
+                *existing = serde_json::Value::Array(vec![prev, val]);
+            }
+            None => {
+                map.insert(key, val);
+            }
         }
     }
 }
@@ -186,8 +300,14 @@ impl GenericParser {
 impl TestParser for GenericParser {
     fn parse(&self, file_path: &Path) -> Result<Vec<TestSuite>, String> {
         let content = fs::read_to_string(file_path).map_err(|e| format!("I/O error: {}", e))?;
-        let root: serde_json::Value =
-            serde_json::from_str(&content).map_err(|e| format!("Invalid JSON: {}", e))?;
+        let root: serde_json::Value = match serde_json::from_str(&content) {
+            Ok(json) => json,
+            Err(json_err) => {
+                Self::parse_xml(&content).map_err(|xml_err| {
+                    format!("Failed to parse report as JSON ({}) or XML ({})", json_err, xml_err)
+                })?
+            }
+        };
         let suites = self.parse_value(&root)?;
         eprintln!(
             "Parsed {} suite(s) from {}",
@@ -398,5 +518,35 @@ mod tests {
         let result = parser.parse(file.path());
         assert!(result.is_err());
         assert!(result.unwrap_err().contains("Invalid path"));
+    }
+
+    #[test]
+    fn parse_valid_xml_source() {
+        let xml_source = r#"<testsuites>
+            <testsuite name="XmlSuite">
+                <testcase name="test1" status="passed"/>
+                <testcase name="test2" status="failed"/>
+            </testsuite>
+        </testsuites>"#;
+        let mapping = r#"{
+            "version": 1,
+            "suitePath": "$..testsuite",
+            "suiteName": "$['@name']",
+            "testPath": "$..testcase[*]",
+            "testName": "$['@name']",
+            "testStatus": "$['@status']",
+            "statusMap": { "passed": "passed", "failed": "failed" }
+        }"#;
+        let parser = GenericParser::from_mapping_str(mapping).unwrap();
+        let file = create_temp_json_file(xml_source);
+        let result = parser.parse(file.path()).unwrap();
+
+        assert_eq!(result.len(), 1);
+        assert_eq!(result[0].name, "XmlSuite");
+        assert_eq!(result[0].tests.len(), 2);
+        assert_eq!(result[0].tests[0].name, "test1");
+        assert_eq!(result[0].tests[0].status, TestStatus::Passed);
+        assert_eq!(result[0].tests[1].name, "test2");
+        assert_eq!(result[0].tests[1].status, TestStatus::Failed(String::new()));
     }
 }

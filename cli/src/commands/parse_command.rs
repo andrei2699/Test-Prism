@@ -255,17 +255,28 @@ mod tests {
     fn generic_report_type_without_mapping_returns_error() {
         let result = get_parser("json", None);
         assert!(result.is_err());
-        assert!(result.unwrap_err().contains("--mapping"));
+        assert!(result.err().unwrap().contains("--mapping"));
     }
 
     #[test]
     fn generic_report_type_with_invalid_mapping_returns_error() {
         let mut mapping_file = NamedTempFile::new().unwrap();
-        mapping_file.write_all(br#"{"version": 2}"#).unwrap();
+        mapping_file
+            .write_all(
+                br#"{
+                    "version": 2,
+                    "suitePath": "$.s",
+                    "testPath": "$.t",
+                    "testName": "$.n",
+                    "testStatus": "$.st",
+                    "statusMap": { "ok": "passed" }
+                }"#,
+            )
+            .unwrap();
 
         let result = get_parser("json", Some(mapping_file.path().to_str().unwrap()));
         assert!(result.is_err());
-        assert!(result.unwrap_err().contains("version"));
+        assert!(result.err().unwrap().contains("version"));
     }
 
     #[test]

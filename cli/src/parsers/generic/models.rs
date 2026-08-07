@@ -2,6 +2,7 @@ use serde::Deserialize;
 use std::collections::HashMap;
 
 #[derive(Debug, Clone, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct GenericMapping {
     pub version: u8,
 
@@ -37,7 +38,6 @@ pub struct GenericMapping {
     #[serde(default)]
     pub test_ancestor_titles: Option<String>,
 
-    #[serde(rename = "statusMap")]
     pub status_map: HashMap<String, String>,
 }
 
@@ -63,8 +63,11 @@ impl GenericMapping {
             .ok_or_else(|| "Mapping must be a JSON object".to_string())?;
 
         for field in Self::REQUIRED_FIELDS {
-            if !obj.contains_key(*field) {
-                return Err(format!("Missing required field: {}", field));
+            match obj.get(*field) {
+                None | Some(serde_json::Value::Null) => {
+                    return Err(format!("Missing required field: {}", field));
+                }
+                _ => {}
             }
         }
 
@@ -95,7 +98,7 @@ impl GenericMapping {
             }
         }
 
-        if let Some(time_unit) = obj.get("timeUnit") {
+        if let Some(time_unit) = obj.get("timeUnit").filter(|v| !v.is_null()) {
             let tu = time_unit
                 .as_str()
                 .ok_or_else(|| "Field 'timeUnit' must be a string".to_string())?;
@@ -150,7 +153,7 @@ mod tests {
     #[test]
     fn validate_accepts_minimal_valid_mapping() {
         let mut mapping = valid_mapping_json();
-        mapping["timeUnit"].take();
+        mapping.as_object_mut().unwrap().remove("timeUnit");
         let result = GenericMapping::validate_raw(&mapping);
         assert!(result.is_ok(), "{}", result.unwrap_err());
     }
@@ -274,7 +277,7 @@ mod tests {
     #[test]
     fn from_str_defaults_time_unit_to_seconds_when_absent() {
         let mut mapping = valid_mapping_json();
-        mapping["timeUnit"].take();
+        mapping.as_object_mut().unwrap().remove("timeUnit");
         let json = serde_json::to_string(&mapping).unwrap();
         let result = GenericMapping::from_str(&json).unwrap();
         assert_eq!(result.time_unit, "s");
