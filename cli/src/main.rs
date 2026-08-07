@@ -24,6 +24,12 @@ enum Commands {
 
         #[arg(long, help = "Tags to add to all tests")]
         tag: Vec<String>,
+
+        #[arg(
+            long,
+            help = "Path to the JSON mapping file (required for generic report types: json, xml)"
+        )]
+        mapping: Option<String>,
     },
     Tag {
         #[arg(short, long, help = "Input file path")]
@@ -49,12 +55,14 @@ fn main() {
             input,
             output,
             tag,
+            mapping,
         } => parse_command(
             report_type,
             input,
             output.unwrap_or("output.json".to_string()),
             chrono::Utc::now().to_string(),
             tag,
+            mapping,
         ),
         Commands::Tag { input, output, tag } => {
             tag_command(input, output, tag);
