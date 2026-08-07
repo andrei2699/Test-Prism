@@ -1,0 +1,25 @@
+{
+  "testResults": [
+    {
+      "name": "src/sample.test.ts",
+      "timestamp": "2025-01-06T15:34:21.123Z",
+      "time": 1.2,
+      "assertionResults": [
+        {
+          "title": "sample test pass",
+          "status": "passed",
+          "duration": 0.5,
+          "ancestorTitles": ["SampleSuite"],
+          "failureMessages": []
+        },
+        {
+          "title": "sample test fail",
+          "status": "failed",
+          "duration": 0.7,
+          "ancestorTitles": ["SampleSuite"],
+          "failureMessages": ["Assertion failed: expected true but got false"]
+        }
+      ]
+    }
+  ]
+}

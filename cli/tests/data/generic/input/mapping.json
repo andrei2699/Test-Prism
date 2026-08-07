@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "timeUnit": "s",
+  "suitePath": "$.testResults[*]",
+  "suiteName": "$.name",
+  "suiteFile": "$.name",
+  "suiteTimestamp": "$.timestamp",
+  "suiteDuration": "$.time",
+  "testPath": "$.assertionResults[*]",
+  "testName": "$.title",
+  "testStatus": "$.status",
+  "testTime": "$.duration",
+  "testMessage": "$.failureMessages[0]",
+  "testAncestorTitles": "$.ancestorTitles[*]",
+  "statusMap": {
+    "passed": "passed",
+    "failed": "failed",
+    "skipped": "skipped"
+  }
+}

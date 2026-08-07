@@ -1,3 +1,4 @@
+use crate::parsers::generic::GenericParser;
 use crate::parsers::jest::JestParser;
 use crate::parsers::junit::JunitParser;
 use crate::parsers::vitest::VitestParser;
@@ -11,8 +12,21 @@ pub fn parse_command(
     output: String,
     current_date: String,
     tags: Vec<String>,
+    mapping: Option<String>,
 ) {
-    let parser = get_parser(&report_type);
+    let parser = match get_parser(&report_type, mapping.as_deref()) {
+        Ok(p) => p,
+        Err(e) => {
+            eprintln!("{}", e);
+            std::process::exit(1);
+        }
+    };
+
+    if is_generic_type(&report_type) && Path::new(&input).is_dir() {
+        eprintln!("Error: generic report types (json/xml) require a single input file, not a directory");
+        std::process::exit(1);
+    }
+
     let input_paths = extract_folder_path_first_level(&input);
 
     let mut all_test_report_tests: Vec<TestReportTest> = Vec::new();
@@ -84,16 +98,26 @@ fn parse_file(
     }
 }
 
-fn get_parser(report_type: &str) -> Box<dyn TestParser> {
+fn get_parser(report_type: &str, mapping: Option<&str>) -> Result<Box<dyn TestParser>, String> {
     match report_type {
-        "junit" => Box::new(JunitParser),
-        "jest" => Box::new(JestParser),
-        "vitest" => Box::new(VitestParser),
-        _ => panic!(
-            "Unknown report_type: {}. Supported types: junit, jest, vitest",
+        "junit" => Ok(Box::new(JunitParser)),
+        "jest" => Ok(Box::new(JestParser)),
+        "vitest" => Ok(Box::new(VitestParser)),
+        "json" | "xml" => {
+            let mapping_path = mapping.ok_or_else(|| {
+                "Error: --mapping is required for generic report types (json/xml)".to_string()
+            })?;
+            Ok(Box::new(GenericParser::from_mapping_file(Path::new(mapping_path))?))
+        }
+        _ => Err(format!(
+            "Unknown report_type: {}. Supported types: junit, jest, vitest, json, xml",
             report_type
-        ),
+        )),
     }
+}
+
+fn is_generic_type(report_type: &str) -> bool {
+    report_type == "json" || report_type == "xml"
 }
 
 fn extract_folder_path_first_level(file_path: &str) -> Vec<String> {
@@ -140,7 +164,7 @@ mod tests {
     fn panic_if_unsupported_report_type() {
         let report_type = "unsupported";
 
-        let result = std::panic::catch_unwind(|| get_parser(report_type));
+        let result = get_parser(report_type, None);
 
         assert!(result.is_err());
     }
@@ -189,6 +213,7 @@ mod tests {
             output_file.path().to_str().unwrap().to_string(),
             "2024-01-01T00:00:00Z".to_string(),
             vec!["tag1".to_string(), "tag2".to_string()],
+            None,
         );
 
         let result_data = fs::read_to_string(output_file.path()).unwrap();
@@ -217,11 +242,85 @@ mod tests {
             output_file.path().to_str().unwrap().to_string(),
             "2024-01-01T00:00:00Z".to_string(),
             vec![],
+            None,
         );
 
         let result_data = fs::read_to_string(output_file.path()).unwrap();
         let result_report: TestReport = serde_json::from_str(&result_data).unwrap();
 
         assert_eq!(result_report.tests[0].tags, None);
+    }
+
+    #[test]
+    fn generic_report_type_without_mapping_returns_error() {
+        let result = get_parser("json", None);
+        assert!(result.is_err());
+        assert!(result.err().unwrap().contains("--mapping"));
+    }
+
+    #[test]
+    fn generic_report_type_with_invalid_mapping_returns_error() {
+        let mut mapping_file = NamedTempFile::new().unwrap();
+        mapping_file
+            .write_all(
+                br#"{
+                    "version": 2,
+                    "suitePath": "$.s",
+                    "testPath": "$.t",
+                    "testName": "$.n",
+                    "testStatus": "$.st",
+                    "statusMap": { "ok": "passed" }
+                }"#,
+            )
+            .unwrap();
+
+        let result = get_parser("json", Some(mapping_file.path().to_str().unwrap()));
+        assert!(result.is_err());
+        assert!(result.err().unwrap().contains("version"));
+    }
+
+    #[test]
+    fn generic_report_type_with_valid_mapping_parses_json_source() {
+        let mut mapping_file = NamedTempFile::new().unwrap();
+        mapping_file.write_all(
+            br#"{
+                "version": 1,
+                "suitePath": "$.suites[*]",
+                "suiteName": "$.name",
+                "testPath": "$.cases[*]",
+                "testName": "$.n",
+                "testStatus": "$.s",
+                "statusMap": { "ok": "passed", "bad": "failed" }
+            }"#,
+        ).unwrap();
+
+        let mut input_file = NamedTempFile::new().unwrap();
+        input_file.write_all(
+            br#"{
+                "suites": [{
+                    "name": "suite1",
+                    "cases": [
+                        { "n": "test1", "s": "ok" },
+                        { "n": "test2", "s": "bad" }
+                    ]
+                }]
+            }"#,
+        ).unwrap();
+
+        let output_file = NamedTempFile::new().unwrap();
+        parse_command(
+            "json".to_string(),
+            input_file.path().to_str().unwrap().to_string(),
+            output_file.path().to_str().unwrap().to_string(),
+            "2024-01-01T00:00:00Z".to_string(),
+            vec![],
+            Some(mapping_file.path().to_str().unwrap().to_string()),
+        );
+
+        let result_data = fs::read_to_string(output_file.path()).unwrap();
+        let result_report: TestReport = serde_json::from_str(&result_data).unwrap();
+        assert_eq!(result_report.tests.len(), 2);
+        assert_eq!(result_report.tests[0].name, "test1");
+        assert_eq!(result_report.tests[1].name, "test2");
     }
 }
