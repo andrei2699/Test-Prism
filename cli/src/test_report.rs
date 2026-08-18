@@ -28,6 +28,8 @@ pub struct TestExecution {
     pub duration_ms: u64,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub message: Option<String>,
+    #[serde(rename = "consoleOutput", skip_serializing_if = "Option::is_none")]
+    pub console_output: Option<String>,
 }
 
 #[derive(Serialize, Deserialize, Clone)]

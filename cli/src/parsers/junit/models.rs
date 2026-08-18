@@ -1,4 +1,4 @@
-﻿use serde::Deserialize;
+use serde::Deserialize;
 
 #[derive(Debug, PartialEq, Deserialize)]
 pub enum JunitRoot {
@@ -52,6 +52,10 @@ pub struct JunitTestCase {
     pub error: Option<JunitError>,
     #[serde(rename = "skipped", default)]
     pub skipped: Option<JunitSkipped>,
+    #[serde(rename = "system-out", default)]
+    pub system_out: Option<String>,
+    #[serde(rename = "system-err", default)]
+    pub system_err: Option<String>,
 }
 
 #[derive(Debug, PartialEq, Default, Deserialize)]

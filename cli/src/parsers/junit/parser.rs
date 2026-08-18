@@ -56,12 +56,27 @@ impl JunitParser {
         } else {
             TestStatus::Passed
         };
+
+        let console_output = build_console_output(case.system_out, case.system_err);
+
         Test {
             name: case.name,
             time: case.time,
             status,
             ancestor_titles: Vec::new(),
+            console_output,
         }
+    }
+}
+
+fn build_console_output(system_out: Option<String>, system_err: Option<String>) -> Option<String> {
+    let out = system_out.filter(|s| !s.trim().is_empty());
+    let err = system_err.filter(|s| !s.trim().is_empty());
+    match (out, err) {
+        (Some(o), Some(e)) => Some(format!("{}\n{}", o, e)),
+        (Some(o), None) => Some(o),
+        (None, Some(e)) => Some(e),
+        (None, None) => None,
     }
 }
 
@@ -407,5 +422,75 @@ mod tests {
             suite.tests[3].status,
             TestStatus::Skipped("Skipped message".to_string())
         );
+    }
+
+    #[test]
+    fn test_case_with_system_out_only_sets_console_output() {
+        let xml_content = r#"
+            <testsuite name="Suite" tests="1" failures="0" errors="0" skipped="0" time="0.1" timestamp="2024-01-01T00:00:00Z">
+                <testcase name="test" classname="c" time="0.1">
+                    <system-out><![CDATA[Hello stdout]]></system-out>
+                </testcase>
+            </testsuite>
+        "#;
+        let file = create_temp_xml_file(xml_content);
+        let result = JunitParser.parse(file.path()).unwrap();
+        assert_eq!(result[0].tests[0].console_output, Some("Hello stdout".to_string()));
+    }
+
+    #[test]
+    fn test_case_with_system_err_only_sets_console_output() {
+        let xml_content = r#"
+            <testsuite name="Suite" tests="1" failures="0" errors="0" skipped="0" time="0.1" timestamp="2024-01-01T00:00:00Z">
+                <testcase name="test" classname="c" time="0.1">
+                    <system-err><![CDATA[Hello stderr]]></system-err>
+                </testcase>
+            </testsuite>
+        "#;
+        let file = create_temp_xml_file(xml_content);
+        let result = JunitParser.parse(file.path()).unwrap();
+        assert_eq!(result[0].tests[0].console_output, Some("Hello stderr".to_string()));
+    }
+
+    #[test]
+    fn test_case_with_system_out_and_system_err_combines_both() {
+        let xml_content = r#"
+            <testsuite name="Suite" tests="1" failures="0" errors="0" skipped="0" time="0.1" timestamp="2024-01-01T00:00:00Z">
+                <testcase name="test" classname="c" time="0.1">
+                    <system-out><![CDATA[out line]]></system-out>
+                    <system-err><![CDATA[err line]]></system-err>
+                </testcase>
+            </testsuite>
+        "#;
+        let file = create_temp_xml_file(xml_content);
+        let result = JunitParser.parse(file.path()).unwrap();
+        assert_eq!(result[0].tests[0].console_output, Some("out line\nerr line".to_string()));
+    }
+
+    #[test]
+    fn test_case_without_system_out_or_err_has_no_console_output() {
+        let xml_content = r#"
+            <testsuite name="Suite" tests="1" failures="0" errors="0" skipped="0" time="0.1" timestamp="2024-01-01T00:00:00Z">
+                <testcase name="test" classname="c" time="0.1"/>
+            </testsuite>
+        "#;
+        let file = create_temp_xml_file(xml_content);
+        let result = JunitParser.parse(file.path()).unwrap();
+        assert_eq!(result[0].tests[0].console_output, None);
+    }
+
+    #[test]
+    fn test_case_with_empty_system_out_and_err_has_no_console_output() {
+        let xml_content = r#"
+            <testsuite name="Suite" tests="1" failures="0" errors="0" skipped="0" time="0.1" timestamp="2024-01-01T00:00:00Z">
+                <testcase name="test" classname="c" time="0.1">
+                    <system-out><![CDATA[]]></system-out>
+                    <system-err><![CDATA[]]></system-err>
+                </testcase>
+            </testsuite>
+        "#;
+        let file = create_temp_xml_file(xml_content);
+        let result = JunitParser.parse(file.path()).unwrap();
+        assert_eq!(result[0].tests[0].console_output, None);
     }
 }

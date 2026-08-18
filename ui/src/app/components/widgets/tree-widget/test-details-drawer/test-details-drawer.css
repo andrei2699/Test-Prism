@@ -87,10 +87,50 @@
   background: #fafafa;
 }
 
+.executions-table th:last-child,
+.executions-table td.actions-cell {
+  width: 72px;
+  text-align: right;
+  padding-right: 4px;
+}
+
 .executions-table tbody tr:last-child td {
   border-bottom: none;
 }
 
-.executions-table tbody tr:hover {
+.executions-table tbody tr:not(.console-output-row):hover {
   background: #f5f5f5;
+}
+
+.console-toggle-btn,
+.console-open-btn {
+  width: 28px;
+  height: 28px;
+  line-height: 28px;
+}
+
+.console-toggle-btn mat-icon,
+.console-open-btn mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  line-height: 18px;
+}
+
+.console-output-row td {
+  background: #f5f5f5;
+  padding: 0;
+}
+
+.console-output {
+  margin: 0;
+  padding: 10px 14px;
+  font-family: monospace;
+  font-size: 0.78rem;
+  color: #333;
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-height: 180px;
+  overflow-y: auto;
+  border-top: 1px solid #e0e0e0;
 }

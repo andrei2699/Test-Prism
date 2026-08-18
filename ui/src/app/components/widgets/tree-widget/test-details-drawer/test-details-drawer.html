@@ -54,6 +54,7 @@
           <th>Timestamp</th>
           <th>Status</th>
           <th>Duration</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -62,7 +63,36 @@
             <td>{{ execution.timestamp | date: 'short' }}</td>
             <td [style.color]="colors()[execution.status]">{{ execution.status }}</td>
             <td>{{ execution.durationMs | humanizeDuration }}</td>
+            <td class="actions-cell">
+              @if (execution.consoleOutput) {
+                <button
+                  mat-icon-button
+                  class="console-toggle-btn"
+                  [title]="
+                    isConsoleOutputExpanded(execution.timestamp) ? 'Hide output' : 'Show output'
+                  "
+                  (click)="toggleConsoleOutput(execution.timestamp)">
+                  <mat-icon>{{
+                    isConsoleOutputExpanded(execution.timestamp) ? 'expand_less' : 'expand_more'
+                  }}</mat-icon>
+                </button>
+                <button
+                  mat-icon-button
+                  class="console-open-btn"
+                  title="Open full output"
+                  (click)="openConsoleOutputDialog(execution)">
+                  <mat-icon>open_in_full</mat-icon>
+                </button>
+              }
+            </td>
           </tr>
+          @if (execution.consoleOutput && isConsoleOutputExpanded(execution.timestamp)) {
+            <tr class="console-output-row">
+              <td colspan="4">
+                <pre class="console-output">{{ execution.consoleOutput }}</pre>
+              </td>
+            </tr>
+          }
         }
       </tbody>
     </table>

@@ -38,6 +38,9 @@ pub struct GenericMapping {
     #[serde(default)]
     pub test_ancestor_titles: Option<String>,
 
+    #[serde(default)]
+    pub test_console_output: Option<String>,
+
     pub status_map: HashMap<String, String>,
 }
 

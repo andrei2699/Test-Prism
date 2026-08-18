@@ -24,4 +24,6 @@ pub struct VitestAssertion {
     pub duration: Option<f64>,
     #[serde(rename = "failureMessages")]
     pub failure_messages: Vec<String>,
+    #[serde(rename = "consoleOutput", default)]
+    pub console_output: Option<String>,
 }

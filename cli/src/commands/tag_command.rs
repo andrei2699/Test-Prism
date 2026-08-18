@@ -367,6 +367,7 @@ mod tests {
                 status: TestExecutionStatus::Passed,
                 duration_ms: 100,
                 message: None,
+                console_output: None,
             }],
             tags: None,
         }
@@ -382,6 +383,7 @@ mod tests {
                 status: TestExecutionStatus::Failed,
                 duration_ms: 200,
                 message: Some("failed".to_string()),
+                console_output: None,
             }],
             tags: Some(tags.into_iter().map(|s| s.to_string()).collect()),
         }

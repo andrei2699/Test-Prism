@@ -68,6 +68,7 @@ fn parse_file(
                         status: TestExecutionStatus::from_test_status(&test.status),
                         duration_ms: (test.time * 1000.0) as u64,
                         message: TestExecution::message_from_test_status(&test.status),
+                        console_output: test.console_output.clone(),
                     };
 
                     let mut logical_path: Vec<String> = if suite.name.is_empty() {

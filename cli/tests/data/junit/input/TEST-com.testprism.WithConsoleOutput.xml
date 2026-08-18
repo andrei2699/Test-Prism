@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.testprism.WithConsoleOutput" tests="2" skipped="0" failures="1" errors="0"
+           timestamp="2026-01-06T13:06:33.796Z" hostname="ANDREI" time="0.050">
+    <properties/>
+    <testcase name="testWithOutput()" classname="com.testprism.WithConsoleOutput" time="0.030">
+        <system-out><![CDATA[Hello from passing test]]></system-out>
+        <system-err><![CDATA[]]></system-err>
+    </testcase>
+    <testcase name="testWithOutputAndFailure()" classname="com.testprism.WithConsoleOutput" time="0.020">
+        <failure message="org.opentest4j.AssertionFailedError" type="org.opentest4j.AssertionFailedError">
+            org.opentest4j.AssertionFailedError
+            at app//com.testprism.WithConsoleOutput.testWithOutputAndFailure(WithConsoleOutput.java:15)
+        </failure>
+        <system-out><![CDATA[Some stdout output]]></system-out>
+        <system-err><![CDATA[Some stderr output]]></system-err>
+    </testcase>
+    <system-out><![CDATA[]]></system-out>
+    <system-err><![CDATA[]]></system-err>
+</testsuite>
