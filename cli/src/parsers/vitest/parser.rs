@@ -42,6 +42,7 @@ impl TestParser for VitestParser {
                                 .into_iter()
                                 .filter(|s| !s.is_empty())
                                 .collect(),
+                            console_output: assertion.console_output,
                         }
                     })
                     .collect();

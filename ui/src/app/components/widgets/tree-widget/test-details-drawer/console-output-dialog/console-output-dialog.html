@@ -1,0 +1,9 @@
+﻿<div class="dialog-header" mat-dialog-title>
+  <span>Console Output — {{ data.timestamp }}</span>
+  <button mat-icon-button mat-dialog-close>
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+<mat-dialog-content>
+  <pre class="console-output-full">{{ data.consoleOutput }}</pre>
+</mat-dialog-content>

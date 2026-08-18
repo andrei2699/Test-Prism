@@ -44,6 +44,7 @@ impl TestParser for JestParser {
                                 .into_iter()
                                 .filter(|s| !s.is_empty())
                                 .collect(),
+                            console_output: assertion.console_output,
                         }
                     })
                     .collect();
@@ -125,5 +126,56 @@ mod tests {
             TestStatus::Failed("Expected 3 to equal 4".to_string())
         );
         assert_eq!(suite.tests[1].ancestor_titles, vec!["Math".to_string()]);
+    }
+
+    #[test]
+    fn console_output_is_parsed_when_present() {
+        let json_content = r#"{
+            "testResults": [
+                {
+                    "name": "src/example.test.js",
+                    "status": "passed",
+                    "assertionResults": [
+                        {
+                            "title": "logs something",
+                            "fullName": "logs something",
+                            "status": "passed",
+                            "ancestorTitles": [],
+                            "duration": 1,
+                            "failureMessages": [],
+                            "consoleOutput": "Hello from test"
+                        }
+                    ]
+                }
+            ]
+        }"#;
+        let file = create_temp_json_file(json_content);
+        let result = JestParser.parse(file.path()).unwrap();
+        assert_eq!(result[0].tests[0].console_output, Some("Hello from test".to_string()));
+    }
+
+    #[test]
+    fn console_output_is_none_when_absent() {
+        let json_content = r#"{
+            "testResults": [
+                {
+                    "name": "src/example.test.js",
+                    "status": "passed",
+                    "assertionResults": [
+                        {
+                            "title": "simple test",
+                            "fullName": "simple test",
+                            "status": "passed",
+                            "ancestorTitles": [],
+                            "duration": 1,
+                            "failureMessages": []
+                        }
+                    ]
+                }
+            ]
+        }"#;
+        let file = create_temp_json_file(json_content);
+        let result = JestParser.parse(file.path()).unwrap();
+        assert_eq!(result[0].tests[0].console_output, None);
     }
 }

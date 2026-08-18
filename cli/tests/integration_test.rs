@@ -16,6 +16,7 @@ use tempfile::tempdir;
     "tests/data/junit/input/TEST-com.testprism.SkippedTest.xml",
     "tests/data/junit/input/TEST-com.testprism.SuccessTest.xml",
     "tests/data/junit/input/TEST-com.testprism.TestWithMultipleTypes.xml",
+    "tests/data/junit/input/TEST-com.testprism.WithConsoleOutput.xml",
 }, expected_output_file = {
     "tests/data/junit/output/folder.json",
     "tests/data/junit/output/TEST-com.testprism.DisplayNameTest.json",
@@ -27,6 +28,7 @@ use tempfile::tempdir;
     "tests/data/junit/output/TEST-com.testprism.SkippedTest.json",
     "tests/data/junit/output/TEST-com.testprism.SuccessTest.json",
     "tests/data/junit/output/TEST-com.testprism.TestWithMultipleTypes.json",
+    "tests/data/junit/output/TEST-com.testprism.WithConsoleOutput.json",
 })]
 fn junit_parse_command(input_file: &str, expected_output_file: &str) {
     let temp_dir = tempdir().expect("Failed to create temp dir");

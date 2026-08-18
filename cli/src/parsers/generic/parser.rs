@@ -81,6 +81,9 @@ impl GenericParser {
             .query_array(test_val, &self.mapping.test_ancestor_titles)
             .unwrap_or_default();
 
+        let console_output = self.query_optional(test_val, &self.mapping.test_console_output)
+            .filter(|s| !s.is_empty());
+
         let status = match status {
             TestStatus::Passed => TestStatus::Passed,
             TestStatus::Failed(_) => TestStatus::Failed(message.unwrap_or_default()),
@@ -93,6 +96,7 @@ impl GenericParser {
             time,
             status,
             ancestor_titles,
+            console_output,
         })
     }
 
@@ -548,5 +552,52 @@ mod tests {
         assert_eq!(result[0].tests[0].status, TestStatus::Passed);
         assert_eq!(result[0].tests[1].name, "test2");
         assert_eq!(result[0].tests[1].status, TestStatus::Failed(String::new()));
+    }
+
+    #[test]
+    fn test_console_output_mapping_is_extracted() {
+        let mapping = r#"{
+            "version": 1,
+            "suitePath": "$.suites[*]",
+            "suiteName": "$.name",
+            "testPath": "$.cases[*]",
+            "testName": "$.n",
+            "testStatus": "$.s",
+            "testConsoleOutput": "$.output",
+            "statusMap": { "ok": "passed" }
+        }"#;
+        let source = r#"{
+            "suites": [{
+                "name": "s",
+                "cases": [{ "n": "t1", "s": "ok", "output": "log line" }]
+            }]
+        }"#;
+        let parser = GenericParser::from_mapping_str(mapping).unwrap();
+        let file = create_temp_json_file(source);
+        let result = parser.parse(file.path()).unwrap();
+        assert_eq!(result[0].tests[0].console_output, Some("log line".to_string()));
+    }
+
+    #[test]
+    fn test_console_output_absent_when_mapping_not_provided() {
+        let mapping = r#"{
+            "version": 1,
+            "suitePath": "$.suites[*]",
+            "suiteName": "$.name",
+            "testPath": "$.cases[*]",
+            "testName": "$.n",
+            "testStatus": "$.s",
+            "statusMap": { "ok": "passed" }
+        }"#;
+        let source = r#"{
+            "suites": [{
+                "name": "s",
+                "cases": [{ "n": "t1", "s": "ok" }]
+            }]
+        }"#;
+        let parser = GenericParser::from_mapping_str(mapping).unwrap();
+        let file = create_temp_json_file(source);
+        let result = parser.parse(file.path()).unwrap();
+        assert_eq!(result[0].tests[0].console_output, None);
     }
 }

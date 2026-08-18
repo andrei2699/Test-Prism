@@ -1,0 +1,33 @@
+﻿:host {
+  display: flex;
+  flex-direction: column;
+  height: 80vh;
+  max-height: 80vh;
+}
+
+.dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 8px 8px 24px;
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 500;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+mat-dialog-content {
+  flex: 1;
+  overflow: auto;
+  padding: 16px 24px;
+}
+
+.console-output-full {
+  margin: 0;
+  font-family: monospace;
+  font-size: 0.82rem;
+  color: #333;
+  white-space: pre-wrap;
+  word-break: break-word;
+  line-height: 1.5;
+}

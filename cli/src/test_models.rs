@@ -21,4 +21,5 @@ pub struct Test {
     pub time: f64,
     pub status: TestStatus,
     pub ancestor_titles: Vec<String>,
+    pub console_output: Option<String>,
 }
