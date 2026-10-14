@@ -6,6 +6,6 @@
     "test": "jest --json --outputFile=jest-report.json"
   },
   "devDependencies": {
-    "jest": "^30.4.2"
+    "jest": "^30.5.2"
   }
 }

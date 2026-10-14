@@ -109,7 +109,9 @@ describe('TestDataService', () => {
       const req2 = httpMock.expectOne('/api/source2');
       req2.flush('Error', { status: 500, statusText: 'Server Error' });
 
-      expect(promise).rejects.toThrow('Http failure response for /api/source2: 500 Server Error');
+      await expect(promise).rejects.toThrow(
+        'Http failure response for /api/source2: 500 Server Error',
+      );
     });
 
     it('given error for one of the data sources, then expect error and one request to be cancelled', async () => {
@@ -132,7 +134,7 @@ describe('TestDataService', () => {
       req1.flush('Error', { status: 500, statusText: 'Server Error' });
       expect(req2.cancelled).toBeTruthy();
 
-      expect(promise).rejects.toThrow(
+      await expect(promise).rejects.toThrow(
         /Http failure response for \/api\/source\d+: 500 Server Error/,
       );
     });
