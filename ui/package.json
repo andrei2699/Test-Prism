@@ -50,7 +50,7 @@
   },
   "devDependencies": {
     "@angular/build": "^22.2.2",
-    "@angular/cli": "^22.2.2",
+    "@angular/cli": "^22.2.5",
     "@angular/compiler-cli": "^22.2.2",
     "@types/humanize-duration": "^3.27.4",
     "@vitest/browser-playwright": "^5.0.4",
